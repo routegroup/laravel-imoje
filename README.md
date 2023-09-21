@@ -5,61 +5,12 @@
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/routegroup/laravel-imoje/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/routegroup/laravel-imoje/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/routegroup/laravel-imoje.svg?style=flat-square)](https://packagist.org/packages/routegroup/laravel-imoje)
 
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
-
-## Support us
-
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/Imoje.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/Imoje)
-
-We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can support us by [buying one of our paid products](https://spatie.be/open-source/support-us).
-
-We highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using. You'll find our address on [our contact page](https://spatie.be/about-us). We publish all received postcards on [our virtual postcard wall](https://spatie.be/open-source/postcards).
-
 ## Installation
 
 You can install the package via composer:
 
 ```bash
 composer require routegroup/laravel-imoje
-```
-
-You can publish and run the migrations with:
-
-```bash
-php artisan vendor:publish --tag="imoje-migrations"
-php artisan migrate
-```
-
-You can publish the config file with:
-
-```bash
-php artisan vendor:publish --tag="imoje-config"
-```
-
-This is the contents of the published config file:
-
-```php
-return [
-];
-```
-
-Optionally, you can publish the views using
-
-```bash
-php artisan vendor:publish --tag="imoje-views"
-```
-
-## Usage
-
-```php
-$payment = new Routegroup\Payment();
-echo $payment->echoPhrase('Hello, Routegroup!');
-```
-
-## Testing
-
-```bash
-composer test
 ```
 
 ## Changelog
@@ -76,7 +27,7 @@ Please review [our security policy](../../security/policy) on how to report secu
 
 ## Credits
 
-- [Kajetan Nobel](https://github.com/routegroup)
+- [Kajetan Nobel](https://github.com/kajetan-nobel)
 - [All Contributors](../../contributors)
 
 ## License
