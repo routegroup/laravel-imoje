@@ -6,7 +6,7 @@ namespace Routegroup\Imoje\Payment\DTO\Request;
 
 use JetBrains\PhpStorm\ArrayShape;
 use Routegroup\Imoje\Payment\DTO\BaseDto;
-use Routegroup\Imoje\Payment\Lib\Utils;
+use Routegroup\Imoje\Payment\Lib\Config;
 use Routegroup\Imoje\Payment\Types\HashMethod;
 
 /**
@@ -61,15 +61,15 @@ class OneClickRequestDto extends BaseDto
         ])] $attributes,
         HashMethod $hashMethod = HashMethod::SHA256
     ): BaseDto {
-        $utils = app(Utils::class);
+        $config = app(Config::class);
 
         $attributes = array_merge_recursive([
-            'serviceId' => $utils->serviceId,
-            'merchantId' => $utils->merchantId,
+            'serviceId' => $config->serviceId,
+            'merchantId' => $config->merchantId,
             'widgetType' => 'oneclick',
         ], $attributes);
 
-        $attributes['signature'] = $utils->createSignature($attributes, $hashMethod);
+        $attributes['signature'] = $config->createSignature($attributes, $hashMethod);
 
         return new self($attributes);
     }
