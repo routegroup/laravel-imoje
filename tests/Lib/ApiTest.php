@@ -2,9 +2,11 @@
 
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Http;
+use Routegroup\Imoje\Payment\DTO\Request\ChargeProfileRequestDto;
 use Routegroup\Imoje\Payment\DTO\Request\RefundRequestDto;
 use Routegroup\Imoje\Payment\Lib\Api;
 use Routegroup\Imoje\Payment\Lib\Utils;
+use Routegroup\Imoje\Payment\Types\Currency;
 
 beforeEach(function (): void {
     Http::fake();
@@ -21,6 +23,24 @@ it('makes refund request', function (): void {
             && $request->isJson()
             && $request->method() === 'POST'
             && array_keys($request->data()) === ['type', 'serviceId', 'amount'];
+    });
+});
+
+it('makes charge profile request', function (): void {
+    $dto = ChargeProfileRequestDto::make([
+        'amount' => 1000 * 100,
+        'currency' => Currency::PLN,
+        'paymentProfileId' => '123456789',
+        'orderId' => '1234',
+    ]);
+
+    $this->api->chargeProfile($dto);
+
+    Http::assertSent(function (Request $request) {
+        return $request->url() === $this->utils->createChargeProfileUrl()
+            && $request->isJson()
+            && $request->method() === 'POST'
+            && array_keys($request->data()) === ['serviceId', 'amount', 'currency', 'paymentProfileId', 'orderId'];
     });
 });
 

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Routegroup\Imoje\Payment\DTO;
 
-use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Fluent;
+use Routegroup\Imoje\Payment\Lib\Utils;
 
 /**
  * @template TKey of array-key
@@ -44,7 +44,9 @@ abstract class BaseDto extends Fluent
         }
 
         if (enum_exists($castType)) {
-            return $castType::from($value);
+            return $value instanceof $castType
+                ? $value
+                : $castType::from($value);
         }
 
         return match ($castType) {
@@ -61,23 +63,7 @@ abstract class BaseDto extends Fluent
      */
     public function toArray(): array
     {
-        $computedAttributes = [];
-
-        foreach ($this->attributes as $key => $attribute) {
-            $value = $attribute;
-
-            if ($value instanceof Arrayable) {
-                $value = $value->toArray();
-            }
-
-            if (is_object($value) && enum_exists(get_class($value))) {
-                $value = $value->value;
-            }
-
-            $computedAttributes[$key] = $value;
-        }
-
-        return $computedAttributes;
+        return app(Utils::class)->transformValues($this->attributes);
     }
 
     /**

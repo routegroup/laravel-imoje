@@ -31,6 +31,11 @@ use Routegroup\Imoje\Payment\Types\HashMethod;
  */
 class OneClickRequestDto extends BaseDto
 {
+    protected array $casts = [
+        'amount' => 'int',
+        'validTo' => 'int',
+    ];
+
     public static function make(
         #[ArrayShape([
             // Required

@@ -27,6 +27,10 @@ class NotificationDto extends BaseDto
             return CancelledResponseDto::make($attributes);
         }
 
+        if (static::isChargeProfile($attributes)) {
+            return ChargeProfileResponseDto::make($attributes);
+        }
+
         throw new NotImplementedException();
     }
 
@@ -42,5 +46,12 @@ class NotificationDto extends BaseDto
     {
         return array_key_exists('payment', $attributes)
             && $attributes['payment']['status'] === 'cancelled';
+    }
+
+    public static function isChargeProfile(array $attributes): bool
+    {
+        return array_key_exists('transaction', $attributes)
+            && $attributes['transaction']['paymentMethod'] === 'card'
+            && $attributes['transaction']['source'] === 'api';
     }
 }

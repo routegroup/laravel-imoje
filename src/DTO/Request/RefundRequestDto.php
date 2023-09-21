@@ -16,6 +16,10 @@ use Routegroup\Imoje\Payment\Lib\Utils;
  */
 class RefundRequestDto extends BaseDto
 {
+    protected array $casts = [
+        'amount' => 'int',
+    ];
+
     public static function make(
         #[ArrayShape([
             // Required

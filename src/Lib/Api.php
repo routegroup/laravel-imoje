@@ -7,6 +7,7 @@ namespace Routegroup\Imoje\Payment\Lib;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
+use Routegroup\Imoje\Payment\DTO\Request\ChargeProfileRequestDto;
 use Routegroup\Imoje\Payment\DTO\Request\RefundRequestDto;
 
 class Api
@@ -21,6 +22,16 @@ class Api
         string $transactionId
     ): Response {
         $url = $this->utils->createRefundUrl($transactionId);
+
+        return $this
+            ->request()
+            ->post($url, $dto);
+    }
+
+    public function chargeProfile(
+        ChargeProfileRequestDto $dto
+    ): Response {
+        $url = $this->utils->createChargeProfileUrl();
 
         return $this
             ->request()
