@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Routegroup\Imoje\Payment\DTO\Request;
 
 use Routegroup\Imoje\Payment\DTO\BaseDto;
-use Routegroup\Imoje\Payment\Lib\Utils;
+use Routegroup\Imoje\Payment\Lib\Config;
 use Routegroup\Imoje\Payment\Types\Currency;
 
 /**
@@ -35,10 +35,10 @@ class ChargeProfileRequestDto extends BaseDto
             'title' => 'string',
         ])] array $attributes
     ): BaseDto {
-        $utils = app(Utils::class);
+        $config = app(Config::class);
 
         $attributes = array_merge_recursive([
-            'serviceId' => $utils->serviceId,
+            'serviceId' => $config->serviceId,
         ], $attributes);
 
         return parent::make($attributes);

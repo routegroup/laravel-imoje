@@ -7,6 +7,8 @@ namespace Routegroup\Imoje\Payment;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 use Routegroup\Imoje\Payment\Lib\Api;
+use Routegroup\Imoje\Payment\Lib\Config;
+use Routegroup\Imoje\Payment\Lib\Url;
 use Routegroup\Imoje\Payment\Lib\Utils;
 use Routegroup\Imoje\Payment\Types\Environment;
 
@@ -15,11 +17,11 @@ class ImojeServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(
-            Utils::class,
+            Config::class,
             function (Application $app) {
                 $config = $app->make('config');
 
-                return new Utils(
+                return new Config(
                     $config->get('services.imoje.merchant_id'),
                     $config->get('services.imoje.service_id'),
                     $config->get('services.imoje.service_key'),
@@ -27,11 +29,6 @@ class ImojeServiceProvider extends ServiceProvider
                     Environment::from($config->get('services.imoje.env', Environment::PRODUCTION->value)),
                 );
             }
-        );
-
-        $this->app->bind(
-            Api::class,
-            fn (Application $app) => new Api($app->make(Utils::class))
         );
     }
 
@@ -41,7 +38,9 @@ class ImojeServiceProvider extends ServiceProvider
     public function provides(): array
     {
         return [
+            Config::class,
             Api::class,
+            Url::class,
             Utils::class,
         ];
     }

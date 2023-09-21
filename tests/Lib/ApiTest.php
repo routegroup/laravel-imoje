@@ -5,13 +5,13 @@ use Illuminate\Support\Facades\Http;
 use Routegroup\Imoje\Payment\DTO\Request\ChargeProfileRequestDto;
 use Routegroup\Imoje\Payment\DTO\Request\RefundRequestDto;
 use Routegroup\Imoje\Payment\Lib\Api;
-use Routegroup\Imoje\Payment\Lib\Utils;
+use Routegroup\Imoje\Payment\Lib\Url;
 use Routegroup\Imoje\Payment\Types\Currency;
 
 beforeEach(function (): void {
     Http::fake();
     $this->api = app(Api::class);
-    $this->utils = app(Utils::class);
+    $this->url = app(Url::class);
 });
 
 it('makes refund request', function (): void {
@@ -19,7 +19,7 @@ it('makes refund request', function (): void {
     $this->api->createRefund($dto, '$transaction_id$');
 
     Http::assertSent(function (Request $request) {
-        return $request->url() === $this->utils->createRefundUrl('$transaction_id$')
+        return $request->url() === $this->url->createRefundUrl('$transaction_id$')
             && $request->isJson()
             && $request->method() === 'POST'
             && array_keys($request->data()) === ['type', 'serviceId', 'amount'];
@@ -37,7 +37,7 @@ it('makes charge profile request', function (): void {
     $this->api->chargeProfile($dto);
 
     Http::assertSent(function (Request $request) {
-        return $request->url() === $this->utils->createChargeProfileUrl()
+        return $request->url() === $this->url->createChargeProfileUrl()
             && $request->isJson()
             && $request->method() === 'POST'
             && array_keys($request->data()) === ['serviceId', 'amount', 'currency', 'paymentProfileId', 'orderId'];
@@ -48,7 +48,7 @@ it('makes deactivate profile request', function (): void {
     $this->api->deactivateProfile('$profile_id$');
 
     Http::assertSent(function (Request $request) {
-        return $request->url() === $this->utils->createDeactivateProfileUrl('$profile_id$')
+        return $request->url() === $this->url->createProfileIdUrl('$profile_id$')
             && $request->isJson()
             && $request->method() === 'DELETE';
     });

@@ -20,14 +20,4 @@ it('builds query for create signature')
     ]))
     ->toEqual('bar=baz&foo=faa');
 
-it('creates refund url')
-    ->expect(fn () => $this->utils->createRefundUrl('$transaction_id$'))
-    ->toEqual('https://sandbox.api.imoje.pl/v1/merchant/$merchant_id$/transaction/$transaction_id$/refund');
-
-it('creates charge profile url')
-    ->expect(fn () => $this->utils->createChargeProfileUrl())
-    ->toEqual('https://sandbox.api.imoje.pl/v1/merchant/$merchant_id$/transaction/profile');
-
-it('creates deactivate profile url')
-    ->expect(fn () => $this->utils->createDeactivateProfileUrl('$profile_id$'))
-    ->toEqual('https://sandbox.api.imoje.pl/v1/merchant/$merchant_id$/profile/id/$profile_id$');
+it('transforms values')->todo();

@@ -6,7 +6,7 @@ namespace Routegroup\Imoje\Payment\DTO\Request;
 
 use JetBrains\PhpStorm\ArrayShape;
 use Routegroup\Imoje\Payment\DTO\BaseDto;
-use Routegroup\Imoje\Payment\Lib\Utils;
+use Routegroup\Imoje\Payment\Lib\Config;
 
 /**
  * @property-read string $type
@@ -30,11 +30,11 @@ class RefundRequestDto extends BaseDto
             'title' => 'string',
         ])] array $attributes
     ): BaseDto {
-        $utils = app(Utils::class);
+        $config = app(Config::class);
 
         $attributes = array_merge_recursive([
             'type' => 'refund',
-            'serviceId' => $utils->serviceId,
+            'serviceId' => $config->serviceId,
         ], $attributes);
 
         return parent::make($attributes);

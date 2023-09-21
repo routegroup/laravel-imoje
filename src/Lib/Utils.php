@@ -5,17 +5,12 @@ declare(strict_types=1);
 namespace Routegroup\Imoje\Payment\Lib;
 
 use Illuminate\Contracts\Support\Arrayable;
-use Routegroup\Imoje\Payment\Types\Environment;
 use Routegroup\Imoje\Payment\Types\HashMethod;
 
 class Utils
 {
     public function __construct(
-        public readonly string $merchantId,
-        public readonly string $serviceId,
-        public readonly string $serviceKey,
-        public readonly string $apiKey,
-        public readonly Environment $env,
+        public readonly Config $config,
     ) {
     }
 
@@ -23,7 +18,7 @@ class Utils
         array $orderData,
         HashMethod $hashMethod = HashMethod::SHA256
     ): string {
-        $hash = hash($hashMethod->value, $this->buildQuery($orderData).$this->serviceKey);
+        $hash = hash($hashMethod->value, $this->buildQuery($orderData).$this->config->serviceKey);
 
         return "{$hash};{$hashMethod->value}";
     }
@@ -61,40 +56,5 @@ class Utils
         }
 
         return $computed;
-    }
-
-    public function createRefundUrl(string $transactionId): string
-    {
-        return implode('/', [
-            $this->env->url(),
-            'merchant',
-            $this->merchantId,
-            'transaction',
-            $transactionId,
-            'refund',
-        ]);
-    }
-
-    public function createChargeProfileUrl(): string
-    {
-        return implode('/', [
-            $this->env->url(),
-            'merchant',
-            $this->merchantId,
-            'transaction',
-            'profile',
-        ]);
-    }
-
-    public function createDeactivateProfileUrl(string $profileId): string
-    {
-        return implode('/', [
-            $this->env->url(),
-            'merchant',
-            $this->merchantId,
-            'profile',
-            'id',
-            $profileId,
-        ]);
     }
 }
