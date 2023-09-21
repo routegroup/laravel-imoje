@@ -1,9 +1,9 @@
 <?php
 
-namespace Routegroup\Payment\Tests;
+namespace Routegroup\Imoje\Payment\Tests;
 
 use Orchestra\Testbench\TestCase as Orchestra;
-use Routegroup\Payment\ImojeServiceProvider;
+use Routegroup\Imoje\Payment\ImojeServiceProvider;
 
 class TestCase extends Orchestra
 {

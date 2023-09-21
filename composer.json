@@ -17,7 +17,8 @@
     ],
     "require": {
         "php": "^8.1",
-        "illuminate/contracts": "^10.0"
+        "illuminate/contracts": "^10.0",
+        "justinrainbow/json-schema": "^5.2"
     },
     "require-dev": {
         "laravel/pint": "^1.0",
@@ -33,12 +34,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Routegroup\\Imoje\\": "src/"
+            "Routegroup\\Imoje\\Payment\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Routegroup\\Imoje\\Tests\\": "tests/",
+            "Routegroup\\Imoje\\Payment\\Tests\\": "tests/",
             "Workbench\\App\\": "workbench/app/"
         }
     },
@@ -71,7 +72,7 @@
         "laravel": {
             "providers": [
                 "ImojeServiceProvider"
-            ],
+            ]
         }
     },
     "minimum-stability": "dev",
