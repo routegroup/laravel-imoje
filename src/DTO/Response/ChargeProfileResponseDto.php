@@ -12,9 +12,6 @@ use Routegroup\Imoje\Payment\DTO\Response\Api\TransactionResponseDto;
  */
 class ChargeProfileResponseDto extends BaseDto
 {
-    /**
-     * {@inheritdoc}
-     */
     protected array $casts = [
         'transaction' => TransactionResponseDto::class,
     ];

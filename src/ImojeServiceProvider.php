@@ -32,9 +32,6 @@ class ImojeServiceProvider extends ServiceProvider
         );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function provides(): array
     {
         return [

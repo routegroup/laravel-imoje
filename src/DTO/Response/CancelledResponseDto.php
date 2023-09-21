@@ -12,9 +12,6 @@ use Routegroup\Imoje\Payment\DTO\Response\Api\PaymentResponseDto;
  */
 class CancelledResponseDto extends BaseDto
 {
-    /**
-     * {@inheritdoc}
-     */
     protected array $casts = [
         'payment' => PaymentResponseDto::class,
     ];

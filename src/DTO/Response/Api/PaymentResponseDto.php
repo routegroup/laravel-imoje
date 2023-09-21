@@ -22,9 +22,6 @@ use Routegroup\Imoje\Payment\Types\TransactionStatus;
  */
 class PaymentResponseDto extends BaseDto
 {
-    /**
-     * {@inheritdoc}
-     */
     protected array $casts = [
         'amount' => 'int',
         'created' => 'int',

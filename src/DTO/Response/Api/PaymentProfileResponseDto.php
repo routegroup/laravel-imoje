@@ -21,9 +21,6 @@ use Routegroup\Imoje\Payment\DTO\BaseDto;
  */
 class PaymentProfileResponseDto extends BaseDto
 {
-    /**
-     * {@inheritdoc}
-     */
     protected array $casts = [
         'year' => 'int',
         'month' => 'int',

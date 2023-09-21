@@ -8,8 +8,5 @@ use InvalidArgumentException;
 
 class CantChangeTransactionStatus extends InvalidArgumentException
 {
-    /**
-     * {@inheritdoc}
-     */
     protected $message = 'Cant change transaction status.';
 }

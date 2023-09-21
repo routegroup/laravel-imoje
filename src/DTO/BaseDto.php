@@ -7,15 +7,8 @@ namespace Routegroup\Imoje\Payment\DTO;
 use Illuminate\Support\Fluent;
 use Routegroup\Imoje\Payment\Lib\Utils;
 
-/**
- * @template TKey of array-key
- * @template TValue
- */
 abstract class BaseDto extends Fluent
 {
-    /**
-     * @var array<string, string>
-     */
     protected array $casts = [];
 
     public function __construct($attributes = [])
@@ -24,10 +17,6 @@ abstract class BaseDto extends Fluent
         parent::__construct($attributes);
     }
 
-    /**
-     * @param  array<TKey, TValue>  $attributes
-     * @return array<TKey, TValue> $attributes
-     */
     private function castAttributes(array $attributes): array
     {
         foreach ($this->casts as $attributeKey => $cast) {
@@ -58,20 +47,13 @@ abstract class BaseDto extends Fluent
         };
     }
 
-    /**
-     * @return array<TKey, TValue> $attributes
-     */
     public function toArray(): array
     {
         return app(Utils::class)->transformValues($this->attributes);
     }
 
-    /**
-     * @param  array<TKey, TValue>  $attributes
-     */
     public static function make(array $attributes): BaseDto
     {
-        /* @phpstan-ignore-next-line */
         return new static($attributes);
     }
 }

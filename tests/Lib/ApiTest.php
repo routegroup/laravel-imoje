@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Http;
+use Routegroup\Imoje\Payment\Client\Response;
 use Routegroup\Imoje\Payment\DTO\Request\ChargeProfileRequestDto;
 use Routegroup\Imoje\Payment\DTO\Request\RefundRequestDto;
 use Routegroup\Imoje\Payment\Lib\Api;
@@ -12,10 +13,23 @@ beforeEach(function (): void {
     Http::fake();
     $this->api = app(Api::class);
     $this->url = app(Url::class);
+
+    // @todo replace with tests...
+    $mock = Mockery::mock('overload:'.Response::class);
+    $mock
+        ->allows('resolve')
+        ->andReturnSelf();
+});
+
+afterEach(function (): void {
+    Mockery::close();
 });
 
 it('makes refund request', function (): void {
-    $dto = RefundRequestDto::make(['amount' => 100]);
+    $dto = RefundRequestDto::make([
+        'amount' => 100,
+    ]);
+
     $this->api->createRefund($dto, '$transaction_id$');
 
     Http::assertSent(function (Request $request) {
