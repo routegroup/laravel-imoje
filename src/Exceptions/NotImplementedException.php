@@ -13,10 +13,13 @@ class NotImplementedException extends Exception
     public function __construct(array $data)
     {
         $this->data = $data;
+        parent::__construct('Given response has been not recognized', 501);
+    }
 
-        parent::__construct(
-            'Given response has been not recognized with: '.json_encode($data),
-            501
-        );
+    public function context(): array
+    {
+        return [
+            'data' => $this->data,
+        ];
     }
 }

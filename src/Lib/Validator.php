@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Routegroup\Imoje\Payment\Lib;
 
 use JsonSchema\Validator as JsonSchemaValidator;
-use Routegroup\Imoje\Payment\Exceptions\ValidationException;
+use Routegroup\Imoje\Payment\Exceptions\SchemaValidationException;
 use Routegroup\Imoje\Payment\Types\Currency;
 use Routegroup\Imoje\Payment\Types\TransactionStatus;
 use Routegroup\Imoje\Payment\Types\TransactionType;
@@ -18,7 +18,7 @@ class Validator
     }
 
     /**
-     * @throws ValidationException
+     * @throws SchemaValidationException
      */
     public function fromNotification(array $data): bool
     {
@@ -71,7 +71,7 @@ class Validator
     }
 
     /**
-     * @throws ValidationException
+     * @throws SchemaValidationException
      */
     private function validate(
         array $data,
@@ -95,6 +95,6 @@ class Validator
             $errors[$error['property']] = $error['message'];
         }
 
-        throw new ValidationException($errors);
+        throw new SchemaValidationException($errors);
     }
 }

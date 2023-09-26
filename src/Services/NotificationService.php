@@ -10,7 +10,7 @@ use Routegroup\Imoje\Payment\DTO\Responses\ChargeProfileResponseDto;
 use Routegroup\Imoje\Payment\DTO\Responses\OneClickResponseDto;
 use Routegroup\Imoje\Payment\DTO\Responses\ResponseDto;
 use Routegroup\Imoje\Payment\Exceptions\NotImplementedException;
-use Routegroup\Imoje\Payment\Exceptions\ValidationException;
+use Routegroup\Imoje\Payment\Exceptions\SchemaValidationException;
 use Routegroup\Imoje\Payment\Lib\Validator;
 use Routegroup\Imoje\Payment\Types\PaymentMethod;
 use Routegroup\Imoje\Payment\Types\TransactionSource;
@@ -26,7 +26,7 @@ class NotificationService
 
     /**
      * @throws NotImplementedException
-     * @throws ValidationException
+     * @throws SchemaValidationException
      */
     public function resolve(Request $request): ResponseDto
     {

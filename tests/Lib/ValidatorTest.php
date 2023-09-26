@@ -1,6 +1,6 @@
 <?php
 
-use Routegroup\Imoje\Payment\Exceptions\ValidationException;
+use Routegroup\Imoje\Payment\Exceptions\SchemaValidationException;
 use Routegroup\Imoje\Payment\Lib\Validator;
 use Routegroup\Imoje\Payment\Types\Currency;
 use Routegroup\Imoje\Payment\Types\TransactionStatus;
@@ -29,4 +29,4 @@ it('validates notification successfully', function (): void {
 
 it('validates notification and throws an exception', function (): void {
     $this->validator->fromNotification([]);
-})->throws(ValidationException::class);
+})->throws(SchemaValidationException::class);
