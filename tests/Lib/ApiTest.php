@@ -27,7 +27,7 @@ it('tests api requests and responses', function (
         ],
         fn (Api $api) => $api->createRefund(RefundRequestDto::factory()->make(), '$transaction_id$'),
         RefundResponseDto::class,
-    ], 
+    ],
     'successfully calls get profile' => [
         fn (Api $api) => [
             $api->url->createProfileIdUrl('$profile_id$') => Http::response(ProfileResponseDto::factory()->make()->toArray()),
