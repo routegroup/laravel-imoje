@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Routegroup\Imoje\Payment\DTO\Request;
+namespace Routegroup\Imoje\Payment\DTO\Requests;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Routegroup\Imoje\Payment\DTO\BaseDto;
+use Routegroup\Imoje\Payment\Factories\Requests\ChargeProfileRequestDtoFactory;
 use Routegroup\Imoje\Payment\Lib\Config;
 use Routegroup\Imoje\Payment\Types\Currency;
 
@@ -18,29 +20,37 @@ use Routegroup\Imoje\Payment\Types\Currency;
  */
 class ChargeProfileRequestDto extends BaseDto
 {
+    use HasFactory;
+
     protected array $casts = [
         'amount' => 'int',
         'currency' => Currency::class,
     ];
 
-    public static function make(
+    public function __construct(
         #[ArrayShape([
             // Required
-            'serviceId' => 'string',
             'paymentProfileId' => 'string',
             'amount' => 'int',
             'currency' => Currency::class,
             'orderId' => 'string',
+            // Required but provided by default
+            'serviceId' => 'string',
             // Optional
             'title' => 'string',
-        ])] array $attributes
-    ): BaseDto {
+        ])] array $attributes = []
+    ) {
         $config = app(Config::class);
 
         $attributes = array_merge_recursive([
             'serviceId' => $config->serviceId,
         ], $attributes);
 
-        return parent::make($attributes);
+        parent::__construct($attributes);
+    }
+
+    protected static function newFactory(): ChargeProfileRequestDtoFactory
+    {
+        return ChargeProfileRequestDtoFactory::new();
     }
 }

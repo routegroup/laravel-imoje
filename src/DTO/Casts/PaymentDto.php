@@ -2,15 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Routegroup\Imoje\Payment\DTO\Response\Api;
+namespace Routegroup\Imoje\Payment\DTO\Casts;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Routegroup\Imoje\Payment\DTO\BaseDto;
+use Routegroup\Imoje\Payment\Factories\Casts\PaymentDtoFactory;
 use Routegroup\Imoje\Payment\Types\Currency;
 use Routegroup\Imoje\Payment\Types\TransactionStatus;
 
 /**
  * @property-read string $id
- * @property-read string $title
+ * @property-read string|null $title
  * @property-read int $amount
  * @property-read TransactionStatus $status
  * @property-read int $created
@@ -18,15 +20,24 @@ use Routegroup\Imoje\Payment\Types\TransactionStatus;
  * @property-read Currency $currency
  * @property-read int $modified
  * @property-read string $serviceId
- * @property-read string $notificationUrl
  */
-class PaymentResponseDto extends BaseDto
+class PaymentDto extends BaseDto
 {
+    use HasFactory;
+
     protected array $casts = [
+        'id' => 'string',
         'amount' => 'int',
-        'created' => 'int',
-        'modified' => 'int',
-        'currency' => Currency::class,
         'status' => TransactionStatus::class,
+        'created' => 'int',
+        'orderId' => 'string',
+        'currency' => Currency::class,
+        'modified' => 'int',
+        'serviceId' => 'string',
     ];
+
+    protected static function newFactory(): PaymentDtoFactory
+    {
+        return PaymentDtoFactory::new();
+    }
 }

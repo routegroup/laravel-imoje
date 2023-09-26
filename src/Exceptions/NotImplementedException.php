@@ -8,7 +8,15 @@ use Exception;
 
 class NotImplementedException extends Exception
 {
-    protected $message = 'Given response has been not recognized';
+    public readonly array $data;
 
-    protected $code = '501';
+    public function __construct(array $data)
+    {
+        $this->data = $data;
+
+        parent::__construct(
+            'Given response has been not recognized with: '.json_encode($data),
+            501
+        );
+    }
 }

@@ -4,17 +4,23 @@ declare(strict_types=1);
 
 namespace Routegroup\Imoje\Payment\Lib;
 
-use JsonSchema\Validator;
+use JsonSchema\Validator as JsonSchemaValidator;
 use Routegroup\Imoje\Payment\Exceptions\ValidationException;
 use Routegroup\Imoje\Payment\Types\Currency;
 use Routegroup\Imoje\Payment\Types\TransactionStatus;
+use Routegroup\Imoje\Payment\Types\TransactionType;
 
-class Validate
+class Validator
 {
+    public function __construct(
+        protected readonly JsonSchemaValidator $jsonValidator
+    ) {
+    }
+
     /**
      * @throws ValidationException
      */
-    public static function notification(array $data): bool
+    public function fromNotification(array $data): bool
     {
         $schema = [
             'type' => 'object',
@@ -43,10 +49,7 @@ class Validate
                         ],
                         'type' => [
                             'type' => 'string',
-                            'enum' => [
-                                'sale',
-                                'refund',
-                            ],
+                            'enum' => array_column(TransactionType::cases(), 'value'),
                         ],
                     ],
                     'required' => [
@@ -64,13 +67,13 @@ class Validate
             ],
         ];
 
-        return self::validate($data, $schema, 'notification');
+        return $this->validate($data, $schema, 'notification');
     }
 
     /**
      * @throws ValidationException
      */
-    private static function validate(
+    private function validate(
         array $data,
         array $schema,
         string $schemaType
@@ -78,10 +81,9 @@ class Validate
         $objectData = json_decode(json_encode($data));
         $objectSchema = json_decode(json_encode($schema));
 
-        $validator = new Validator();
-        $validator->validate($objectData, $objectSchema);
+        $this->jsonValidator->validate($objectData, $objectSchema);
 
-        if ($validator->isValid()) {
+        if ($this->jsonValidator->isValid()) {
             return true;
         }
 
@@ -89,7 +91,7 @@ class Validate
             'schema' => $schemaType,
         ];
 
-        foreach ($validator->getErrors() as $error) {
+        foreach ($this->jsonValidator->getErrors() as $error) {
             $errors[$error['property']] = $error['message'];
         }
 

@@ -29,7 +29,7 @@ abstract class BaseDto extends Fluent
     public function castAttribute(string $castType, mixed $value): mixed
     {
         if (is_a($castType, BaseDto::class, true)) {
-            return $castType::make($value ?? []);
+            return new $castType($value ?? []);
         }
 
         if (enum_exists($castType)) {
@@ -49,11 +49,8 @@ abstract class BaseDto extends Fluent
 
     public function toArray(): array
     {
-        return app(Utils::class)->transformValues($this->attributes);
-    }
+        unset($this->attributes['getKey']);
 
-    public static function make(array $attributes): BaseDto
-    {
-        return new static($attributes);
+        return app(Utils::class)->transformValues($this->attributes);
     }
 }

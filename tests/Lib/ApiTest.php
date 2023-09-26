@@ -1,69 +1,52 @@
 <?php
 
-use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Http;
-use Routegroup\Imoje\Payment\Client\Response;
-use Routegroup\Imoje\Payment\DTO\Request\ChargeProfileRequestDto;
-use Routegroup\Imoje\Payment\DTO\Request\RefundRequestDto;
+use Routegroup\Imoje\Payment\DTO\Requests\ChargeProfileRequestDto;
+use Routegroup\Imoje\Payment\DTO\Requests\RefundRequestDto;
+use Routegroup\Imoje\Payment\DTO\Responses\ChargeProfileResponseDto;
+use Routegroup\Imoje\Payment\DTO\Responses\ProfileResponseDto;
+use Routegroup\Imoje\Payment\DTO\Responses\RefundResponseDto;
 use Routegroup\Imoje\Payment\Lib\Api;
-use Routegroup\Imoje\Payment\Lib\Url;
-use Routegroup\Imoje\Payment\Types\Currency;
 
 beforeEach(function (): void {
-    Http::fake();
     $this->api = app(Api::class);
-    $this->url = app(Url::class);
-
-    // @todo replace with tests...
-    $mock = Mockery::mock('overload:'.Response::class);
-    $mock
-        ->allows('resolve')
-        ->andReturnSelf();
 });
 
-afterEach(function (): void {
-    Mockery::close();
-});
-
-it('makes refund request', function (): void {
-    $dto = RefundRequestDto::make([
-        'amount' => 100,
-    ]);
-
-    $this->api->createRefund($dto, '$transaction_id$');
-
-    Http::assertSent(function (Request $request) {
-        return $request->url() === $this->url->createRefundUrl('$transaction_id$')
-            && $request->isJson()
-            && $request->method() === 'POST'
-            && array_keys($request->data()) === ['type', 'serviceId', 'amount'];
-    });
-});
-
-it('makes charge profile request', function (): void {
-    $dto = ChargeProfileRequestDto::make([
-        'amount' => 1000 * 100,
-        'currency' => Currency::PLN,
-        'paymentProfileId' => '123456789',
-        'orderId' => '1234',
-    ]);
-
-    $this->api->chargeProfile($dto);
-
-    Http::assertSent(function (Request $request) {
-        return $request->url() === $this->url->createChargeProfileUrl()
-            && $request->isJson()
-            && $request->method() === 'POST'
-            && array_keys($request->data()) === ['serviceId', 'amount', 'currency', 'paymentProfileId', 'orderId'];
-    });
-});
-
-it('makes deactivate profile request', function (): void {
-    $this->api->deactivateProfile('$profile_id$');
-
-    Http::assertSent(function (Request $request) {
-        return $request->url() === $this->url->createProfileIdUrl('$profile_id$')
-            && $request->isJson()
-            && $request->method() === 'DELETE';
-    });
-});
+it('tests api requests and responses', function (
+    callable $mockResponse,
+    callable $mockRequest,
+    string $instance,
+): void {
+    Http::fake($mockResponse($this->api));
+    $response = $mockRequest($this->api);
+    expect($response)->toBeInstanceOf($instance);
+})->with([
+    'successfully calls refund' => [
+        fn (Api $api) => [
+            $api->url->createRefundUrl('$transaction_id$') => Http::response(RefundResponseDto::factory()->make()->toArray()),
+        ],
+        fn (Api $api) => $api->createRefund(RefundRequestDto::factory()->make(), '$transaction_id$'),
+        RefundResponseDto::class,
+    ],
+    'successfully calls get profile' => [
+        fn (Api $api) => [
+            $api->url->createProfileIdUrl('$profile_id$') => Http::response(ProfileResponseDto::factory()->make()->toArray()),
+        ],
+        fn (Api $api) => $api->getProfile('$profile_id$'),
+        ProfileResponseDto::class,
+    ],
+    'successfully calls charge profile' => [
+        fn (Api $api) => [
+            $api->url->createChargeProfileUrl() => Http::response(ChargeProfileResponseDto::factory()->make()->toArray()),
+        ],
+        fn (Api $api) => $api->chargeProfile(ChargeProfileRequestDto::factory()->make()),
+        ChargeProfileResponseDto::class,
+    ],
+    'successfully calls deactivate profile' => [
+        fn (Api $api) => [
+            $api->url->createProfileIdUrl('$profile_id$') => Http::response(ProfileResponseDto::factory()->make()->toArray()),
+        ],
+        fn (Api $api) => $api->deactivateProfile('$profile_id$'),
+        ProfileResponseDto::class,
+    ],
+]);

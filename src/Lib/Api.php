@@ -6,12 +6,11 @@ namespace Routegroup\Imoje\Payment\Lib;
 
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Http;
-use Routegroup\Imoje\Payment\Client\Response;
-use Routegroup\Imoje\Payment\DTO\Request\ChargeProfileRequestDto;
-use Routegroup\Imoje\Payment\DTO\Request\RefundRequestDto;
-use Routegroup\Imoje\Payment\DTO\Response\ChargeProfileResponseDto;
-use Routegroup\Imoje\Payment\DTO\Response\ProfileResponseDto;
-use Routegroup\Imoje\Payment\DTO\Response\RefundResponseDto;
+use Routegroup\Imoje\Payment\DTO\Requests\ChargeProfileRequestDto;
+use Routegroup\Imoje\Payment\DTO\Requests\RefundRequestDto;
+use Routegroup\Imoje\Payment\DTO\Responses\ChargeProfileResponseDto;
+use Routegroup\Imoje\Payment\DTO\Responses\ProfileResponseDto;
+use Routegroup\Imoje\Payment\DTO\Responses\RefundResponseDto;
 
 class Api
 {
@@ -24,46 +23,38 @@ class Api
     public function createRefund(
         RefundRequestDto $dto,
         string $transactionId
-    ) {
+    ): RefundResponseDto {
         $url = $this->url->createRefundUrl($transactionId);
+        $response = $this->request()->post($url, $dto);
 
-        return Response::resolve(
-            $this->request()->post($url, $dto),
-            RefundResponseDto::class
-        );
+        return new RefundResponseDto($response);
     }
 
     public function getProfile(
         string $profileId
-    ): Response {
+    ): ProfileResponseDto {
         $url = $this->url->createProfileIdUrl($profileId);
+        $response = $this->request()->get($url);
 
-        return Response::resolve(
-            $this->request()->get($url),
-            ProfileResponseDto::class
-        );
+        return new ProfileResponseDto($response);
     }
 
     public function chargeProfile(
         ChargeProfileRequestDto $dto
-    ): Response {
+    ): ChargeProfileResponseDto {
         $url = $this->url->createChargeProfileUrl();
+        $response = $this->request()->post($url, $dto);
 
-        return Response::resolve(
-            $this->request()->post($url, $dto),
-            ChargeProfileResponseDto::class
-        );
+        return new ChargeProfileResponseDto($response);
     }
 
     public function deactivateProfile(
         string $profileId
-    ): Response {
+    ): ProfileResponseDto {
         $url = $this->url->createProfileIdUrl($profileId);
+        $response = $this->request()->delete($url);
 
-        return Response::resolve(
-            $this->request()->delete($url),
-            ProfileResponseDto::class
-        );
+        return new ProfileResponseDto($response);
     }
 
     protected function request(): PendingRequest

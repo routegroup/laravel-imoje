@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Routegroup\Imoje\Payment\DTO\Request;
+namespace Routegroup\Imoje\Payment\DTO\Requests;
 
-use JetBrains\PhpStorm\ArrayShape;
 use Routegroup\Imoje\Payment\DTO\BaseDto;
 use Routegroup\Imoje\Payment\Lib\Config;
+use Routegroup\Imoje\Payment\Lib\Utils;
 use Routegroup\Imoje\Payment\Types\HashMethod;
 
 /**
@@ -36,7 +36,7 @@ class OneClickRequestDto extends BaseDto
         'validTo' => 'int',
     ];
 
-    public static function make(
+    public function __construct(
         #[ArrayShape([
             // Required
             'merchantId' => 'string',
@@ -58,10 +58,11 @@ class OneClickRequestDto extends BaseDto
             'urlCancel' => 'string',
             'widgetType' => 'string',
             'validTo' => 'int',
-        ])] $attributes,
+        ])] $attributes = [],
         HashMethod $hashMethod = HashMethod::SHA256
-    ): BaseDto {
+    ) {
         $config = app(Config::class);
+        $utils = app(Utils::class);
 
         $attributes = array_merge_recursive([
             'serviceId' => $config->serviceId,
@@ -69,8 +70,8 @@ class OneClickRequestDto extends BaseDto
             'widgetType' => 'oneclick',
         ], $attributes);
 
-        $attributes['signature'] = $config->createSignature($attributes, $hashMethod);
+        $attributes['signature'] = $utils->createSignature($attributes, $hashMethod);
 
-        return new self($attributes);
+        parent::__construct($attributes);
     }
 }
