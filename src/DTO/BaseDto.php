@@ -29,7 +29,9 @@ abstract class BaseDto extends Fluent
     public function castAttribute(string $castType, mixed $value): mixed
     {
         if (is_a($castType, BaseDto::class, true)) {
-            return new $castType($value ?? []);
+            return $value instanceof BaseDto
+                ? $value
+                : new $castType($value ?? []);
         }
 
         if (enum_exists($castType)) {

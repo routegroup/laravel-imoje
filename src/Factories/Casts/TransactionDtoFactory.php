@@ -23,17 +23,28 @@ class TransactionDtoFactory extends Factory
 
         return [
             'id' => $this->faker->unique()->uuid,
-            'type' => TransactionType::REFUND->value,
-            'status' => TransactionStatus::SETTLED->value,
-            'source' => TransactionSource::API->value,
+            'type' => TransactionType::REFUND,
+            'status' => TransactionStatus::SETTLED,
+            'source' => TransactionSource::API,
             'created' => $now->timestamp,
             'modified' => $now->timestamp,
             'serviceId' => config('services.imoje.service_key'),
             'amount' => $this->faker->numberBetween(1, 100) * 100,
-            'currency' => Currency::PLN->value,
+            'currency' => Currency::PLN,
             'orderId' => $this->faker->unique()->uuid,
-            'paymentMethod' => PaymentMethod::CARD->value,
-            'paymentMethodCode' => PaymentMethodCode::ONECLICK->value,
+            'paymentMethod' => $this->faker->randomElement(PaymentMethod::cases()),
+            'paymentMethodCode' => $this->faker->randomElement(PaymentMethodCode::cases()),
         ];
+    }
+
+    public function asOneClick(): static
+    {
+        return $this->state([
+            'type' => TransactionType::SALE,
+            'status' => TransactionStatus::SETTLED,
+            'source' => TransactionSource::WEB,
+            'paymentMethod' => PaymentMethod::CARD,
+            'paymentMethodCode' => PaymentMethodCode::ONECLICK,
+        ]);
     }
 }

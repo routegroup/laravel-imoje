@@ -4,14 +4,9 @@ declare(strict_types=1);
 
 namespace Routegroup\Imoje\Payment\Factories\Casts;
 
+use Illuminate\Support\Str;
 use Routegroup\Imoje\Payment\DTO\Casts\PaymentProfileDto;
 use Routegroup\Imoje\Payment\Factories\Factory;
-use Routegroup\Imoje\Payment\Types\Currency;
-use Routegroup\Imoje\Payment\Types\PaymentMethod;
-use Routegroup\Imoje\Payment\Types\PaymentMethodCode;
-use Routegroup\Imoje\Payment\Types\TransactionSource;
-use Routegroup\Imoje\Payment\Types\TransactionStatus;
-use Routegroup\Imoje\Payment\Types\TransactionType;
 
 class PaymentProfileDtoFactory extends Factory
 {
@@ -19,21 +14,20 @@ class PaymentProfileDtoFactory extends Factory
 
     public function definition(): array
     {
-        $now = now();
+        $expirationDate = $this->faker->creditCardExpirationDate;
 
         return [
             'id' => $this->faker->unique()->uuid,
-            'type' => TransactionType::REFUND->value,
-            'status' => TransactionStatus::SETTLED->value,
-            'source' => TransactionSource::API->value,
-            'created' => $now->timestamp,
-            'modified' => $now->timestamp,
-            'serviceId' => config('services.imoje.service_key'),
-            'amount' => $this->faker->numberBetween(1, 100) * 100,
-            'currency' => Currency::PLN->value,
-            'orderId' => $this->faker->unique()->uuid,
-            'paymentMethod' => PaymentMethod::CARD->value,
-            'paymentMethodCode' => PaymentMethodCode::ONECLICK->value,
+            'merchantMid' => Str::random(),
+            'merchantCustomerId' => $this->faker->unique()->numberBetween(1, 999999),
+            'firstName' => $this->faker->firstName,
+            'lastName' => $this->faker->lastName,
+            'maskedNumber' => $this->faker->numerify('****####'),
+            'month' => $expirationDate->format('m'),
+            'year' => $expirationDate->format('Y'),
+            'organization' => $this->faker->creditCardType,
+            'isActive' => 1,
+            'profile' => '',
         ];
     }
 }
