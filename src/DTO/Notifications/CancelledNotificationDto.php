@@ -2,14 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Routegroup\Imoje\Payment\DTO\Responses;
+namespace Routegroup\Imoje\Payment\DTO\Notifications;
 
+use Routegroup\Imoje\Payment\DTO\BaseDto;
 use Routegroup\Imoje\Payment\DTO\Casts\PaymentDto;
 
 /**
  * @property-read PaymentDto $payment
  */
-class CancelledResponseDto extends ResponseDto
+class CancelledNotificationDto extends BaseDto
 {
     protected array $casts = [
         'payment' => PaymentDto::class,

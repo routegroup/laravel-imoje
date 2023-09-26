@@ -30,6 +30,8 @@ use Routegroup\Imoje\Payment\Types\TransactionType;
  * @property-read PaymentMethod $paymentMethod
  * @property-read PaymentMethodCode $paymentMethodCode
  * @property-read PaymentProfileDto|null $paymentProfile
+ * @property-read string|null $statusCode
+ * @property-read string|null $statusCodeDescription
  */
 class TransactionDto extends BaseDto
 {
