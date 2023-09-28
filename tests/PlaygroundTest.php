@@ -11,7 +11,7 @@ beforeEach(function (): void {
         'api_key' => env('IMOJE_API_KEY'),
         'env' => env('IMOJE_ENV', Environment::SANDBOX->value),
     ]);
-})->skip(fn () => !env('PLAYGROUND', 0), 'playground disabled');
+})->skip(fn () => ! env('PLAYGROUND', 0), 'playground disabled');
 
 it('is for playground purposes', function (): void {
     /** @var Api $api */

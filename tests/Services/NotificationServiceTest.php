@@ -35,4 +35,3 @@ it('returns OneClickNotification', function (): void {
     $result = $this->service->resolve($request);
     expect($result)->toBeInstanceOf(OneClickNotificationDto::class);
 });
-
