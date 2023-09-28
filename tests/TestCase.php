@@ -3,6 +3,7 @@
 namespace Routegroup\Imoje\Payment\Tests;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Foundation\Bootstrap\LoadEnvironmentVariables;
 use Orchestra\Testbench\TestCase as Orchestra;
 use Routegroup\Imoje\Payment\ImojeServiceProvider;
 use Routegroup\Imoje\Payment\Types\Environment;
@@ -18,15 +19,18 @@ class TestCase extends Orchestra
         );
     }
 
-    protected function getPackageProviders($app)
+    protected function getPackageProviders($app): array
     {
         return [
             ImojeServiceProvider::class,
         ];
     }
 
-    public function getEnvironmentSetUp($app)
+    public function getEnvironmentSetUp($app): void
     {
+        $app->useEnvironmentPath(__DIR__.'/..');
+        $app->bootstrapWith([LoadEnvironmentVariables::class]);
+
         config()->set('database.default', 'testing');
 
         config()->set('services.imoje', [
@@ -36,5 +40,7 @@ class TestCase extends Orchestra
             'api_key' => '$api_key$',
             'env' => Environment::SANDBOX->value,
         ]);
+
+        parent::getEnvironmentSetUp($app);
     }
 }
