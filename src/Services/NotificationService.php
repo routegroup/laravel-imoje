@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Routegroup\Imoje\Payment\DTO\BaseDto;
 use Routegroup\Imoje\Payment\DTO\Notifications\OneClickNotificationDto;
+use Routegroup\Imoje\Payment\DTO\Notifications\RefundNotificationDto;
 use Routegroup\Imoje\Payment\Exceptions\NotImplementedException;
 use Routegroup\Imoje\Payment\Exceptions\SchemaValidationException;
 use Routegroup\Imoje\Payment\Lib\Validator;
@@ -37,6 +38,10 @@ class NotificationService
             return new OneClickNotificationDto($data);
         }
 
+        if ($this->isRefund($data)) {
+            return new RefundNotificationDto($data);
+        }
+
         throw new NotImplementedException($data);
     }
 
@@ -48,6 +53,16 @@ class NotificationService
                 'source' => TransactionSource::WEB->value,
                 'paymentMethod' => PaymentMethod::CARD->value,
                 'paymentMethodCode' => PaymentMethodCode::ONECLICK->value,
+            ],
+        ]);
+    }
+
+    protected function isRefund(array $data): bool
+    {
+        return $this->isEqualWithStructure($data, [
+            'transaction' => [
+                'type' => TransactionType::REFUND->value,
+                'source' => TransactionSource::API->value,
             ],
         ]);
     }
