@@ -6,10 +6,10 @@ namespace Routegroup\Imoje\Payment\DTO\Responses;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Routegroup\Imoje\Payment\DTO\Casts\PaymentProfileDto;
-use Routegroup\Imoje\Payment\Factories\Casts\PaymentProfileDtoFactory;
+use Routegroup\Imoje\Payment\Factories\Responses\ProfileResponseDtoFactory;
 
 /**
- * @property-read PaymentProfileDto $transaction
+ * @property-read PaymentProfileDto $paymentProfile
  */
 class ProfileResponseDto extends ResponseDto
 {
@@ -19,8 +19,8 @@ class ProfileResponseDto extends ResponseDto
         'paymentProfile' => PaymentProfileDto::class,
     ];
 
-    protected static function newFactory(): PaymentProfileDtoFactory
+    protected static function newFactory(): ProfileResponseDtoFactory
     {
-        return PaymentProfileDtoFactory::new();
+        return ProfileResponseDtoFactory::new();
     }
 }

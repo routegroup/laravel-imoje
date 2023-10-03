@@ -15,7 +15,7 @@ class RefundResponseDtoFactory extends Factory
     public function definition(): array
     {
         return [
-            'transaction' => TransactionDto::factory(),
+            'transaction' => TransactionDto::factory()->asApiRefund(),
         ];
     }
 }

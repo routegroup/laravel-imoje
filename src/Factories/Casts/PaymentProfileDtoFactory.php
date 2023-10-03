@@ -26,8 +26,8 @@ class PaymentProfileDtoFactory extends Factory
             'month' => $expirationDate->format('m'),
             'year' => $expirationDate->format('Y'),
             'organization' => $this->faker->creditCardType,
-            'isActive' => 1,
-            'profile' => '',
+            'isActive' => true,
+            'profile' => 'ONE_CLICK',
         ];
     }
 }

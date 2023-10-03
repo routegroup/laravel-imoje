@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Routegroup\Imoje\Payment\Factories\Casts;
 
+use Routegroup\Imoje\Payment\DTO\Casts\PaymentProfileDto;
 use Routegroup\Imoje\Payment\DTO\Casts\TransactionDto;
 use Routegroup\Imoje\Payment\Factories\Factory;
 use Routegroup\Imoje\Payment\Types\Currency;
@@ -44,7 +45,15 @@ class TransactionDtoFactory extends Factory
             'status' => TransactionStatus::PENDING,
             'source' => TransactionSource::API,
             'notificationUrl' => 'https://imoje.requestcatcher.com/',
+        ]);
+    }
 
+    public function asApiRefund(): static
+    {
+        return $this->state([
+            'type' => TransactionType::REFUND,
+            'status' => TransactionStatus::SETTLED,
+            'source' => TransactionSource::API,
         ]);
     }
 
@@ -56,6 +65,13 @@ class TransactionDtoFactory extends Factory
             'source' => TransactionSource::WEB,
             'paymentMethod' => PaymentMethod::CARD,
             'paymentMethodCode' => PaymentMethodCode::ONECLICK,
+        ]);
+    }
+
+    public function withPaymentProfile(): static
+    {
+        return $this->state([
+            'paymentProfile' => PaymentProfileDto::factory(),
         ]);
     }
 }
