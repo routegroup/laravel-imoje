@@ -16,7 +16,7 @@ class TransactionResponseDtoFactory extends Factory
     public function definition(): array
     {
         return [
-            'transaction' => TransactionDto::factory(),
+            'transaction' => TransactionDto::factory()->asApiPending(),
             'action' => ActionDto::factory(),
         ];
     }

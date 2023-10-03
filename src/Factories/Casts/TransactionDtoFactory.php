@@ -29,12 +29,23 @@ class TransactionDtoFactory extends Factory
             'created' => $now->timestamp,
             'modified' => $now->timestamp,
             'serviceId' => config('services.imoje.service_key'),
-            'amount' => $this->faker->numberBetween(1, 100) * 100,
+            'amount' => $this->faker->numberBetween(1, 1000) * 100,
             'currency' => Currency::PLN,
             'orderId' => $this->faker->unique()->uuid,
-            'paymentMethod' => $this->faker->randomElement(PaymentMethod::cases()),
-            'paymentMethodCode' => $this->faker->randomElement(PaymentMethodCode::cases()),
+            'paymentMethod' => PaymentMethod::PAY_BY_LINK,
+            'paymentMethodCode' => PaymentMethodCode::IPKO,
         ];
+    }
+
+    public function asApiPending(): static
+    {
+        return $this->state([
+            'type' => TransactionType::SALE,
+            'status' => TransactionStatus::PENDING,
+            'source' => TransactionSource::API,
+            'notificationUrl' => 'https://imoje.requestcatcher.com/',
+
+        ]);
     }
 
     public function asOneClick(): static

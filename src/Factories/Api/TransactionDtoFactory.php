@@ -20,9 +20,9 @@ class TransactionDtoFactory extends Factory
     public function definition(): array
     {
         return [
-            'amount' => $this->faker->numberBetween(1, 100) * 100,
+            'amount' => $this->faker->numberBetween(1, 100000) * 100,
             'currency' => Currency::PLN,
-            'orderId' => $this->faker->uuid,
+            'orderId' => $this->faker->unique()->uuid,
             'paymentMethod' => PaymentMethod::PAY_BY_LINK,
             'paymentMethodCode' => PaymentMethodCode::IPKO,
             'successReturnUrl' => 'https://imoje.requestcatcher.com',
@@ -30,8 +30,6 @@ class TransactionDtoFactory extends Factory
             'customer' => CustomerDto::factory(),
             'billing' => BillingDto::factory(),
             'shipping' => BillingDto::factory(),
-            // 'validTo' => '',
-            // 'title' => '',
         ];
     }
 

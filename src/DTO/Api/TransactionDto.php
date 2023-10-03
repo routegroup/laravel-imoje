@@ -53,7 +53,7 @@ class TransactionDto extends BaseDto
         'billing' => BillingDto::class,
         'shipping' => BillingDto::class,
         'card' => CardDto::class,
-        'additionalData' => CardAdditionalDataDto::class,
+        // 'additionalData' => 'array' @todo
         // 'multipayout' => 'array' @todo
         // 'invoice' => 'array' @todo
     ];

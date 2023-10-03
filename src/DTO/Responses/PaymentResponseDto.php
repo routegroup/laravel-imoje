@@ -6,7 +6,7 @@ namespace Routegroup\Imoje\Payment\DTO\Responses;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Routegroup\Imoje\Payment\DTO\Casts\PaymentDto;
-use Routegroup\Imoje\Payment\Factories\Api\PaymentDtoFactory;
+use Routegroup\Imoje\Payment\Factories\Responses\PaymentResponseDtoFactory;
 
 /**
  * @property-read PaymentDto $payment
@@ -19,8 +19,8 @@ class PaymentResponseDto extends ResponseDto
         'payment' => PaymentDto::class,
     ];
 
-    protected static function newFactory(): PaymentDtoFactory
+    protected static function newFactory(): PaymentResponseDtoFactory
     {
-        return PaymentDtoFactory::new();
+        return PaymentResponseDtoFactory::new();
     }
 }

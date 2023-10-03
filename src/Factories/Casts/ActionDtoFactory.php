@@ -16,7 +16,7 @@ class ActionDtoFactory extends Factory
     {
         return [
             'type' => ActionType::REDIRECT,
-            'url' => '',
+            'url' => "https://sandbox.paywall.imoje.pl/redirect/{$this->faker->uuid}/{$this->faker->uuid}",
             'method' => 'GET',
             'contentType' => '',
             'contentBodyRaw' => '',

@@ -17,9 +17,15 @@ class CustomerDtoFactory extends Factory
             'firstName' => $this->faker->firstName,
             'lastName' => $this->faker->lastName,
             'email' => $this->faker->email,
-            'cid' => $this->faker->numerify('##############'),
-            'company' => $this->faker->company,
             'phone' => $this->faker->numerify('#########'),
         ];
+    }
+
+    public function asCard(): static
+    {
+        return $this->state([
+            'cid' => $this->faker->numerify('##############'),
+            'company' => $this->faker->company,
+        ]);
     }
 }
