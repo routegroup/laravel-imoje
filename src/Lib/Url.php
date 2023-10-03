@@ -31,13 +31,18 @@ class Url
         ]);
     }
 
+    public function createCancelPaymentUrl(): string
+    {
+        return implode('/', [
+            $this->createPaymentUrl(),
+            'cancel',
+        ]);
+    }
+
     public function createRefundUrl(string $transactionId): string
     {
         return implode('/', [
-            $this->config->env->apiUrl(),
-            'merchant',
-            $this->config->merchantId,
-            'transaction',
+            $this->createTransactionUrl(),
             $transactionId,
             'refund',
         ]);
@@ -46,10 +51,7 @@ class Url
     public function createChargeProfileUrl(): string
     {
         return implode('/', [
-            $this->config->env->apiUrl(),
-            'merchant',
-            $this->config->merchantId,
-            'transaction',
+            $this->createTransactionUrl(),
             'profile',
         ]);
     }

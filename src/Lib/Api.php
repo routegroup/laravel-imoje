@@ -7,10 +7,12 @@ namespace Routegroup\Imoje\Payment\Lib;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
+use Routegroup\Imoje\Payment\DTO\Api\CancelPaymentDto;
 use Routegroup\Imoje\Payment\DTO\Api\ChargeProfileDto;
 use Routegroup\Imoje\Payment\DTO\Api\PaymentDto;
 use Routegroup\Imoje\Payment\DTO\Api\RefundDto;
 use Routegroup\Imoje\Payment\DTO\Api\TransactionDto;
+use Routegroup\Imoje\Payment\DTO\Responses\CancelPaymentResponseDto;
 use Routegroup\Imoje\Payment\DTO\Responses\ChargeProfileResponseDto;
 use Routegroup\Imoje\Payment\DTO\Responses\PaymentResponseDto;
 use Routegroup\Imoje\Payment\DTO\Responses\ProfileResponseDto;
@@ -44,6 +46,16 @@ class Api
         $this->validateResponse($response, $dto->toArray());
 
         return new PaymentResponseDto($response);
+    }
+
+    public function cancelPayment(
+        CancelPaymentDto $dto
+    ): CancelPaymentResponseDto {
+        $url = $this->url->createCancelPaymentUrl();
+        $response = $this->request()->post($url, $dto);
+        $this->validateResponse($response, $dto->toArray());
+
+        return new CancelPaymentResponseDto($response);
     }
 
     public function createRefund(
