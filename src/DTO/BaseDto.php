@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Routegroup\Imoje\Payment\DTO;
 
 use Illuminate\Support\Fluent;
+use Routegroup\Imoje\Payment\Exceptions\ReadOnlyDtoException;
 use Routegroup\Imoje\Payment\Lib\Utils;
 
 abstract class BaseDto extends Fluent
@@ -54,5 +55,11 @@ abstract class BaseDto extends Fluent
         unset($this->attributes['getKey']);
 
         return app(Utils::class)->transformValues($this->attributes);
+    }
+
+    /** @throws ReadOnlyDtoException */
+    public function offsetSet($offset, $value): void
+    {
+        throw new ReadOnlyDtoException();
     }
 }

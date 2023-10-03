@@ -14,7 +14,7 @@ class Url
     public function createRefundUrl(string $transactionId): string
     {
         return implode('/', [
-            $this->config->env->url(),
+            $this->config->env->apiUrl(),
             'merchant',
             $this->config->merchantId,
             'transaction',
@@ -26,7 +26,7 @@ class Url
     public function createChargeProfileUrl(): string
     {
         return implode('/', [
-            $this->config->env->url(),
+            $this->config->env->apiUrl(),
             'merchant',
             $this->config->merchantId,
             'transaction',
@@ -37,7 +37,7 @@ class Url
     public function createProfileIdUrl(string $profileId): string
     {
         return implode('/', [
-            $this->config->env->url(),
+            $this->config->env->apiUrl(),
             'merchant',
             $this->config->merchantId,
             'profile',

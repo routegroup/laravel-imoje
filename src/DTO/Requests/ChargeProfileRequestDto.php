@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Routegroup\Imoje\Payment\DTO\Requests;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use JetBrains\PhpStorm\ArrayShape;
 use Routegroup\Imoje\Payment\DTO\BaseDto;
 use Routegroup\Imoje\Payment\Factories\Requests\ChargeProfileRequestDtoFactory;
 use Routegroup\Imoje\Payment\Lib\Config;

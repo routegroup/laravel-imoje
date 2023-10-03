@@ -7,7 +7,7 @@ namespace Routegroup\Imoje\Payment\Services;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Routegroup\Imoje\Payment\DTO\BaseDto;
-use Routegroup\Imoje\Payment\DTO\Notifications\OneClickNotificationDto;
+use Routegroup\Imoje\Payment\DTO\Notifications\Paywall\OneClickNotificationDto;
 use Routegroup\Imoje\Payment\DTO\Notifications\RefundNotificationDto;
 use Routegroup\Imoje\Payment\Exceptions\NotImplementedException;
 use Routegroup\Imoje\Payment\Exceptions\SchemaValidationException;

@@ -23,7 +23,7 @@ class TransactionDtoFactory extends Factory
 
         return [
             'id' => $this->faker->unique()->uuid,
-            'type' => TransactionType::REFUND,
+            'type' => TransactionType::SALE,
             'status' => TransactionStatus::SETTLED,
             'source' => TransactionSource::API,
             'created' => $now->timestamp,

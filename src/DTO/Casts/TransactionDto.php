@@ -21,7 +21,7 @@ use Routegroup\Imoje\Payment\Types\TransactionType;
  * @property-read TransactionSource $source
  * @property-read int $created
  * @property-read int $modified
- * @property-read string $notificationUrl
+ * @property-read string|null $notificationUrl
  * @property-read string $serviceId
  * @property-read int $amount
  * @property-read Currency $currency

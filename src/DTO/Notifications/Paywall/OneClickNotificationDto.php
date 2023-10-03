@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Routegroup\Imoje\Payment\DTO\Notifications;
+namespace Routegroup\Imoje\Payment\DTO\Notifications\Paywall;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Routegroup\Imoje\Payment\DTO\BaseDto;
 use Routegroup\Imoje\Payment\DTO\Casts\PaymentDto;
 use Routegroup\Imoje\Payment\DTO\Casts\TransactionDto;
-use Routegroup\Imoje\Payment\Factories\Notifications\OneClickNotificationDtoFactory;
+use Routegroup\Imoje\Payment\Factories\Notifications\Paywall\OneClickNotificationDtoFactory;
 
 /**
  * @property-read TransactionDto $transaction

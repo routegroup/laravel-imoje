@@ -34,6 +34,7 @@ enum PaymentMethodCode: string
     case BLIK_ONECLICK = 'blik_oneclick';
     case PAYPO = 'paypo';
 
+    // For notification
     case ONECLICK = 'oneclick';
     case RECURRING = 'recurring';
     case ECOM3DS = 'ecom3ds';
