@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Routegroup\Imoje\Payment\Factories\Casts;
 
+use Routegroup\Imoje\Payment\DTO\Casts\CustomerDto;
 use Routegroup\Imoje\Payment\DTO\Casts\PaymentDto;
 use Routegroup\Imoje\Payment\Factories\Factory;
 use Routegroup\Imoje\Payment\Types\Currency;
-use Routegroup\Imoje\Payment\Types\TransactionStatus;
 
 class PaymentDtoFactory extends Factory
 {
@@ -19,13 +19,21 @@ class PaymentDtoFactory extends Factory
 
         return [
             'id' => $this->faker->unique()->uuid,
-            'amount' => $this->faker->numberBetween(1, 1000) * 100,
-            'status' => TransactionStatus::SETTLED,
-            'created' => $now->timestamp,
-            'orderId' => $this->faker->unique()->uuid,
-            'currency' => Currency::PLN,
-            'modified' => $now->timestamp,
+            'url' => '#',
             'serviceId' => config('services.imoje.service_key'),
+            'orderId' => $this->faker->unique()->uuid,
+            'title' => $this->faker->unique()->uuid,
+            'simp' => '',
+            'amount' => $this->faker->numberBetween(1, 1000) * 100,
+            'currency' => Currency::PLN,
+            'returnUrl' => '#',
+            'successReturnUrl' => '#',
+            'failureReturnUrl' => '#',
+            'customer' => CustomerDto::factory(),
+            'isActive' => true,
+            'validTo' => null,
+            'created' => $now->timestamp,
+            'modified' => $now->timestamp,
         ];
     }
 }

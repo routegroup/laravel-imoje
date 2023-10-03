@@ -8,32 +8,33 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Routegroup\Imoje\Payment\DTO\BaseDto;
 use Routegroup\Imoje\Payment\Factories\Casts\PaymentDtoFactory;
 use Routegroup\Imoje\Payment\Types\Currency;
-use Routegroup\Imoje\Payment\Types\TransactionStatus;
 
 /**
- * @property-read string $id
- * @property-read string|null $title
- * @property-read int $amount
- * @property-read TransactionStatus $status
- * @property-read int $created
- * @property-read string $orderId
- * @property-read Currency $currency
- * @property-read int $modified
  * @property-read string $serviceId
+ * @property-read int $amount
+ * @property-read Currency $currency
+ * @property-read string $orderId
+ * @property-read CustomerDto $customer
+ * @property-read string $id
+ * @property-read string $url
+ * @property-read int|null $validTo
+ * @property-read int $created
+ * @property-read int $modified
  */
 class PaymentDto extends BaseDto
 {
     use HasFactory;
 
     protected array $casts = [
-        'id' => 'string',
-        'amount' => 'int',
-        'status' => TransactionStatus::class,
-        'created' => 'int',
-        'orderId' => 'string',
-        'currency' => Currency::class,
-        'modified' => 'int',
         'serviceId' => 'string',
+        'amount' => 'int',
+        'currency' => Currency::class,
+        'orderId' => 'string',
+        'customer' => CustomerDto::class,
+        'id' => 'string',
+        'url' => 'string',
+        'created' => 'int',
+        'modified' => 'int',
     ];
 
     protected static function newFactory(): PaymentDtoFactory

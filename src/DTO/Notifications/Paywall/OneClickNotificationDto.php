@@ -6,13 +6,13 @@ namespace Routegroup\Imoje\Payment\DTO\Notifications\Paywall;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Routegroup\Imoje\Payment\DTO\BaseDto;
-use Routegroup\Imoje\Payment\DTO\Casts\PaymentDto;
 use Routegroup\Imoje\Payment\DTO\Casts\TransactionDto;
+use Routegroup\Imoje\Payment\DTO\Casts\TransactionPaymentDto;
 use Routegroup\Imoje\Payment\Factories\Notifications\Paywall\OneClickNotificationDtoFactory;
 
 /**
  * @property-read TransactionDto $transaction
- * @property-read PaymentDto $payment
+ * @property-read TransactionPaymentDto $payment
  */
 class OneClickNotificationDto extends BaseDto
 {
@@ -20,7 +20,7 @@ class OneClickNotificationDto extends BaseDto
 
     protected array $casts = [
         'transaction' => TransactionDto::class,
-        'payment' => PaymentDto::class,
+        'payment' => TransactionPaymentDto::class,
     ];
 
     protected static function newFactory(): OneClickNotificationDtoFactory

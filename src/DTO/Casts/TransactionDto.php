@@ -37,6 +37,8 @@ class TransactionDto extends BaseDto
 {
     use HasFactory;
 
+    protected bool $allowNull = true;
+
     protected array $casts = [
         'id' => 'string',
         'type' => TransactionType::class,

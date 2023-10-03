@@ -8,9 +8,11 @@ use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 use Routegroup\Imoje\Payment\DTO\Api\ChargeProfileDto;
+use Routegroup\Imoje\Payment\DTO\Api\PaymentDto;
 use Routegroup\Imoje\Payment\DTO\Api\RefundDto;
 use Routegroup\Imoje\Payment\DTO\Api\TransactionDto;
 use Routegroup\Imoje\Payment\DTO\Responses\ChargeProfileResponseDto;
+use Routegroup\Imoje\Payment\DTO\Responses\PaymentResponseDto;
 use Routegroup\Imoje\Payment\DTO\Responses\ProfileResponseDto;
 use Routegroup\Imoje\Payment\DTO\Responses\RefundResponseDto;
 use Routegroup\Imoje\Payment\DTO\Responses\TransactionResponseDto;
@@ -32,6 +34,16 @@ class Api
         $this->validateResponse($response, $dto->toArray());
 
         return new TransactionResponseDto($response);
+    }
+
+    public function createPayment(
+        PaymentDto $dto
+    ): PaymentResponseDto {
+        $url = $this->url->createPaymentUrl();
+        $response = $this->request()->post($url, $dto);
+        $this->validateResponse($response, $dto->toArray());
+
+        return new PaymentResponseDto($response);
     }
 
     public function createRefund(

@@ -35,8 +35,8 @@ abstract class BaseDto extends Fluent
 
     public function castAttribute(string $castType, mixed $value): mixed
     {
-        if ($this->allowNull && is_null($value)) {
-            return $value;
+        if ($this->allowNull && empty($value)) {
+            return null;
         }
 
         if (is_a($castType, BaseDto::class, true)) {
