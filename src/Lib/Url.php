@@ -21,6 +21,14 @@ class Url
         ]);
     }
 
+    public function createGetTransactionUrl($transactionId): string
+    {
+        return implode('/', [
+            $this->createTransactionUrl(),
+            $transactionId,
+        ]);
+    }
+
     public function createPaymentUrl(): string
     {
         return implode('/', [
@@ -28,6 +36,14 @@ class Url
             'merchant',
             $this->config->merchantId,
             'payment',
+        ]);
+    }
+
+    public function createGetPaymentUrl($paymentId): string
+    {
+        return implode('/', [
+            $this->createPaymentUrl(),
+            $paymentId,
         ]);
     }
 

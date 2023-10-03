@@ -38,6 +38,16 @@ class Api
         return new TransactionResponseDto($response);
     }
 
+    public function getTransaction(
+        string $transactionId
+    ): ?object {
+        $url = $this->url->createGetTransactionUrl($transactionId);
+        $response = $this->request()->get($url);
+        $this->validateResponse($response, compact('transactionId'));
+
+        return $response->object();
+    }
+
     public function createPayment(
         PaymentDto $dto
     ): PaymentResponseDto {
@@ -46,6 +56,16 @@ class Api
         $this->validateResponse($response, $dto->toArray());
 
         return new PaymentResponseDto($response);
+    }
+
+    public function getPayment(
+        string $paymentId
+    ): ?object {
+        $url = $this->url->createGetPaymentUrl($paymentId);
+        $response = $this->request()->get($url);
+        $this->validateResponse($response, compact('paymentId'));
+
+        return $response->object();
     }
 
     public function cancelPayment(
