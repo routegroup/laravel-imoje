@@ -6,6 +6,7 @@ namespace Routegroup\Imoje\Payment\Lib;
 
 use Illuminate\Http\Request;
 use JsonSchema\Validator as JsonSchemaValidator;
+use Routegroup\Imoje\Payment\Exceptions\InvalidSignatureException;
 use Routegroup\Imoje\Payment\Exceptions\SchemaValidationException;
 use Routegroup\Imoje\Payment\Types\Currency;
 use Routegroup\Imoje\Payment\Types\HashMethod;
@@ -101,21 +102,26 @@ class Validator
         throw new SchemaValidationException($errors);
     }
 
-    public function verifySignature(Request $request): bool
+    /** @throws InvalidSignatureException */
+    public function verifySignature(Request $request): void
     {
         $header = [];
 
         parse_str(
-            str_replace(';', '&', $request->headers->get('X-Imoje-Signature')),
+            str_replace(';', '&', $request->headers->get('X-Imoje-Signature', '')),
             $header
         );
 
         $hashMethod = HashMethod::from($header['alg']);
 
-        return $this->utils->verifySignature(
+        $result = $this->utils->verifySignature(
             $header['signature'],
             $request->toArray(),
             $hashMethod
         );
+
+        if (! $result) {
+            throw new InvalidSignatureException();
+        }
     }
 }

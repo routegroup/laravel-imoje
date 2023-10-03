@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Routegroup\Imoje\Payment\Exceptions\InvalidSignatureException;
 use Routegroup\Imoje\Payment\Exceptions\SchemaValidationException;
 use Routegroup\Imoje\Payment\Lib\Validator;
 use Routegroup\Imoje\Payment\Types\Currency;
@@ -78,7 +79,16 @@ it('verifies signature', function (): void {
 
     config(['services.imoje.service_key' => 'PIcMy86ssE5wuNHAuQn5zPKf6hCAwX3Oxvjw']);
     $validator = app(Validator::class);
-    $result = $validator->verifySignature($request);
+    $validator->verifySignature($request);
+})->expectNotToPerformAssertions();
 
-    $this->assertTrue($result);
-});
+it('expects to throw InvalidSignatureException', function (): void {
+    $request = new Request();
+
+    $request->headers->set(
+        'X-Imoje-Signature',
+        'merchantid=mdy7zxvxudgarxbsou9n;serviceid=a33f331b-23fc-42b0-9fd1-67f310028b46;signature=b73321c9e8bcc414b8c08198db4084dafb1b4dc252f512ffe71b1fbce857fd23;alg=sha256'
+    );
+
+    $this->validator->verifySignature($request);
+})->throws(InvalidSignatureException::class);
