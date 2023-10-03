@@ -25,7 +25,7 @@ class TransactionPaymentDtoFactory extends Factory
             'orderId' => $this->faker->unique()->uuid,
             'currency' => Currency::PLN,
             'modified' => $now->timestamp,
-            'serviceId' => config('services.imoje.service_key'),
+            'serviceId' => config('services.imoje.service_id'),
         ];
     }
 }

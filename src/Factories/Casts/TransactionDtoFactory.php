@@ -29,7 +29,7 @@ class TransactionDtoFactory extends Factory
             'source' => TransactionSource::API,
             'created' => $now->timestamp,
             'modified' => $now->timestamp,
-            'serviceId' => config('services.imoje.service_key'),
+            'serviceId' => config('services.imoje.service_id'),
             'amount' => $this->faker->numberBetween(1, 1000) * 100,
             'currency' => Currency::PLN,
             'orderId' => $this->faker->unique()->uuid,

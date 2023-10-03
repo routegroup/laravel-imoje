@@ -21,7 +21,7 @@ class CancelPaymentResponseDtoFactory extends Factory
         return [
             'id' => $this->faker->unique()->uuid,
             'url' => "https://sandbox.paywall.imoje.pl/pay/{$this->faker->unique()->uuid}",
-            'serviceId' => config('services.imoje.service_key'),
+            'serviceId' => config('services.imoje.service_id'),
             'orderId' => $this->faker->unique()->uuid,
             'title' => '',
             'simp' => '',

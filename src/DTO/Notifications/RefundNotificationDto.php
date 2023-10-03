@@ -6,17 +6,16 @@ namespace Routegroup\Imoje\Payment\DTO\Notifications;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Routegroup\Imoje\Payment\DTO\BaseDto;
-use Routegroup\Imoje\Payment\DTO\Casts\ActionDto;
 use Routegroup\Imoje\Payment\DTO\Casts\TransactionDto;
 use Routegroup\Imoje\Payment\DTO\Casts\TransactionPaymentDto;
-use Routegroup\Imoje\Payment\Factories\Notifications\GenericNotificationDtoFactory;
+use Routegroup\Imoje\Payment\Factories\Notifications\RefundNotificationDtoFactory;
 
 /**
  * @property-read TransactionDto $transaction
  * @property-read TransactionPaymentDto $payment
- * @property-read ActionDto|null $action
+ * @property-read string $originalTransactionId
  */
-class GenericNotificationDto extends BaseDto
+class RefundNotificationDto extends BaseDto
 {
     use HasFactory;
 
@@ -25,11 +24,11 @@ class GenericNotificationDto extends BaseDto
     protected array $casts = [
         'transaction' => TransactionDto::class,
         'payment' => TransactionPaymentDto::class,
-        'action' => ActionDto::class,
+        'originalTransactionId' => 'string',
     ];
 
-    protected static function newFactory(): GenericNotificationDtoFactory
+    protected static function newFactory(): RefundNotificationDtoFactory
     {
-        return GenericNotificationDtoFactory::new();
+        return RefundNotificationDtoFactory::new();
     }
 }
