@@ -4,16 +4,19 @@ declare(strict_types=1);
 
 namespace Routegroup\Imoje\Payment\Lib;
 
+use Illuminate\Http\Request;
 use JsonSchema\Validator as JsonSchemaValidator;
 use Routegroup\Imoje\Payment\Exceptions\SchemaValidationException;
 use Routegroup\Imoje\Payment\Types\Currency;
+use Routegroup\Imoje\Payment\Types\HashMethod;
 use Routegroup\Imoje\Payment\Types\TransactionStatus;
 use Routegroup\Imoje\Payment\Types\TransactionType;
 
 class Validator
 {
     public function __construct(
-        protected readonly JsonSchemaValidator $jsonValidator
+        protected readonly JsonSchemaValidator $jsonValidator,
+        protected readonly Utils $utils,
     ) {
     }
 
@@ -96,5 +99,23 @@ class Validator
         }
 
         throw new SchemaValidationException($errors);
+    }
+
+    public function verifySignature(Request $request): bool
+    {
+        $header = [];
+
+        parse_str(
+            str_replace(';', '&', $request->headers->get('X-Imoje-Signature')),
+            $header
+        );
+
+        $hashMethod = HashMethod::from($header['alg']);
+
+        return $this->utils->verifySignature(
+            $header['signature'],
+            $request->toArray(),
+            $hashMethod
+        );
     }
 }

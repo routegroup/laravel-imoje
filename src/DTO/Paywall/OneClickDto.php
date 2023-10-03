@@ -7,9 +7,10 @@ namespace Routegroup\Imoje\Payment\DTO\Paywall;
 use JetBrains\PhpStorm\ArrayShape;
 use Routegroup\Imoje\Payment\DTO\BaseDto;
 use Routegroup\Imoje\Payment\Lib\Config;
-use Routegroup\Imoje\Payment\Lib\Paywall;
+use Routegroup\Imoje\Payment\Lib\Utils;
 use Routegroup\Imoje\Payment\Types\Currency;
 use Routegroup\Imoje\Payment\Types\HashMethod;
+use Routegroup\Imoje\Payment\Types\WidgetType;
 
 /**
  * @property-read string $serviceId
@@ -36,6 +37,7 @@ class OneClickDto extends BaseDto
     protected array $casts = [
         'amount' => 'int',
         'currency' => Currency::class,
+        'widgetType' => WidgetType::class,
     ];
 
     public function __construct(
@@ -65,15 +67,15 @@ class OneClickDto extends BaseDto
         HashMethod $hashMethod = HashMethod::SHA256
     ) {
         $config = app(Config::class);
-        $paywall = app(Paywall::class);
+        $utils = app(Utils::class);
 
         $attributes = array_merge_recursive([
             'serviceId' => $config->serviceId,
             'merchantId' => $config->merchantId,
-            'widgetType' => 'oneclick',
+            'widgetType' => WidgetType::ONECLICK,
         ], $attributes);
 
-        $attributes['signature'] = $paywall->createSignature($attributes, $hashMethod);
+        $attributes['signature'] = $utils->createSignature($attributes, $hashMethod);
 
         parent::__construct($attributes);
     }

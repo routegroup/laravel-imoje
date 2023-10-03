@@ -17,7 +17,7 @@ use Routegroup\Imoje\Payment\Exceptions\ApiErrorException;
 class Api
 {
     public function __construct(
-        public readonly Config $config,
+        protected readonly Config $config,
         public readonly Url $url,
     ) {
     }

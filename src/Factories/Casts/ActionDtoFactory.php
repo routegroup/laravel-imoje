@@ -15,7 +15,7 @@ class ActionDtoFactory extends Factory
     public function definition(): array
     {
         return [
-            'type' => ActionType::TRANSFER,
+            'type' => ActionType::REDIRECT,
             'url' => '',
             'method' => 'GET',
             'contentType' => '',
