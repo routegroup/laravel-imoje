@@ -23,3 +23,5 @@ it('builds query for create signature')
     ->toEqual('bar=baz&foo=faa');
 
 it('transforms values')->todo();
+
+it('checks if contains a structure')->todo();

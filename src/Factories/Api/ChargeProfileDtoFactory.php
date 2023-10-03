@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Routegroup\Imoje\Payment\Factories\Requests;
+namespace Routegroup\Imoje\Payment\Factories\Api;
 
-use Routegroup\Imoje\Payment\DTO\Requests\ChargeProfileRequestDto;
+use Routegroup\Imoje\Payment\DTO\Api\ChargeProfileDto;
 use Routegroup\Imoje\Payment\Factories\Factory;
 use Routegroup\Imoje\Payment\Types\Currency;
 
-class ChargeProfileRequestDtoFactory extends Factory
+class ChargeProfileDtoFactory extends Factory
 {
-    protected $model = ChargeProfileRequestDto::class;
+    protected $model = ChargeProfileDto::class;
 
     public function definition(): array
     {

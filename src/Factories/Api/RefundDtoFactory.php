@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Routegroup\Imoje\Payment\Factories\Requests;
+namespace Routegroup\Imoje\Payment\Factories\Api;
 
-use Routegroup\Imoje\Payment\DTO\Requests\RefundRequestDto;
+use Routegroup\Imoje\Payment\DTO\Api\RefundDto;
 use Routegroup\Imoje\Payment\Factories\Factory;
 
-class RefundRequestDtoFactory extends Factory
+class RefundDtoFactory extends Factory
 {
-    protected $model = RefundRequestDto::class;
+    protected $model = RefundDto::class;
 
     public function definition(): array
     {

@@ -7,11 +7,13 @@ namespace Routegroup\Imoje\Payment\Lib;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
-use Routegroup\Imoje\Payment\DTO\Requests\ChargeProfileRequestDto;
-use Routegroup\Imoje\Payment\DTO\Requests\RefundRequestDto;
+use Routegroup\Imoje\Payment\DTO\Api\ChargeProfileDto;
+use Routegroup\Imoje\Payment\DTO\Api\RefundDto;
+use Routegroup\Imoje\Payment\DTO\Api\TransactionDto;
 use Routegroup\Imoje\Payment\DTO\Responses\ChargeProfileResponseDto;
 use Routegroup\Imoje\Payment\DTO\Responses\ProfileResponseDto;
 use Routegroup\Imoje\Payment\DTO\Responses\RefundResponseDto;
+use Routegroup\Imoje\Payment\DTO\Responses\TransactionResponseDto;
 use Routegroup\Imoje\Payment\Exceptions\ApiErrorException;
 
 class Api
@@ -22,8 +24,18 @@ class Api
     ) {
     }
 
+    public function createTransaction(
+        TransactionDto $dto
+    ): TransactionResponseDto {
+        $url = $this->url->createTransactionUrl();
+        $response = $this->request()->post($url, $dto);
+        $this->validateResponse($response, $dto->toArray());
+
+        return new TransactionResponseDto($response);
+    }
+
     public function createRefund(
-        RefundRequestDto $dto,
+        RefundDto $dto,
         string $transactionId
     ): RefundResponseDto {
         $url = $this->url->createRefundUrl($transactionId);
@@ -44,7 +56,7 @@ class Api
     }
 
     public function chargeProfile(
-        ChargeProfileRequestDto $dto
+        ChargeProfileDto $dto
     ): ChargeProfileResponseDto {
         $url = $this->url->createChargeProfileUrl();
         $response = $this->request()->post($url, $dto);

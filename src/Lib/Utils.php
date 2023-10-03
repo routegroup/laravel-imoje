@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Routegroup\Imoje\Payment\Lib;
 
 use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Support\Arr;
 use Routegroup\Imoje\Payment\Types\HashMethod;
 
 class Utils
@@ -66,5 +67,13 @@ class Utils
         }
 
         return $computed;
+    }
+
+    public function isEqualWithStructure(array $data, array $structure): bool
+    {
+        $structure = Arr::dot($structure);
+        $data = Arr::dot($data);
+
+        return count($structure) === count(array_intersect($structure, $data));
     }
 }

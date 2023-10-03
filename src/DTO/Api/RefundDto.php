@@ -2,40 +2,36 @@
 
 declare(strict_types=1);
 
-namespace Routegroup\Imoje\Payment\DTO\Requests;
+namespace Routegroup\Imoje\Payment\DTO\Api;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use JetBrains\PhpStorm\ArrayShape;
 use Routegroup\Imoje\Payment\DTO\BaseDto;
-use Routegroup\Imoje\Payment\Factories\Requests\ChargeProfileRequestDtoFactory;
+use Routegroup\Imoje\Payment\Factories\Api\RefundDtoFactory;
 use Routegroup\Imoje\Payment\Lib\Config;
-use Routegroup\Imoje\Payment\Types\Currency;
+use Routegroup\Imoje\Payment\Types\TransactionType;
 
 /**
- * @property-read string $serviceId
- * @property-read string $paymentProfileId
  * @property-read int $amount
- * @property-read Currency $currency
- * @property-read string $orderId
+ * @property-read TransactionType $type
+ * @property-read string $serviceId
  * @property-read string $title
  */
-class ChargeProfileRequestDto extends BaseDto
+class RefundDto extends BaseDto
 {
     use HasFactory;
 
     protected array $casts = [
         'amount' => 'int',
-        'currency' => Currency::class,
+        'type' => TransactionType::class,
     ];
 
     public function __construct(
         #[ArrayShape([
             // Required
-            'paymentProfileId' => 'string',
             'amount' => 'int',
-            'currency' => Currency::class,
-            'orderId' => 'string',
-            // Required but provided by default
+            // Required but passed by default
+            'type' => 'string',
             'serviceId' => 'string',
             // Optional
             'title' => 'string',
@@ -44,14 +40,15 @@ class ChargeProfileRequestDto extends BaseDto
         $config = app(Config::class);
 
         $attributes = array_merge_recursive([
+            'type' => TransactionType::REFUND,
             'serviceId' => $config->serviceId,
         ], $attributes);
 
         parent::__construct($attributes);
     }
 
-    protected static function newFactory(): ChargeProfileRequestDtoFactory
+    protected static function newFactory(): RefundDtoFactory
     {
-        return ChargeProfileRequestDtoFactory::new();
+        return RefundDtoFactory::new();
     }
 }

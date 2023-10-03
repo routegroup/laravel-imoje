@@ -11,6 +11,16 @@ class Url
     ) {
     }
 
+    public function createTransactionUrl(): string
+    {
+        return implode('/', [
+            $this->config->env->apiUrl(),
+            'merchant',
+            $this->config->merchantId,
+            'transaction',
+        ]);
+    }
+
     public function createRefundUrl(string $transactionId): string
     {
         return implode('/', [

@@ -112,10 +112,10 @@ class Validator
             $header
         );
 
-        $hashMethod = HashMethod::from($header['alg']);
+        $hashMethod = HashMethod::from($header['alg'] ?? '');
 
         $result = $this->utils->verifySignature(
-            $header['signature'],
+            $header['signature'] ?? '',
             $request->toArray(),
             $hashMethod
         );

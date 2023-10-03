@@ -12,6 +12,8 @@ abstract class BaseDto extends Fluent
 {
     protected array $casts = [];
 
+    protected bool $allowNull = false;
+
     public function __construct($attributes = [])
     {
         $attributes = $this->castAttributes($attributes);
@@ -24,11 +26,19 @@ abstract class BaseDto extends Fluent
             $attributes[$attributeKey] = $this->castAttribute($cast, $attributes[$attributeKey] ?? null);
         }
 
+        if ($this->allowNull) {
+            $attributes = array_filter($attributes);
+        }
+
         return $attributes;
     }
 
     public function castAttribute(string $castType, mixed $value): mixed
     {
+        if ($this->allowNull && is_null($value)) {
+            return $value;
+        }
+
         if (is_a($castType, BaseDto::class, true)) {
             return $value instanceof BaseDto
                 ? $value

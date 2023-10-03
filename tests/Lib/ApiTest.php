@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Http;
-use Routegroup\Imoje\Payment\DTO\Requests\ChargeProfileRequestDto;
-use Routegroup\Imoje\Payment\DTO\Requests\RefundRequestDto;
+use Routegroup\Imoje\Payment\DTO\Api\ChargeProfileDto;
+use Routegroup\Imoje\Payment\DTO\Api\RefundDto;
 use Routegroup\Imoje\Payment\DTO\Responses\ChargeProfileResponseDto;
 use Routegroup\Imoje\Payment\DTO\Responses\ProfileResponseDto;
 use Routegroup\Imoje\Payment\DTO\Responses\RefundResponseDto;
@@ -25,7 +25,7 @@ it('tests api requests and responses', function (
         fn (Api $api) => [
             $api->url->createRefundUrl('$transaction_id$') => Http::response(RefundResponseDto::factory()->make()->toArray()),
         ],
-        fn (Api $api) => $api->createRefund(RefundRequestDto::factory()->make(), '$transaction_id$'),
+        fn (Api $api) => $api->createRefund(RefundDto::factory()->make(), '$transaction_id$'),
         RefundResponseDto::class,
     ],
     'successfully calls get profile' => [
@@ -39,7 +39,7 @@ it('tests api requests and responses', function (
         fn (Api $api) => [
             $api->url->createChargeProfileUrl() => Http::response(ChargeProfileResponseDto::factory()->make()->toArray()),
         ],
-        fn (Api $api) => $api->chargeProfile(ChargeProfileRequestDto::factory()->make()),
+        fn (Api $api) => $api->chargeProfile(ChargeProfileDto::factory()->make()),
         ChargeProfileResponseDto::class,
     ],
     'successfully calls deactivate profile' => [
