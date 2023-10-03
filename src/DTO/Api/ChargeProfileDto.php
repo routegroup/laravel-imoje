@@ -17,7 +17,7 @@ use Routegroup\Imoje\Payment\Types\Currency;
  * @property-read int $amount
  * @property-read Currency $currency
  * @property-read string $orderId
- * @property-read string $title
+ * @property-read string|null $title
  */
 class ChargeProfileDto extends BaseDto
 {

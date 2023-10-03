@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Routegroup\Imoje\Payment\DTO\Paywall;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use JetBrains\PhpStorm\ArrayShape;
 use Routegroup\Imoje\Payment\DTO\BaseDto;
+use Routegroup\Imoje\Payment\Factories\Paywall\OneClickDtoFactory;
 use Routegroup\Imoje\Payment\Lib\Config;
 use Routegroup\Imoje\Payment\Lib\Utils;
 use Routegroup\Imoje\Payment\Types\Currency;
@@ -34,6 +36,8 @@ use Routegroup\Imoje\Payment\Types\WidgetType;
  */
 class OneClickDto extends BaseDto
 {
+    use HasFactory;
+
     protected array $casts = [
         'amount' => 'int',
         'currency' => Currency::class,
@@ -78,5 +82,10 @@ class OneClickDto extends BaseDto
         $attributes['signature'] = $utils->createSignature($attributes, $hashMethod);
 
         parent::__construct($attributes);
+    }
+
+    protected static function newFactory(): OneClickDtoFactory
+    {
+        return OneClickDtoFactory::new();
     }
 }

@@ -3,10 +3,7 @@
 This package provides base verification for signature, schema structure and mappings for responses.
 
 ```php
-use Routegroup\Imoje\Payment\DTO\Notifications\Paywall\TransactionNotificationDto;
-use Routegroup\Imoje\Payment\Lib\Validator;
-use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
+use Illuminate\Http\JsonResponse;use Illuminate\Http\Request;use Routegroup\Imoje\Payment\DTO\Notifications\GenericNotificationDto;use Routegroup\Imoje\Payment\Lib\Validator;
 
 public function postNotification(Request $request, Validator $validator): JsonResponse 
 {
@@ -20,7 +17,7 @@ public function postNotification(Request $request, Validator $validator): JsonRe
      * There should be custom logic which will determine 
      * what kind of response is based on needs.
      */
-    $notification = new TransactionNotificationDto($request->toArray());
+    $notification = new GenericNotificationDto($request->toArray());
     
     return response()->json(['status' => 'ok']);
 }

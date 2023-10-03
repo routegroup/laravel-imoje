@@ -9,5 +9,5 @@ beforeEach(function (): void {
 });
 
 it('creates transaction')
-    ->expect(fn () => $this->paywall->createTransaction(new TransactionDto()))
+    ->expect(fn () => $this->paywall->createTransaction(TransactionDto::factory()->make()))
     ->toBeInstanceOf(RedirectResponse::class);

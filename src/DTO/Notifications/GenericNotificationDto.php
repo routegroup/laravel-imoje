@@ -2,23 +2,24 @@
 
 declare(strict_types=1);
 
-namespace Routegroup\Imoje\Payment\DTO\Notifications\Paywall;
+namespace Routegroup\Imoje\Payment\DTO\Notifications;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Routegroup\Imoje\Payment\DTO\BaseDto;
 use Routegroup\Imoje\Payment\DTO\Casts\ActionDto;
 use Routegroup\Imoje\Payment\DTO\Casts\TransactionDto;
 use Routegroup\Imoje\Payment\DTO\Casts\TransactionPaymentDto;
-use Routegroup\Imoje\Payment\Factories\Notifications\Paywall\TransactionNotificationDtoFactory;
 
 /**
  * @property-read TransactionDto $transaction
  * @property-read TransactionPaymentDto $payment
- * @property-read ActionDto $action
+ * @property-read ActionDto|null $action
  */
-class TransactionNotificationDto extends BaseDto
+class GenericNotificationDto extends BaseDto
 {
     use HasFactory;
+
+    protected bool $allowNull = true;
 
     protected array $casts = [
         'transaction' => TransactionDto::class,

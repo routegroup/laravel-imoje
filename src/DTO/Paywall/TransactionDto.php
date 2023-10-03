@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Routegroup\Imoje\Payment\DTO\Paywall;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use JetBrains\PhpStorm\ArrayShape;
 use Routegroup\Imoje\Payment\DTO\BaseDto;
+use Routegroup\Imoje\Payment\Factories\Paywall\TransactionDtoFactory;
 use Routegroup\Imoje\Payment\Lib\Config;
 use Routegroup\Imoje\Payment\Lib\Utils;
 use Routegroup\Imoje\Payment\Types\Currency;
@@ -32,6 +34,8 @@ use Routegroup\Imoje\Payment\Types\HashMethod;
  */
 class TransactionDto extends BaseDto
 {
+    use HasFactory;
+
     protected array $casts = [
         'amount' => 'int',
     ];
@@ -71,5 +75,10 @@ class TransactionDto extends BaseDto
         $attributes['signature'] = $utils->createSignature($attributes, $hashMethod);
 
         parent::__construct($attributes);
+    }
+
+    protected static function newFactory(): TransactionDtoFactory
+    {
+        return TransactionDtoFactory::new();
     }
 }
