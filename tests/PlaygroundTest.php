@@ -2,6 +2,7 @@
 
 use Routegroup\Imoje\Payment\Lib\Api;
 use Routegroup\Imoje\Payment\Lib\Paywall;
+use Routegroup\Imoje\Payment\Lib\Utils;
 
 beforeEach(function (): void {
     config()->set('services.imoje', [
@@ -18,4 +19,6 @@ it('is for playground purposes', function (): void {
     $api = app(Api::class);
     /** @var Paywall $paywall */
     $paywall = app(Paywall::class);
+    /** @var Utils $utils */
+    $utils = app(Utils::class);
 });

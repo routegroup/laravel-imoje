@@ -22,6 +22,10 @@ enum TransactionStatus: string
             return false;
         }
 
+        if ($this === self::SETTLED && $newStatus === self::REFUND) {
+            return true;
+        }
+
         if (
             in_array($this, [
                 self::ERROR,

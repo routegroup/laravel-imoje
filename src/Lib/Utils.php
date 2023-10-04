@@ -30,7 +30,7 @@ class Utils
         array $body,
         HashMethod $hashMethod
     ): bool {
-        $body = json_encode($body, JSON_UNESCAPED_SLASHES);
+        $body = json_encode($body, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 
         return $signature === hash($hashMethod->value, $body.$this->config->serviceKey);
     }
