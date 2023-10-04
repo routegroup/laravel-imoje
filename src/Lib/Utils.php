@@ -6,6 +6,7 @@ namespace Routegroup\Imoje\Payment\Lib;
 
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Arr;
+use Routegroup\Imoje\Payment\DTO\BaseDto;
 use Routegroup\Imoje\Payment\Types\HashMethod;
 
 class Utils
@@ -69,7 +70,22 @@ class Utils
         return $computed;
     }
 
-    public function isEqualWithStructure(array $data, array $structure): bool
+    public function mockHeaders(
+        BaseDto $dto,
+        HashMethod $hashMethod = HashMethod::SHA256
+    ): array {
+        $body = json_encode($dto->toArray(), JSON_UNESCAPED_SLASHES);
+        $signature = hash($hashMethod->value, $body.$this->config->serviceKey);
+
+        $value = "merchantid={$this->config->merchantId};";
+        $value .= "serviceid={$this->config->serviceId};";
+        $value .= "signature=$signature;";
+        $value .= "alg=$hashMethod->value";
+
+        return ['x-imoje-signature' => $value];
+    }
+
+    public function hasStructure(array $data, array $structure): bool
     {
         $structure = Arr::dot($structure);
         $data = Arr::dot($data);

@@ -24,4 +24,6 @@ it('builds query for create signature')
 
 it('transforms values')->todo();
 
-it('checks if contains a structure')->todo();
+it('mock headers')->todo();
+
+it('checks if contains structure')->todo();

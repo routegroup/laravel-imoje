@@ -13,7 +13,7 @@ class SchemaValidationException extends Exception
     public function __construct(array $errors)
     {
         $this->errors = $errors;
-        parent::__construct('Given data doesnt fullfill JSON schema requirements', 422);
+        parent::__construct('Given data doesnt fulfill JSON schema requirements.', 422);
     }
 
     public function context(): array
