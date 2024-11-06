@@ -6,4 +6,4 @@ Add support to Laravel 11
 
 ## [0.1.0] - 2023-10-09
 
-Initial pre-release.
+Initial version
