@@ -1,6 +1,7 @@
 {
     "name": "routegroup/laravel-imoje",
     "description": "Package for imoje payments",
+    "version": "0.2.0",
     "keywords": [
         "routegroup",
         "laravel",
@@ -24,7 +25,7 @@
     "require-dev": {
         "laravel/pint": "^v1.18.1",
         "nunomaduro/collision": "^v7|^v8",
-        "nunomaduro/larastan": "^v2.9.10",
+        "larastan/larastan": "^v2.9.10",
         "orchestra/testbench": "^v8|^v9",
         "pestphp/pest": "^2.36.0",
         "pestphp/pest-plugin-arch": "^v2.7.0",
