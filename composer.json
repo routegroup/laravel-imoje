@@ -22,14 +22,14 @@
         "justinrainbow/json-schema": "^5.2"
     },
     "require-dev": {
-        "laravel/pint": "^1.0",
-        "nunomaduro/collision": "^7.8",
-        "nunomaduro/larastan": "^2.0.1",
-        "orchestra/testbench": "^8.8",
-        "pestphp/pest": "^2.0",
-        "pestphp/pest-plugin-arch": "^2.0",
-        "pestphp/pest-plugin-laravel": "^2.0",
-        "phpunit/phpunit": "^10.3"
+        "laravel/pint": "^v1.18.1",
+        "nunomaduro/collision": "^v7|^v8",
+        "nunomaduro/larastan": "^v2.9.10",
+        "orchestra/testbench": "^v8|^v9",
+        "pestphp/pest": "^2.36.0",
+        "pestphp/pest-plugin-arch": "^v2.7.0",
+        "pestphp/pest-plugin-laravel": "^v2.4.0",
+        "phpunit/phpunit": "^10.5.38"
     },
     "autoload": {
         "psr-4": {
