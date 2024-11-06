@@ -28,8 +28,7 @@
         "orchestra/testbench": "^v8|^v9",
         "pestphp/pest": "^2.36.0",
         "pestphp/pest-plugin-arch": "^v2.7.0",
-        "pestphp/pest-plugin-laravel": "^v2.4.0",
-        "phpunit/phpunit": "^10.5.38"
+        "pestphp/pest-plugin-laravel": "^v2.4.0"
     },
     "autoload": {
         "psr-4": {
