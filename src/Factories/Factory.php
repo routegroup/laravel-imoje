@@ -10,7 +10,7 @@ use Routegroup\Imoje\Payment\DTO\Responses\ResponseDto;
 
 abstract class Factory extends BaseFactory
 {
-    public function create($attributes = [], Model $parent = null)
+    public function create($attributes = [], ?Model $parent = null)
     {
         if (! empty($attributes)) {
             return $this->state($attributes)->create([], $parent);

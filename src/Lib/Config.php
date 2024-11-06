@@ -14,6 +14,5 @@ class Config
         public readonly string $serviceKey,
         public readonly string $apiKey,
         public readonly Environment $env,
-    ) {
-    }
+    ) {}
 }

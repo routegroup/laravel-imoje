@@ -70,6 +70,6 @@ abstract class BaseDto extends Fluent
     /** @throws ReadOnlyDtoException */
     public function offsetSet($offset, $value): void
     {
-        throw new ReadOnlyDtoException();
+        throw new ReadOnlyDtoException;
     }
 }

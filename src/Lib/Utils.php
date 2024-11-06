@@ -13,8 +13,7 @@ class Utils
 {
     public function __construct(
         protected readonly Config $config,
-    ) {
-    }
+    ) {}
 
     public function createSignature(
         array $orderData,

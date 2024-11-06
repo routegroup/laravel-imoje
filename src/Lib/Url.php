@@ -8,8 +8,7 @@ class Url
 {
     public function __construct(
         public readonly Config $config,
-    ) {
-    }
+    ) {}
 
     public function createTransactionUrl(): string
     {

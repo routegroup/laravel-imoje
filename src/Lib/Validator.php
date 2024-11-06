@@ -18,8 +18,7 @@ class Validator
     public function __construct(
         protected readonly JsonSchemaValidator $jsonValidator,
         protected readonly Utils $utils,
-    ) {
-    }
+    ) {}
 
     /**
      * @throws SchemaValidationException
@@ -121,7 +120,7 @@ class Validator
         );
 
         if (! $result) {
-            throw new InvalidSignatureException();
+            throw new InvalidSignatureException;
         }
     }
 }

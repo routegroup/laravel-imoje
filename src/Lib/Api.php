@@ -25,8 +25,7 @@ class Api
     public function __construct(
         protected readonly Config $config,
         public readonly Url $url,
-    ) {
-    }
+    ) {}
 
     public function createTransaction(
         TransactionDto $dto

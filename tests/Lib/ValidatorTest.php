@@ -83,7 +83,7 @@ it('verifies signature', function (): void {
 })->expectNotToPerformAssertions();
 
 it('expects to throw InvalidSignatureException', function (): void {
-    $request = new Request();
+    $request = new Request;
 
     $request->headers->set(
         'X-Imoje-Signature',

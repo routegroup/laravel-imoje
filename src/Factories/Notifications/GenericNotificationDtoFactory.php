@@ -30,7 +30,7 @@ class GenericNotificationDtoFactory extends Factory
         ];
     }
 
-    public function make($attributes = [], Model $parent = null): GenericNotificationDto
+    public function make($attributes = [], ?Model $parent = null): GenericNotificationDto
     {
         $dto = parent::make($attributes, $parent);
 

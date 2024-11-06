@@ -17,7 +17,7 @@ enum Environment: string
         };
     }
 
-    public function paywallUrl(Lang $lang = null): string
+    public function paywallUrl(?Lang $lang = null): string
     {
         if ($lang) {
             return match ($this) {

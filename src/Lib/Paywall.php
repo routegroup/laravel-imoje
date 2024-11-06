@@ -13,12 +13,11 @@ class Paywall
 {
     public function __construct(
         protected readonly Config $config
-    ) {
-    }
+    ) {}
 
     public function createTransaction(
         TransactionDto $dto,
-        Lang $lang = null
+        ?Lang $lang = null
     ): RedirectResponse {
         $query = Arr::query($dto->toArray());
         $url = $this->config->env->paywallUrl($lang)."?$query";
