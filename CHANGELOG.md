@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.3.0 - 2025-01-12
+
+**Full Changelog**: https://github.com/routegroup/laravel-imoje/compare/v0.2.0...v0.3.0
+
 ## v0.2.0 - 2024-11-06
 
 ### What's Changed
