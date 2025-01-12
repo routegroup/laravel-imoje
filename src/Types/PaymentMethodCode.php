@@ -38,4 +38,46 @@ enum PaymentMethodCode: string
     case ONECLICK = 'oneclick';
     case RECURRING = 'recurring';
     case ECOM3DS = 'ecom3ds';
+
+    public function getLogo(): ?string
+    {
+        $filename = $this->getLogoFilename();
+
+        if (! $filename) {
+            return null;
+        }
+
+        return Environment::PRODUCTION->cdnUrl().'/img/pay/'.$filename;
+    }
+
+    public function getLogoFilename(): ?string
+    {
+        return match ($this) {
+            self::ALIOR => 'alior.svg',
+            self::BNPPARIBAS => 'bnpparibas.png',
+            self::BOS => 'bos.png',
+            self::BS => 'bs.png',
+            self::BSPB => 'bspb.png',
+            self::BZWBK => 'bzwbk.png',
+            self::CITI => 'citi.png',
+            self::CREDITAGRICOLE => 'creditagricole.svg',
+            self::ENVELO => 'envelo.png',
+            self::GETIN => 'getin.svg',
+            self::IDEABANK => 'ideabank.png',
+            self::ING => 'ing.png',
+            self::INTELIGO => 'inteligo.png',
+            self::IPKO => 'ipko.png',
+            self::MILLENNIUM => 'millennium.svg',
+            self::MTRANSFER => 'mtransfer.png',
+            self::NEST => 'nest.svg',
+            self::NOBLE => 'noble.png',
+            self::PBS => 'pbs.png',
+            self::PEKAO24 => 'pekao24.svg',
+            self::PLUSBANK => 'plusbank.png',
+            self::POCZTOWY => 'pocztowy.svg',
+            self::TMOBILE => 'tmobile.svg',
+            self::PAYPO => 'paypo.svg',
+            default => null
+        };
+    }
 }

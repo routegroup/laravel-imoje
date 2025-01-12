@@ -12,5 +12,5 @@ enum PaymentMethod: string
     case PAYLATER = 'imoje_paylater'; // Twisto, PayPo, PragmaGO etc
     case LEASE = 'lease'; // ING Lease Now
     case WIRE_TRANSFER = 'wt'; // Wire transfer
-
+    case ING = 'ing';
 }

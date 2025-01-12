@@ -39,4 +39,9 @@ enum Environment: string
             self::SANDBOX => 'https://sandbox.paywall.imoje.pl/js/widget.min.js',
         };
     }
+
+    public function cdnUrl(): string
+    {
+        return 'https://data.imoje.pl';
+    }
 }
