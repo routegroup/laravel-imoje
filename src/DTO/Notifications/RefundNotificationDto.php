@@ -14,6 +14,8 @@ use Routegroup\Imoje\Payment\Factories\Notifications\RefundNotificationDtoFactor
  * @property-read TransactionDto $transaction
  * @property-read TransactionPaymentDto $payment
  * @property-read string $originalTransactionId
+ *
+ * @method static RefundNotificationDtoFactory factory($count = null, $state = [])
  */
 class RefundNotificationDto extends BaseDto
 {

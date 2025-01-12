@@ -17,6 +17,8 @@ use Routegroup\Imoje\Payment\Types\Lang;
  * @property-read string|null $company
  * @property-read string|null $phone
  * @property-read Lang|null $locale
+ *
+ * @method static CustomerDtoFactory factory($count = null, $state = [])
  */
 class CustomerDto extends BaseDto
 {

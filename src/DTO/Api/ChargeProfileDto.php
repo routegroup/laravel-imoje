@@ -18,6 +18,8 @@ use Routegroup\Imoje\Payment\Types\Currency;
  * @property-read Currency $currency
  * @property-read string $orderId
  * @property-read string|null $title
+ *
+ * @method static ChargeProfileDtoFactory factory($count = null, $state = [])
  */
 class ChargeProfileDto extends BaseDto
 {

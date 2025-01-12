@@ -15,6 +15,8 @@ use Routegroup\Imoje\Payment\Factories\Notifications\GenericNotificationDtoFacto
  * @property-read TransactionDto $transaction
  * @property-read TransactionPaymentDto $payment
  * @property-read ActionDto|null $action
+ *
+ * @method static GenericNotificationDtoFactory factory($count = null, $state = [])
  */
 class GenericNotificationDto extends BaseDto
 {

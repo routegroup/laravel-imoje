@@ -13,6 +13,8 @@ use Routegroup\Imoje\Payment\Lib\Config;
 /**
  * @property-read string $serviceId
  * @property-read string $paymentId
+ *
+ * @method static CancelPaymentDtoFactory factory($count = null, $state = [])
  */
 class CancelPaymentDto extends BaseDto
 {

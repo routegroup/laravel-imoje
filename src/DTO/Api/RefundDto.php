@@ -16,6 +16,8 @@ use Routegroup\Imoje\Payment\Types\TransactionType;
  * @property-read TransactionType $type
  * @property-read string $serviceId
  * @property-read string $title
+ *
+ * @method static RefundDtoFactory factory($count = null, $state = [])
  */
 class RefundDto extends BaseDto
 {

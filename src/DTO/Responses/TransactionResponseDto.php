@@ -12,6 +12,8 @@ use Routegroup\Imoje\Payment\Factories\Responses\TransactionResponseDtoFactory;
 /**
  * @property-read TransactionDto $transaction
  * @property-read ActionDto $action
+ *
+ * @method static TransactionResponseDtoFactory factory($count = null, $state = [])
  */
 class TransactionResponseDto extends ResponseDto
 {

@@ -7,6 +7,7 @@ namespace Routegroup\Imoje\Payment\DTO\Casts;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Routegroup\Imoje\Payment\DTO\BaseDto;
 use Routegroup\Imoje\Payment\Factories\Casts\TransactionDtoFactory;
+use Routegroup\Imoje\Payment\Factories\Factory;
 use Routegroup\Imoje\Payment\Types\Currency;
 use Routegroup\Imoje\Payment\Types\PaymentMethod;
 use Routegroup\Imoje\Payment\Types\PaymentMethodCode;
@@ -32,6 +33,8 @@ use Routegroup\Imoje\Payment\Types\TransactionType;
  * @property-read PaymentProfileDto|null $paymentProfile
  * @property-read string|null $statusCode
  * @property-read string|null $statusCodeDescription
+ *
+ * @method static TransactionDtoFactory factory($count = null, $state = [])
  */
 class TransactionDto extends BaseDto
 {

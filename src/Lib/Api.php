@@ -31,7 +31,7 @@ class Api
         TransactionDto $dto
     ): TransactionResponseDto {
         $url = $this->url->createTransactionUrl();
-        $response = $this->request()->post($url, $dto);
+        $response = $this->request()->post($url, $dto->toArray());
         $this->validateResponse($response, $dto->toArray());
 
         return new TransactionResponseDto($response);
@@ -51,7 +51,7 @@ class Api
         PaymentDto $dto
     ): PaymentResponseDto {
         $url = $this->url->createPaymentUrl();
-        $response = $this->request()->post($url, $dto);
+        $response = $this->request()->post($url, $dto->toArray());
         $this->validateResponse($response, $dto->toArray());
 
         return new PaymentResponseDto($response);
@@ -71,7 +71,7 @@ class Api
         CancelPaymentDto $dto
     ): CancelPaymentResponseDto {
         $url = $this->url->createCancelPaymentUrl();
-        $response = $this->request()->post($url, $dto);
+        $response = $this->request()->post($url, $dto->toArray());
         $this->validateResponse($response, $dto->toArray());
 
         return new CancelPaymentResponseDto($response);
@@ -82,7 +82,7 @@ class Api
         string $transactionId
     ): RefundResponseDto {
         $url = $this->url->createRefundUrl($transactionId);
-        $response = $this->request()->post($url, $dto);
+        $response = $this->request()->post($url, $dto->toArray());
         $this->validateResponse($response, $dto->toArray());
 
         return new RefundResponseDto($response);
@@ -102,7 +102,7 @@ class Api
         ChargeProfileDto $dto
     ): ChargeProfileResponseDto {
         $url = $this->url->createChargeProfileUrl();
-        $response = $this->request()->post($url, $dto);
+        $response = $this->request()->post($url, $dto->toArray());
         $this->validateResponse($response, $dto->toArray());
 
         return new ChargeProfileResponseDto($response);
@@ -138,7 +138,8 @@ class Api
 
         match ($response->status()) {
             422 => throw new ApiErrorException($response, $request),
-            500 => throw new ApiErrorException($response)
+            500 => throw new ApiErrorException($response),
+            default => null
         };
     }
 }

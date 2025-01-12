@@ -20,6 +20,8 @@ use Routegroup\Imoje\Payment\Types\Currency;
  * @property-read int|null $validTo
  * @property-read int $created
  * @property-read int $modified
+ *
+ * @method static PaymentDtoFactory factory($count = null, $state = [])
  */
 class PaymentDto extends BaseDto
 {

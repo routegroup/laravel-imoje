@@ -31,6 +31,8 @@ use Routegroup\Imoje\Payment\Types\HashMethod;
  * @property-read string $orderDescription
  * @property-read string $visibleMethod
  * @property-read int $validTo
+ *
+ * @method static TransactionDtoFactory factory($count = null, $state = [])
  */
 class TransactionDto extends BaseDto
 {

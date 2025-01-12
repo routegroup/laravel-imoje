@@ -20,6 +20,8 @@ use Routegroup\Imoje\Payment\Types\TransactionStatus;
  * @property-read Currency $currency
  * @property-read int $modified
  * @property-read string $serviceId
+ *
+ * @method static TransactionPaymentDtoFactory factory($count = null, $state = [])
  */
 class TransactionPaymentDto extends BaseDto
 {

@@ -1,6 +1,8 @@
 <?php
 
+use Illuminate\Contracts\Support\Arrayable;
 use Routegroup\Imoje\Payment\Lib\Utils;
+use Routegroup\Imoje\Payment\Types\PaymentMethod;
 
 beforeEach(function (): void {
     $this->utils = app(Utils::class);
@@ -22,7 +24,47 @@ it('builds query for create signature')
     ]))
     ->toEqual('bar=baz&foo=faa');
 
-it('transforms values')->todo();
+it('transforms values', function (
+    array $value,
+    array $result
+): void {
+    expect($this->utils->transformValues($value))->toEqual($result);
+})->with([
+    [
+        [
+            'bar' => 'baz',
+            'foo' => 'faa',
+        ],
+        [
+            'bar' => 'baz',
+            'foo' => 'faa',
+        ],
+    ],
+    [
+        [
+            'bar' => 'baz',
+            'foo' => new class implements Arrayable
+            {
+                public function toArray(): array
+                {
+                    return ['bar' => 'baz'];
+                }
+            },
+        ],
+        [
+            'bar' => 'baz',
+            'foo' => ['bar' => 'baz'],
+        ],
+    ],
+    [
+        [
+            'bar' => PaymentMethod::ING,
+        ],
+        [
+            'bar' => PaymentMethod::ING->value,
+        ],
+    ],
+]);
 
 it('mock headers')->todo();
 

@@ -36,6 +36,8 @@ use Routegroup\Imoje\Payment\Types\TransactionType;
  * @property-read int $validTo
  * @property-read array $multipayout
  * @property-read array $invoice
+ *
+ * @method static TransactionDtoFactory factory($count = null, $state = [])
  */
 class TransactionDto extends BaseDto
 {

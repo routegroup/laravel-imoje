@@ -10,6 +10,8 @@ use Routegroup\Imoje\Payment\Factories\Responses\ChargeProfileResponseDtoFactory
 
 /**
  * @property-read TransactionDto $transaction
+ *
+ * @method static ChargeProfileResponseDtoFactory factory($count = null, $state = [])
  */
 class ChargeProfileResponseDto extends ResponseDto
 {

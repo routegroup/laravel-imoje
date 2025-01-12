@@ -33,6 +33,8 @@ use Routegroup\Imoje\Payment\Types\WidgetType;
  * @property-read string $urlCancel
  * @property-read string $widgetType
  * @property-read int $validTo
+ *
+ * @method static OneClickDtoFactory factory($count = null, $state = [])
  */
 class OneClickDto extends BaseDto
 {

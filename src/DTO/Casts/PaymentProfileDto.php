@@ -20,6 +20,8 @@ use Routegroup\Imoje\Payment\Factories\Casts\PaymentProfileDtoFactory;
  * @property-read string|null $organization
  * @property-read bool|null $isActive
  * @property-read string|null $profile
+ *
+ * @method static PaymentProfileDtoFactory factory($count = null, $state = [])
  */
 class PaymentProfileDto extends BaseDto
 {

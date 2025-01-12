@@ -27,6 +27,8 @@ use Routegroup\Imoje\Payment\Types\Currency;
  * @property-read string $simp
  * @property-read int $validTo
  * @property-read array $cart
+ *
+ * @method static PaymentDtoFactory factory($count = null, $state = [])
  */
 class PaymentDto extends BaseDto
 {

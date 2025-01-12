@@ -16,6 +16,8 @@ use Routegroup\Imoje\Payment\Types\ActionType;
  * @property-read string $contentType
  * @property-read string $contentBodyRaw
  * @property-read string|null $ban
+ *
+ * @method static ActionDtoFactory factory($count = null, $state = [])
  */
 class ActionDto extends BaseDto
 {

@@ -15,6 +15,8 @@ use Routegroup\Imoje\Payment\Factories\Casts\CardDtoFactory;
  * @property-read string $month
  * @property-read string $year
  * @property-read string $cvv
+ *
+ * @method static CardDtoFactory factory($count = null, $state = [])
  */
 class CardDto extends BaseDto
 {

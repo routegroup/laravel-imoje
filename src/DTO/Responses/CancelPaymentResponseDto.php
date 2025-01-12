@@ -33,6 +33,8 @@ use Routegroup\Imoje\Payment\Types\TransactionStatus;
  * @property-read string|null $failureReturnUrl
  * @property-read string|null $successReturnUrl
  * @property-read CustomerDto $customer
+ *
+ * @method static CancelPaymentResponseDtoFactory factory($count = null, $state = [])
  */
 class CancelPaymentResponseDto extends ResponseDto
 {

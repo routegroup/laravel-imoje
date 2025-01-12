@@ -10,6 +10,8 @@ use Routegroup\Imoje\Payment\Factories\Responses\PaymentResponseDtoFactory;
 
 /**
  * @property-read PaymentDto $payment
+ *
+ * @method static PaymentResponseDtoFactory factory($count = null, $state = [])
  */
 class PaymentResponseDto extends ResponseDto
 {

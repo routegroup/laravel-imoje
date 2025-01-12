@@ -19,7 +19,7 @@ class BillingDtoFactory extends Factory
             'company' => $this->faker->company,
             'street' => $this->faker->streetName,
             'city' => $this->faker->city,
-            'region' => $this->faker->state,
+            'region' => $this->faker->word,
             'postalCode' => $this->faker->postcode,
             'countryCodeAlpha2' => $this->faker->countryCode,
         ];

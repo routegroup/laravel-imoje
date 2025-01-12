@@ -107,7 +107,7 @@ class Validator
         $header = [];
 
         parse_str(
-            str_replace(';', '&', $request->headers->get('X-Imoje-Signature', '')),
+            str_replace(';', '&', $request->headers->get('x-imoje-signature', '')),
             $header
         );
 

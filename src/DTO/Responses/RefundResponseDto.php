@@ -10,6 +10,8 @@ use Routegroup\Imoje\Payment\Factories\Responses\RefundResponseDtoFactory;
 
 /**
  * @property-read TransactionDto $transaction
+ *
+ * @method static RefundResponseDtoFactory factory($count = null, $state = [])
  */
 class RefundResponseDto extends ResponseDto
 {
