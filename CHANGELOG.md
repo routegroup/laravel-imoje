@@ -1,5 +1,16 @@
 # Changelog
 
+## v0.4.0 - 2025-03-17
+
+### What's Changed
+
+* build(deps): bump dependabot/fetch-metadata from 2.2.0 to 2.3.0 by @dependabot in https://github.com/routegroup/laravel-imoje/pull/13
+* build(deps): bump aglipanci/laravel-pint-action from 2.4 to 2.5 by @dependabot in https://github.com/routegroup/laravel-imoje/pull/14
+* feat: update deps and prepare for laravel v12 by @kajetan-nobel in https://github.com/routegroup/laravel-imoje/pull/16
+* Support Laravel 12 by @kajetan-nobel in https://github.com/routegroup/laravel-imoje/pull/17
+
+**Full Changelog**: https://github.com/routegroup/laravel-imoje/compare/v0.3.0...v0.4.0
+
 ## v0.3.0 - 2025-01-12
 
 **Full Changelog**: https://github.com/routegroup/laravel-imoje/compare/v0.2.0...v0.3.0
