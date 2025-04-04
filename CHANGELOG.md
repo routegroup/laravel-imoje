@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.5.0 - 2025-04-04
+
+### What's Changed
+
+* Add missing payment methods and codes by @kajetan-nobel in https://github.com/routegroup/laravel-imoje/pull/18
+
+**Full Changelog**: https://github.com/routegroup/laravel-imoje/compare/v0.4.0...v0.5.0
+
 ## v0.4.0 - 2025-03-17
 
 ### What's Changed
