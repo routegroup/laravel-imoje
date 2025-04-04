@@ -6,8 +6,11 @@ namespace Routegroup\Imoje\Payment\Types;
 
 enum PaymentMethodCode: string
 {
-    case BLIK = 'blik';
     case ALIOR = 'alior';
+    case APPLEPAY = 'applepay';
+    case BLIK = 'blik';
+    case BLIK_ONECLICK = 'blik_oneclick';
+    case BLIK_PAYLATER = 'blik_paylater';
     case BNPPARIBAS = 'bnpparibas';
     case BOS = 'bos';
     case BS = 'bs';
@@ -17,7 +20,9 @@ enum PaymentMethodCode: string
     case CREDITAGRICOLE = 'creditagricole';
     case ENVELO = 'envelo';
     case GETIN = 'getin';
+    case GOOGLE_PAY = 'gpay';
     case IDEABANK = 'ideabank';
+    case IMOJE_INSTALLMENTS = 'imoje_installments';
     case ING = 'ing';
     case INTELIGO = 'inteligo';
     case IPKO = 'ipko';
@@ -25,14 +30,16 @@ enum PaymentMethodCode: string
     case MTRANSFER = 'mtransfer';
     case NEST = 'nest';
     case NOBLE = 'noble';
+    case PAYLATER = 'imoje_twisto';
+    case PAYPO = 'paypo';
     case PBS = 'pbs';
     case PEKAO24 = 'pekao24';
     case PLUSBANK = 'plusbank';
     case POCZTOWY = 'pocztowy';
+    case PRAGMA_GO = 'pragma_go';
     case TMOBILE = 'tmobile';
-    case PAYLATER = 'imoje_twisto';
-    case BLIK_ONECLICK = 'blik_oneclick';
-    case PAYPO = 'paypo';
+    case VISA_MOBILE = 'visa_mobile';
+    case WIRE_TRANSFER = 'wt';
 
     // For notification
     case ONECLICK = 'oneclick';
