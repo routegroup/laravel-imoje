@@ -1,5 +1,21 @@
 # Changelog
 
+## v0.6.0 - 2026-02-02
+
+### What's Changed
+
+- fixed widgetType in OneClickDto
+
+* build(deps): bump dependabot/fetch-metadata from 2.3.0 to 2.4.0 by @dependabot[bot] in https://github.com/routegroup/laravel-imoje/pull/19
+* build(deps): bump aglipanci/laravel-pint-action from 2.5 to 2.6 by @dependabot[bot] in https://github.com/routegroup/laravel-imoje/pull/21
+* build(deps): bump stefanzweifel/git-auto-commit-action from 5 to 6 by @dependabot[bot] in https://github.com/routegroup/laravel-imoje/pull/20
+* build(deps): bump actions/checkout from 4 to 5 by @dependabot[bot] in https://github.com/routegroup/laravel-imoje/pull/22
+* build(deps): bump dependabot/fetch-metadata from 2.4.0 to 2.5.0 by @dependabot[bot] in https://github.com/routegroup/laravel-imoje/pull/25
+* build(deps): bump actions/checkout from 5 to 6 by @dependabot[bot] in https://github.com/routegroup/laravel-imoje/pull/24
+* build(deps): bump stefanzweifel/git-auto-commit-action from 6 to 7 by @dependabot[bot] in https://github.com/routegroup/laravel-imoje/pull/23
+
+**Full Changelog**: https://github.com/routegroup/laravel-imoje/compare/v0.5.0...v0.6.0
+
 ## v0.5.0 - 2025-04-04
 
 ### What's Changed
