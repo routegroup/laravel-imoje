@@ -78,8 +78,11 @@ class OneClickDto extends BaseDto
         $attributes = array_merge_recursive([
             'serviceId' => $config->serviceId,
             'merchantId' => $config->merchantId,
-            'widgetType' => WidgetType::ONECLICK,
         ], $attributes);
+
+        if (! array_key_exists('widgetType', $attributes)) {
+            $attributes['widgetType'] = WidgetType::ONECLICK->value;
+        }
 
         $attributes['signature'] = $utils->createSignature($attributes, $hashMethod);
 
