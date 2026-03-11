@@ -1,0 +1,10 @@
+.git
+.github
+vendor
+.idea
+*.md
+!README.md
+.env*
+.DS_Store
+build
+.phpunit.cache
