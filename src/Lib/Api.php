@@ -8,16 +8,25 @@ use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 use Routegroup\Imoje\Payment\DTO\Api\CancelPaymentDto;
+use Routegroup\Imoje\Payment\DTO\Api\CanRefundDto;
 use Routegroup\Imoje\Payment\DTO\Api\ChargeProfileDto;
+use Routegroup\Imoje\Payment\DTO\Api\DeactivateProfileDto;
+use Routegroup\Imoje\Payment\DTO\Api\GetPaymentMethodsDto;
 use Routegroup\Imoje\Payment\DTO\Api\PaymentDto;
+use Routegroup\Imoje\Payment\DTO\Api\PutTrustedIpsDto;
 use Routegroup\Imoje\Payment\DTO\Api\RefundDto;
 use Routegroup\Imoje\Payment\DTO\Api\TransactionDto;
 use Routegroup\Imoje\Payment\DTO\Responses\CancelPaymentResponseDto;
+use Routegroup\Imoje\Payment\DTO\Responses\CanRefundResponseDto;
 use Routegroup\Imoje\Payment\DTO\Responses\ChargeProfileResponseDto;
+use Routegroup\Imoje\Payment\DTO\Responses\PaymentMethodsResponseDto;
 use Routegroup\Imoje\Payment\DTO\Responses\PaymentResponseDto;
 use Routegroup\Imoje\Payment\DTO\Responses\ProfileResponseDto;
 use Routegroup\Imoje\Payment\DTO\Responses\RefundResponseDto;
+use Routegroup\Imoje\Payment\DTO\Responses\ServiceResponseDto;
+use Routegroup\Imoje\Payment\DTO\Responses\ServicesResponseDto;
 use Routegroup\Imoje\Payment\DTO\Responses\TransactionResponseDto;
+use Routegroup\Imoje\Payment\DTO\Responses\TrustedIpsResponseDto;
 use Routegroup\Imoje\Payment\Exceptions\ApiErrorException;
 
 class Api
@@ -116,6 +125,100 @@ class Api
         $this->validateResponse($response, compact('profileId'));
 
         return new ProfileResponseDto($response);
+    }
+
+    public function captureTransaction(string $transactionId): TransactionResponseDto
+    {
+        $url = $this->url->createCaptureUrl($transactionId);
+        $response = $this->request()->post($url);
+        $this->validateResponse($response, compact('transactionId'));
+
+        return new TransactionResponseDto($response);
+    }
+
+    public function voidTransaction(string $transactionId): TransactionResponseDto
+    {
+        $url = $this->url->createVoidUrl($transactionId);
+        $response = $this->request()->post($url);
+        $this->validateResponse($response, compact('transactionId'));
+
+        return new TransactionResponseDto($response);
+    }
+
+    public function getProfileByCid(string $cid): ProfileResponseDto
+    {
+        $url = $this->url->createProfileCidUrl($cid);
+        $response = $this->request()->get($url);
+        $this->validateResponse($response, compact('cid'));
+
+        return new ProfileResponseDto($response);
+    }
+
+    public function deactivateProfileByPost(DeactivateProfileDto $dto): ProfileResponseDto
+    {
+        $url = $this->url->createProfileDeactivateUrl();
+        $response = $this->request()->post($url, $dto->toArray());
+        $this->validateResponse($response, $dto->toArray());
+
+        return new ProfileResponseDto($response);
+    }
+
+    public function canRefund(
+        CanRefundDto $dto,
+        string $transactionId
+    ): CanRefundResponseDto {
+        $url = $this->url->createCanRefundUrl($transactionId);
+        $response = $this->request()->post($url, $dto->toArray());
+        $this->validateResponse($response, $dto->toArray());
+
+        return new CanRefundResponseDto($response);
+    }
+
+    public function getPaymentMethods(
+        string $serviceId,
+        GetPaymentMethodsDto $dto
+    ): PaymentMethodsResponseDto {
+        $url = $this->url->createGetPaymentMethodsUrl($serviceId);
+        $response = $this->request()->post($url, $dto->toArray());
+        $this->validateResponse($response, $dto->toArray());
+
+        return new PaymentMethodsResponseDto($response);
+    }
+
+    public function getService(string $serviceId): ServiceResponseDto
+    {
+        $url = $this->url->createServiceUrl($serviceId);
+        $response = $this->request()->get($url);
+        $this->validateResponse($response, compact('serviceId'));
+
+        return new ServiceResponseDto($response);
+    }
+
+    public function getServices(): ServicesResponseDto
+    {
+        $url = $this->url->createServicesUrl();
+        $response = $this->request()->get($url);
+        $this->validateResponse($response);
+
+        return new ServicesResponseDto($response);
+    }
+
+    public function getTrustedIps(): TrustedIpsResponseDto
+    {
+        $url = $this->url->createSettingsIpsUrl();
+        $response = $this->request()->get($url);
+        $this->validateResponse($response);
+
+        return new TrustedIpsResponseDto($response);
+    }
+
+    public function putTrustedIps(PutTrustedIpsDto $dto): TrustedIpsResponseDto
+    {
+        $url = $this->url->createSettingsIpsUrl();
+        $response = $this->request()->put($url, $dto->toArray());
+        $this->validateResponse($response, $dto->toArray());
+
+        return new TrustedIpsResponseDto($response);
     }
 
     protected function request(): PendingRequest

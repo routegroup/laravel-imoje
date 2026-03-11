@@ -5,6 +5,7 @@ use Routegroup\Imoje\Payment\Exceptions\InvalidSignatureException;
 use Routegroup\Imoje\Payment\Exceptions\SchemaValidationException;
 use Routegroup\Imoje\Payment\Lib\Validator;
 use Routegroup\Imoje\Payment\Types\Currency;
+use Routegroup\Imoje\Payment\Types\HashMethod;
 use Routegroup\Imoje\Payment\Types\TransactionStatus;
 use Routegroup\Imoje\Payment\Types\TransactionType;
 
@@ -34,7 +35,9 @@ it('validates notification and throws an exception', function (): void {
 })->throws(SchemaValidationException::class);
 
 it('verifies signature', function (): void {
-    $request = new Request([
+    config(['services.imoje.service_key' => 'PIcMy86ssE5wuNHAuQn5zPKf6hCAwX3Oxvjw']);
+
+    $requestData = [
         'transaction' => [
             'id' => '07938437-cae3-4d46-877d-e1b9d6e6c58f',
             'type' => 'sale',
@@ -42,7 +45,7 @@ it('verifies signature', function (): void {
             'source' => 'api',
             'created' => 1666339083,
             'modified' => 1666339083,
-            'notificationUrl' => 'https://qaz54.requestcatcher.com/',
+            'notificationUrl' => 'https://example.com/notification',
             'serviceId' => 'a33f331b-23fc-42b0-9fd1-67f310028b46',
             'amount' => 100,
             'currency' => 'PLN',
@@ -61,7 +64,7 @@ it('verifies signature', function (): void {
             'currency' => 'PLN',
             'modified' => 1666339083,
             'serviceId' => 'a33f331b-23fc-42b0-9fd1-67f310028b46',
-            'notificationUrl' => 'https://qaz54.requestcatcher.com/',
+            'notificationUrl' => 'https://example.com/notification',
         ],
         'action' => [
             'type' => 'redirect',
@@ -70,14 +73,18 @@ it('verifies signature', function (): void {
             'contentType' => '',
             'contentBodyRaw' => '',
         ],
-    ]);
+    ];
+
+    $request = new Request($requestData);
+
+    $body = json_encode($request->toArray(), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    $signature = hash(HashMethod::SHA256->value, $body.config('services.imoje.service_key'));
 
     $request->headers->set(
         'X-Imoje-Signature',
-        'merchantid=mdy7zxvxudgarxbsou9n;serviceid=a33f331b-23fc-42b0-9fd1-67f310028b46;signature=b73321c9e8bcc414b8c08198db4084dafb1b4dc252f512ffe71b1fbce857fd23;alg=sha256'
+        'merchantid=mdy7zxvxudgarxbsou9n;serviceid=a33f331b-23fc-42b0-9fd1-67f310028b46;signature='.$signature.';alg=sha256'
     );
 
-    config(['services.imoje.service_key' => 'PIcMy86ssE5wuNHAuQn5zPKf6hCAwX3Oxvjw']);
     $validator = app(Validator::class);
     $validator->verifySignature($request);
 })->expectNotToPerformAssertions();

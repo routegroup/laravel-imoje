@@ -44,7 +44,7 @@ class TransactionDtoFactory extends Factory
             'type' => TransactionType::SALE,
             'status' => TransactionStatus::PENDING,
             'source' => TransactionSource::API,
-            'notificationUrl' => 'https://imoje.requestcatcher.com/',
+            'notificationUrl' => 'https://example.com/notification',
         ]);
     }
 
