@@ -29,9 +29,17 @@ use Routegroup\Imoje\Payment\Types\TransactionType;
  * @property-read string $orderId
  * @property-read PaymentMethod $paymentMethod
  * @property-read PaymentMethodCode $paymentMethodCode
+ * @property-read PaymentSummaryDto|null $payment
  * @property-read PaymentProfileDto|null $paymentProfile
+ * @property-read array $refunds
+ * @property-read string|null $blikTransactionId
  * @property-read string|null $statusCode
  * @property-read string|null $statusCodeDescription
+ * @property-read FeeDto|null $fee
+ * @property-read array|null $payerData
+ * @property-read array|null $payerCardData
+ * @property-read int|null $paidAmount
+ * @property-read ActionDto|null $action
  *
  * @method static TransactionDtoFactory factory($count = null, $state = [])
  */
@@ -54,7 +62,11 @@ class TransactionDto extends BaseDto
         'orderId' => 'string',
         'paymentMethod' => PaymentMethod::class,
         'paymentMethodCode' => PaymentMethodCode::class,
+        'payment' => PaymentSummaryDto::class,
         'paymentProfile' => PaymentProfileDto::class,
+        'paidAmount' => 'int',
+        'fee' => FeeDto::class,
+        'action' => ActionDto::class,
     ];
 
     protected static function newFactory(): TransactionDtoFactory

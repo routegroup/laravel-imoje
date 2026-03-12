@@ -29,7 +29,7 @@ class CustomerDto extends BaseDto
     protected array $casts = [
         'firstName' => 'string',
         'lastName' => 'string',
-        'email' => 'email',
+        'email' => 'string',
         'locale' => Lang::class,
     ];
 

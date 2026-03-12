@@ -19,6 +19,8 @@ use Routegroup\Imoje\Payment\DTO\Api\TransactionDto;
 use Routegroup\Imoje\Payment\DTO\Responses\CancelPaymentResponseDto;
 use Routegroup\Imoje\Payment\DTO\Responses\CanRefundResponseDto;
 use Routegroup\Imoje\Payment\DTO\Responses\ChargeProfileResponseDto;
+use Routegroup\Imoje\Payment\DTO\Responses\GetPaymentResponseDto;
+use Routegroup\Imoje\Payment\DTO\Responses\GetTransactionResponseDto;
 use Routegroup\Imoje\Payment\DTO\Responses\PaymentMethodsResponseDto;
 use Routegroup\Imoje\Payment\DTO\Responses\PaymentResponseDto;
 use Routegroup\Imoje\Payment\DTO\Responses\ProfileResponseDto;
@@ -48,12 +50,12 @@ class Api
 
     public function getTransaction(
         string $transactionId
-    ): ?object {
+    ): GetTransactionResponseDto {
         $url = $this->url->createGetTransactionUrl($transactionId);
         $response = $this->request()->get($url);
         $this->validateResponse($response, compact('transactionId'));
 
-        return $response->object();
+        return new GetTransactionResponseDto($response);
     }
 
     public function createPayment(
@@ -68,12 +70,12 @@ class Api
 
     public function getPayment(
         string $paymentId
-    ): ?object {
+    ): GetPaymentResponseDto {
         $url = $this->url->createGetPaymentUrl($paymentId);
         $response = $this->request()->get($url);
         $this->validateResponse($response, compact('paymentId'));
 
-        return $response->object();
+        return new GetPaymentResponseDto($response);
     }
 
     public function cancelPayment(

@@ -17,6 +17,7 @@ use Routegroup\Imoje\Payment\Factories\Casts\BillingDtoFactory;
  * @property-read string|null $region
  * @property-read string|null $postalCode
  * @property-read string|null $countryCodeAlpha2
+ * @property-read string|null $taxId
  *
  * @method static BillingDtoFactory factory($count = null, $state = [])
  */

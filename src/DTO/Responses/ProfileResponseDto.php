@@ -9,13 +9,15 @@ use Routegroup\Imoje\Payment\DTO\Casts\PaymentProfileDto;
 use Routegroup\Imoje\Payment\Factories\Responses\ProfileResponseDtoFactory;
 
 /**
- * @property-read PaymentProfileDto $paymentProfile
+ * @property-read PaymentProfileDto|null $paymentProfile
  *
  * @method static ProfileResponseDtoFactory factory($count = null, $state = [])
  */
 class ProfileResponseDto extends ResponseDto
 {
     use HasFactory;
+
+    protected bool $allowNull = true;
 
     protected array $casts = [
         'paymentProfile' => PaymentProfileDto::class,

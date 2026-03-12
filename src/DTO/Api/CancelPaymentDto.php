@@ -20,6 +20,11 @@ class CancelPaymentDto extends BaseDto
 {
     use HasFactory;
 
+    protected array $casts = [
+        'serviceId' => 'string',
+        'paymentId' => 'string',
+    ];
+
     public function __construct(
         #[ArrayShape([
             // Required

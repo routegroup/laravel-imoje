@@ -13,6 +13,8 @@ use Routegroup\Imoje\Payment\DTO\Api\TransactionDto;
 use Routegroup\Imoje\Payment\DTO\Responses\CancelPaymentResponseDto;
 use Routegroup\Imoje\Payment\DTO\Responses\CanRefundResponseDto;
 use Routegroup\Imoje\Payment\DTO\Responses\ChargeProfileResponseDto;
+use Routegroup\Imoje\Payment\DTO\Responses\GetPaymentResponseDto;
+use Routegroup\Imoje\Payment\DTO\Responses\GetTransactionResponseDto;
 use Routegroup\Imoje\Payment\DTO\Responses\PaymentMethodsResponseDto;
 use Routegroup\Imoje\Payment\DTO\Responses\PaymentResponseDto;
 use Routegroup\Imoje\Payment\DTO\Responses\ProfileResponseDto;
@@ -69,14 +71,14 @@ it('tests api requests and responses', function (
             $api->url->createGetTransactionUrl('$transaction_id$') => Http::response(TransactionResponseDto::factory()->make()->toArray()),
         ],
         fn (Api $api) => $api->getTransaction('$transaction_id$'),
-        stdClass::class,
+        GetTransactionResponseDto::class,
     ],
     'successfully calls get payment' => [
         fn (Api $api) => [
-            $api->url->createGetPaymentUrl('$payment_id$') => Http::response(PaymentResponseDto::factory()->make()->toArray()),
+            $api->url->createGetPaymentUrl('$payment_id$') => Http::response(CancelPaymentResponseDto::factory()->make()->toArray()),
         ],
         fn (Api $api) => $api->getPayment('$payment_id$'),
-        stdClass::class,
+        GetPaymentResponseDto::class,
     ],
     'successfully calls get profile' => [
         fn (Api $api) => [

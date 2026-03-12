@@ -32,6 +32,7 @@ use Routegroup\Imoje\Payment\Types\TransactionType;
  * @property-read BillingDto $billing
  * @property-read BillingDto $shipping
  * @property-read CardDto $card
+ * @property-read array $visibleMethod
  * @property-read array $additionalData
  * @property-read int $validTo
  * @property-read array $multipayout
@@ -76,6 +77,7 @@ class TransactionDto extends BaseDto
             'serviceId' => 'string',
             // Optional
             'title' => 'string',
+            'visibleMethod' => 'array',
             'billing' => 'object',
             'shipping' => 'object',
             'card' => 'object',

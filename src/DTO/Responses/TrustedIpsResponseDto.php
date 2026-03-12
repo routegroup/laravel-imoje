@@ -17,6 +17,10 @@ class TrustedIpsResponseDto extends ResponseDto
 {
     use HasFactory;
 
+    protected array $casts = [
+        'trustedIps' => 'array',
+    ];
+
     protected static function newFactory(): TrustedIpsResponseDtoFactory
     {
         return TrustedIpsResponseDtoFactory::new();
