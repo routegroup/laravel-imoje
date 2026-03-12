@@ -37,9 +37,9 @@ class CancelPaymentResponseDtoFactory extends Factory
             'usedAt' => null,
             'isConfirmVisited' => false,
             'confirmVisitedAt' => null,
-            'returnUrl' => 'https://example.com/return',
-            'failureReturnUrl' => 'https://example.com/failure',
-            'successReturnUrl' => 'https://example.com/success',
+            'returnUrl' => rtrim((string) (env('IMOJE_RETURN_URL') ?: 'https://example.com/return'), '/'),
+            'failureReturnUrl' => rtrim((string) (env('IMOJE_RETURN_URL') ?: 'https://example.com/failure'), '/'),
+            'successReturnUrl' => rtrim((string) (env('IMOJE_RETURN_URL') ?: 'https://example.com/success'), '/'),
             'customer' => CustomerDto::factory(),
         ];
     }

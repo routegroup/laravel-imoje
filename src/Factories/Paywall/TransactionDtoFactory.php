@@ -28,9 +28,9 @@ class TransactionDtoFactory extends Factory
         return $this->state([
             'customerEmail' => $this->faker->email,
             'customerPhone' => $this->faker->numerify('#########'),
-            'urlSuccess' => 'https://example.com/success',
-            'urlFailure' => 'https://example.com/failure',
-            'urlReturn' => 'https://example.com/return',
+            'urlSuccess' => rtrim((string) (env('IMOJE_RETURN_URL') ?: 'https://example.com/success'), '/'),
+            'urlFailure' => rtrim((string) (env('IMOJE_RETURN_URL') ?: 'https://example.com/failure'), '/'),
+            'urlReturn' => rtrim((string) (env('IMOJE_RETURN_URL') ?: 'https://example.com/return'), '/'),
             'orderDescription' => $this->faker->sentence,
         ]);
     }

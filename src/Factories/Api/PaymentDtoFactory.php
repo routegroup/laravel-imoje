@@ -20,9 +20,9 @@ class PaymentDtoFactory extends Factory
             'currency' => Currency::PLN,
             'orderId' => $this->faker->uuid,
             'customer' => CustomerDto::factory(),
-            'returnUrl' => 'https://example.com/return',
-            'successReturnUrl' => 'https://example.com/success',
-            'failureReturnUrl' => 'https://example.com/failure',
+            'returnUrl' => rtrim((string) (env('IMOJE_RETURN_URL') ?: 'https://example.com/return'), '/'),
+            'successReturnUrl' => rtrim((string) (env('IMOJE_RETURN_URL') ?: 'https://example.com/success'), '/'),
+            'failureReturnUrl' => rtrim((string) (env('IMOJE_RETURN_URL') ?: 'https://example.com/failure'), '/'),
         ];
     }
 }
