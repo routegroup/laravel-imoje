@@ -17,6 +17,13 @@ use Routegroup\Imoje\Payment\Types\Currency;
  * @property-read CustomerDto $customer
  * @property-read string $id
  * @property-read string $url
+ * @property-read string|null $title
+ * @property-read string|null $simp
+ * @property-read string|null $notificationUrl
+ * @property-read string|null $returnUrl
+ * @property-read string|null $failureReturnUrl
+ * @property-read string|null $successReturnUrl
+ * @property-read bool $isActive
  * @property-read int|null $validTo
  * @property-read int $created
  * @property-read int $modified
@@ -35,6 +42,8 @@ class PaymentDto extends BaseDto
         'customer' => CustomerDto::class,
         'id' => 'string',
         'url' => 'string',
+        'isActive' => 'bool',
+        'validTo' => 'int',
         'created' => 'int',
         'modified' => 'int',
     ];

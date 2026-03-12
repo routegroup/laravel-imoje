@@ -19,7 +19,7 @@ use Routegroup\Imoje\Payment\Types\Currency;
  * @property-read string $orderId
  * @property-read CustomerDto $customer
  * @property-read string $title
- * @property-read string $visibleMethod
+ * @property-read array $visibleMethod
  * @property-read string $preselectMethodCode
  * @property-read string $returnUrl
  * @property-read string $successReturnUrl
@@ -53,7 +53,7 @@ class PaymentDto extends BaseDto
             'serviceId' => 'string',
             // Optional
             'title' => 'string',
-            'visibleMethod' => 'string',
+            'visibleMethod' => 'array',
             'preselectMethodCode' => 'string',
             'returnUrl' => 'string',
             'successReturnUrl' => 'string',

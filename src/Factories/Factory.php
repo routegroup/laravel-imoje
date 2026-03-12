@@ -2,10 +2,12 @@
 
 namespace Routegroup\Imoje\Payment\Factories;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\Factory as BaseFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Client\Response;
 use Mockery;
+use Routegroup\Imoje\Payment\DTO\BaseDto;
 use Routegroup\Imoje\Payment\DTO\Responses\ResponseDto;
 
 /**
@@ -14,12 +16,12 @@ use Routegroup\Imoje\Payment\DTO\Responses\ResponseDto;
 abstract class Factory extends BaseFactory
 {
     /**
-     * @var class-string<\Routegroup\Imoje\Payment\DTO\BaseDto|TModel>
+     * @var class-string<BaseDto|TModel>
      */
     protected $model;
 
     /**
-     * @return \Illuminate\Database\Eloquent\Collection<int, \Routegroup\Imoje\Payment\DTO\BaseDto|TModel>|\Routegroup\Imoje\Payment\DTO\BaseDto|TModel
+     * @return Collection<int, BaseDto|TModel>|BaseDto|TModel
      */
     public function create($attributes = [], ?Model $parent = null)
     {
@@ -31,7 +33,7 @@ abstract class Factory extends BaseFactory
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Collection<int, \Routegroup\Imoje\Payment\DTO\BaseDto|TModel>|\Routegroup\Imoje\Payment\DTO\BaseDto|TModel
+     * @return Collection<int, BaseDto|TModel>|BaseDto|TModel
      */
     public function make($attributes = [], ?Model $parent = null)
     {

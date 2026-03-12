@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Routegroup\Imoje\Payment\DTO\Responses;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Routegroup\Imoje\Payment\DTO\Casts\CustomerDto;
-use Routegroup\Imoje\Payment\Factories\Responses\CancelPaymentResponseDtoFactory;
 use Routegroup\Imoje\Payment\Types\Currency;
 use Routegroup\Imoje\Payment\Types\TransactionStatus;
 
@@ -35,13 +33,9 @@ use Routegroup\Imoje\Payment\Types\TransactionStatus;
  * @property-read string|null $notificationUrl
  * @property-read CustomerDto $customer
  * @property-read array $transactions
- *
- * @method static CancelPaymentResponseDtoFactory factory($count = null, $state = [])
  */
-class CancelPaymentResponseDto extends ResponseDto
+class GetPaymentResponseDto extends ResponseDto
 {
-    use HasFactory;
-
     protected array $casts = [
         'id' => 'string',
         'url' => 'string',
@@ -58,9 +52,4 @@ class CancelPaymentResponseDto extends ResponseDto
         'isConfirmVisited' => 'bool',
         'customer' => CustomerDto::class,
     ];
-
-    protected static function newFactory(): CancelPaymentResponseDtoFactory
-    {
-        return CancelPaymentResponseDtoFactory::new();
-    }
 }

@@ -14,12 +14,14 @@ use Routegroup\Imoje\Payment\Factories\Casts\PaymentProfileDtoFactory;
  * @property-read string|null $merchantCustomerId
  * @property-read string|null $firstName
  * @property-read string|null $lastName
+ * @property-read string|null $email
  * @property-read string|null $maskedNumber
  * @property-read int|null $month
  * @property-read int|null $year
  * @property-read string|null $organization
  * @property-read bool|null $isActive
  * @property-read string|null $profile
+ * @property-read string|null $firstTransactionId
  *
  * @method static PaymentProfileDtoFactory factory($count = null, $state = [])
  */
@@ -33,12 +35,14 @@ class PaymentProfileDto extends BaseDto
         'merchantCustomerId' => null,
         'firstName' => null,
         'lastName' => null,
+        'email' => null,
         'maskedNumber' => null,
         'month' => null,
         'year' => null,
         'organization' => null,
         'isActive' => null,
         'profile' => null,
+        'firstTransactionId' => null,
     ];
 
     protected array $casts = [

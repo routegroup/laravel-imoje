@@ -18,12 +18,17 @@ use Routegroup\Imoje\Payment\Types\Currency;
  * @property-read Currency $currency
  * @property-read string $orderId
  * @property-read string|null $title
+ * @property-read string|null $notificationUrl
+ * @property-read array|null $data
+ * @property-read array|null $invoice
  *
  * @method static ChargeProfileDtoFactory factory($count = null, $state = [])
  */
 class ChargeProfileDto extends BaseDto
 {
     use HasFactory;
+
+    protected bool $allowNull = true;
 
     protected array $casts = [
         'amount' => 'int',
@@ -41,6 +46,10 @@ class ChargeProfileDto extends BaseDto
             'serviceId' => 'string',
             // Optional
             'title' => 'string',
+            'notificationUrl' => 'string',
+            // @todo: add proper DTO for data and invoice
+            'data' => 'array',
+            'invoice' => 'array',
         ])] array $attributes = []
     ) {
         $config = app(Config::class);

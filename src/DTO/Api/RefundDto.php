@@ -15,7 +15,8 @@ use Routegroup\Imoje\Payment\Types\TransactionType;
  * @property-read int $amount
  * @property-read TransactionType $type
  * @property-read string $serviceId
- * @property-read string $title
+ * @property-read string|null $title
+ * @property-read bool|null $sendRefundConfirmationEmail
  *
  * @method static RefundDtoFactory factory($count = null, $state = [])
  */
@@ -26,6 +27,7 @@ class RefundDto extends BaseDto
     protected array $casts = [
         'amount' => 'int',
         'type' => TransactionType::class,
+        'sendRefundConfirmationEmail' => 'bool',
     ];
 
     public function __construct(
@@ -37,6 +39,7 @@ class RefundDto extends BaseDto
             'serviceId' => 'string',
             // Optional
             'title' => 'string',
+            'sendRefundConfirmationEmail' => 'bool',
         ])] array $attributes = []
     ) {
         $config = app(Config::class);

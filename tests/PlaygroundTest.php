@@ -1,5 +1,6 @@
 <?php
 
+use Routegroup\Imoje\Payment\Exceptions\ApiErrorException;
 use Routegroup\Imoje\Payment\Lib\Api;
 use Routegroup\Imoje\Payment\Lib\Paywall;
 use Routegroup\Imoje\Payment\Lib\Utils;
@@ -21,4 +22,10 @@ it('is for playground purposes', function (): void {
     $paywall = app(Paywall::class);
     /** @var Utils $utils */
     $utils = app(Utils::class);
-});
+
+    try {
+        //
+    } catch (ApiErrorException $exception) {
+        dd($exception->dto->toArray());
+    }
+})->expectNotToPerformAssertions();

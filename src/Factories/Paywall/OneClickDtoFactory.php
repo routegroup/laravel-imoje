@@ -30,10 +30,10 @@ class OneClickDtoFactory extends Factory
         return $this->state([
             'customerPhone' => $this->faker->numerify('#########'),
             'orderDescription' => $this->faker->sentence,
-            'urlSuccess' => 'https://imoje.requestcatcher.com/',
-            'urlFailure' => 'https://imoje.requestcatcher.com/',
-            'urlReturn' => 'https://imoje.requestcatcher.com/',
-            'urlCancel' => 'https://imoje.requestcatcher.com/',
+            'urlSuccess' => rtrim((string) (env('IMOJE_RETURN_URL') ?: 'https://example.com/success'), '/'),
+            'urlFailure' => rtrim((string) (env('IMOJE_RETURN_URL') ?: 'https://example.com/failure'), '/'),
+            'urlReturn' => rtrim((string) (env('IMOJE_RETURN_URL') ?: 'https://example.com/return'), '/'),
+            'urlCancel' => rtrim((string) (env('IMOJE_RETURN_URL') ?: 'https://example.com/cancel'), '/'),
         ]);
     }
 }
