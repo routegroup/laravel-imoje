@@ -1,5 +1,14 @@
 # Changelog
 
+## v1.4.0 - 2026-03-12
+
+### What's Changed
+
+* Add docker for dev by @kajetan-nobel in https://github.com/routegroup/laravel-imoje/pull/26
+* Update to API v1.4.0 by @kajetan-nobel in https://github.com/routegroup/laravel-imoje/pull/27
+
+**Full Changelog**: https://github.com/routegroup/laravel-imoje/compare/v0.6.0...v1.4.0
+
 ## v0.6.0 - 2026-02-02
 
 ### What's Changed
