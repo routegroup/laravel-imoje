@@ -25,8 +25,11 @@ class Validator
      */
     public function fromNotification(array $data): bool
     {
+        $paymentStatuses = array_column(TransactionStatus::cases(), 'value');
+
         $schema = [
             'type' => 'object',
+            'minProperties' => 1,
             'properties' => [
                 'transaction' => [
                     'type' => 'object',
@@ -65,6 +68,18 @@ class Validator
                     ],
                 ],
                 'payment' => [
+                    'type' => 'object',
+                    'properties' => [
+                        'status' => [
+                            'type' => 'string',
+                            'enum' => $paymentStatuses,
+                        ],
+                    ],
+                ],
+                'action' => [
+                    'type' => 'object',
+                ],
+                'paymentProfile' => [
                     'type' => 'object',
                 ],
             ],
@@ -113,9 +128,14 @@ class Validator
 
         $hashMethod = HashMethod::from($header['alg'] ?? '');
 
+        $rawBody = $request->getContent();
+        if ($rawBody === '') {
+            throw new InvalidSignatureException;
+        }
+
         $result = $this->utils->verifySignature(
             $header['signature'] ?? '',
-            $request->toArray(),
+            $rawBody,
             $hashMethod
         );
 

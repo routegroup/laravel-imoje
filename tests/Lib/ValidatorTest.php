@@ -34,6 +34,27 @@ it('validates notification and throws an exception', function (): void {
     $this->validator->fromNotification([]);
 })->throws(SchemaValidationException::class);
 
+it('validates notification with only payment (e.g. link cancelled)', function (): void {
+    $data = [
+        'payment' => [
+            'id' => '07980a69-a884-46f7-ad16-216c88a13b98',
+            'title' => 'Order',
+            'amount' => 100,
+            'status' => 'cancelled',
+            'created' => 1666339083,
+            'orderId' => 'order-1',
+            'currency' => 'PLN',
+            'modified' => 1666339083,
+            'serviceId' => 'a33f331b-23fc-42b0-9fd1-67f310028b46',
+            'notificationUrl' => 'https://example.com/notification',
+        ],
+    ];
+
+    $result = $this->validator->fromNotification($data);
+
+    expect($result)->toBeTrue();
+});
+
 it('verifies signature', function (): void {
     config(['services.imoje.service_key' => 'PIcMy86ssE5wuNHAuQn5zPKf6hCAwX3Oxvjw']);
 
@@ -75,11 +96,11 @@ it('verifies signature', function (): void {
         ],
     ];
 
-    $request = new Request($requestData);
+    $rawBody = json_encode($requestData, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    $request = Request::create('/notification', 'POST', [], [], [], [], $rawBody);
+    $request->headers->set('Content-Type', 'application/json; charset=UTF-8');
 
-    $body = json_encode($request->toArray(), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-    $signature = hash(HashMethod::SHA256->value, $body.config('services.imoje.service_key'));
-
+    $signature = hash(HashMethod::SHA256->value, $rawBody.config('services.imoje.service_key'));
     $request->headers->set(
         'X-Imoje-Signature',
         'merchantid=mdy7zxvxudgarxbsou9n;serviceid=a33f331b-23fc-42b0-9fd1-67f310028b46;signature='.$signature.';alg=sha256'

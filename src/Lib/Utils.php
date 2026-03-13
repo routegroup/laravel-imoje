@@ -26,12 +26,10 @@ class Utils
 
     public function verifySignature(
         string $signature,
-        array $body,
+        string $rawBody,
         HashMethod $hashMethod
     ): bool {
-        $body = json_encode($body, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-
-        return $signature === hash($hashMethod->value, $body.$this->config->serviceKey);
+        return $signature === hash($hashMethod->value, $rawBody.$this->config->serviceKey);
     }
 
     public function buildQuery(array $orderData): string
