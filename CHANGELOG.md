@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.4.1 - 2026-03-13
+
+### What's Changed
+
+* Fix signatures validation by @kajetan-nobel in https://github.com/routegroup/laravel-imoje/pull/28
+
+**Full Changelog**: https://github.com/routegroup/laravel-imoje/compare/v1.4.0...v1.4.1
+
 ## v1.4.0 - 2026-03-12
 
 ### What's Changed
