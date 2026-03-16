@@ -16,6 +16,7 @@ enum PaymentMethodCode: string
     case BS = 'bs';
     case BSPB = 'bspb';
     case BZWBK = 'bzwbk';
+    case C2P = 'c2p';
     case CB = 'cb';
     case CITI = 'citi';
     case CREDITAGRICOLE = 'creditagricole';
