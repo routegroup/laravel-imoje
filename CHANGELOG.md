@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.4.2 - 2026-03-16
+
+### What's Changed
+
+* fix: add c2p to PaymentMethodCode by @kajetan-nobel in https://github.com/routegroup/laravel-imoje/pull/29
+
+**Full Changelog**: https://github.com/routegroup/laravel-imoje/compare/v1.4.1...v1.4.2
+
 ## v1.4.1 - 2026-03-13
 
 ### What's Changed
