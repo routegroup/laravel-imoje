@@ -261,6 +261,7 @@ def tracking_body(guids: list[str]) -> str:
 
 
 def imoje_issue_title(item: dict[str, str]) -> str:
+    # Date only — imoje OpenAPI info.version is not a product SemVer (ADR 0001).
     breaking = "breaking" in item["title"].lower()
     kind = "imoje API breaking" if breaking else "imoje API"
     return f"Adjust package: {kind} ({item['date']})"
