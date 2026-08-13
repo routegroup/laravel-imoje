@@ -12,7 +12,7 @@ use Routegroup\Imoje\Payment\Types\Lang;
 /**
  * @property-read string $firstName
  * @property-read string $lastName
- * @property-read string $email
+ * @property-read string|null $email
  * @property-read string|null $cid
  * @property-read string|null $company
  * @property-read string|null $phone

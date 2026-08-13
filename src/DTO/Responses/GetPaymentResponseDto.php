@@ -17,7 +17,7 @@ use Routegroup\Imoje\Payment\Types\TransactionStatus;
  * @property-read string|null $simp
  * @property-read int $amount
  * @property-read Currency $currency
- * @property-read TransactionStatus $status
+ * @property-read TransactionStatus|null $status
  * @property-read bool $isActive
  * @property-read int|null $validTo
  * @property-read int $created
