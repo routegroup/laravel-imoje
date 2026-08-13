@@ -15,3 +15,7 @@ Single-context: `CONTEXT.md` and `docs/adr/` at the repo root. See `docs/agents/
 ### Commits
 
 Always use [Conventional Commits](https://www.conventionalcommits.org/). See `docs/agents/conventional-commits.md`.
+
+### Branch naming
+
+Prefer `{issue_number}-{short-slug-from-issue-title}`. No issue: `agent/{slug}`. See `docs/agents/branch-naming.md`.
