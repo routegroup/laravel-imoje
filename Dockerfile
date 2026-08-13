@@ -1,4 +1,36 @@
-FROM php:8.4-cli-alpine
+FROM php:8.3-cli-alpine AS php83
+
+WORKDIR /app
+
+ENV COMPOSER_ALLOW_SUPERUSER=1
+
+COPY --from=mlocati/php-extension-installer:2.9 /usr/bin/install-php-extensions /usr/local/bin/
+
+RUN install-php-extensions mbstring xml intl zip pcntl opcache curl pcov
+
+RUN apk add --no-cache git unzip
+
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
+CMD ["/bin/sh"]
+
+FROM php:8.4-cli-alpine AS php84
+
+WORKDIR /app
+
+ENV COMPOSER_ALLOW_SUPERUSER=1
+
+COPY --from=mlocati/php-extension-installer:2.9 /usr/bin/install-php-extensions /usr/local/bin/
+
+RUN install-php-extensions mbstring xml intl zip pcntl opcache curl pcov
+
+RUN apk add --no-cache git unzip
+
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
+CMD ["/bin/sh"]
+
+FROM php:8.5-cli-alpine AS php85
 
 WORKDIR /app
 

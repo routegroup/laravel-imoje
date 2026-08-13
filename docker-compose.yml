@@ -3,6 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      target: ${PHP_TARGET:-php85}
     volumes:
       - .:/app
     working_dir: /app
