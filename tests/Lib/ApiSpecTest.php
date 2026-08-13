@@ -1,5 +1,7 @@
 <?php
 
+namespace Routegroup\Imoje\Payment\Tests\Lib;
+
 use Illuminate\Support\Facades\Http;
 use Routegroup\Imoje\Payment\DTO\Api\PaymentDto;
 use Routegroup\Imoje\Payment\DTO\Casts\CustomerDto;

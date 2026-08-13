@@ -1,5 +1,7 @@
 <?php
 
+namespace Routegroup\Imoje\Payment\Tests;
+
 use Routegroup\Imoje\Payment\Exceptions\ApiErrorException;
 use Routegroup\Imoje\Payment\Lib\Api;
 use Routegroup\Imoje\Payment\Lib\Paywall;

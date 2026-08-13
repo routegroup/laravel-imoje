@@ -1,5 +1,7 @@
 <?php
 
+namespace Routegroup\Imoje\Payment\Tests\Lib;
+
 use Routegroup\Imoje\Payment\Lib\Url;
 
 beforeEach(function (): void {

@@ -1,5 +1,7 @@
 <?php
 
+namespace Routegroup\Imoje\Payment\Tests\Lib;
+
 use Illuminate\Http\RedirectResponse;
 use Routegroup\Imoje\Payment\DTO\Paywall\TransactionDto;
 use Routegroup\Imoje\Payment\Lib\Paywall;
