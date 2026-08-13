@@ -46,9 +46,15 @@ abstract class BaseDto extends Fluent
         }
 
         if (enum_exists($castType)) {
-            return $value instanceof $castType
-                ? $value
-                : $castType::from($value);
+            if ($value instanceof $castType) {
+                return $value;
+            }
+
+            if ($value === null) {
+                return null;
+            }
+
+            return $castType::from($value);
         }
 
         return match ($castType) {

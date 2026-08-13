@@ -10,7 +10,7 @@ use Routegroup\Imoje\Payment\Factories\Casts\ActionDtoFactory;
 use Routegroup\Imoje\Payment\Types\ActionType;
 
 /**
- * @property-read ActionType $type
+ * @property-read ActionType|null $type
  * @property-read string $url
  * @property-read string $method
  * @property-read string $contentType
