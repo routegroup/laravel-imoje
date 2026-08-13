@@ -124,6 +124,24 @@ def latest_stable_laravel_major(payload: dict[str, Any]) -> tuple[int, str]:
     return best_major, best_version
 
 
+def max_supported_laravel_major(composer: dict[str, Any], path: str = "composer.json") -> int:
+    require = composer.get("require") or {}
+    constraint = str(require.get("illuminate/contracts") or require.get("laravel/framework") or "")
+    majors = [int(match) for match in re.findall(r"\^(\d+)", constraint)]
+    if not majors:
+        raise RuntimeError(f"no Laravel major in {path} require illuminate/contracts")
+    return max(majors)
+
+
+def load_composer(path: str = "composer.json") -> dict[str, Any]:
+    with open(path, encoding="utf-8") as handle:
+        return json.load(handle)
+
+
+def should_open_laravel(latest_major: int, supported_major: int, already: set[int]) -> bool:
+    return latest_major > supported_major and latest_major not in already
+
+
 def repo() -> str:
     env = os.environ.get("GH_REPO", "").strip()
     if env:
@@ -259,11 +277,12 @@ def imoje_issue_body(item: dict[str, str]) -> str:
     )
 
 
-def laravel_issue_body(major: int, version: str) -> str:
+def laravel_issue_body(major: int, version: str, supported_major: int) -> str:
     tag = version if version.startswith("v") else f"v{version}"
     return (
         f"A new stable Laravel major is on Packagist.\n\n"
         f"- Latest stable of this major: `{version}`\n"
+        f"- Package currently declares up to Laravel {supported_major} in `composer.json`\n"
         f"- [Packagist laravel/framework](https://packagist.org/packages/laravel/framework)\n"
         f"- [GitHub release {tag}](https://github.com/laravel/framework/releases/tag/{tag})\n\n"
         f"{LARAVEL_MARKER_PREFIX}{major}\n"
@@ -276,6 +295,7 @@ def main() -> int:
         raise RuntimeError(f"no items in {RSS_URL}")
     packagist = json.loads(fetch(PACKAGIST_URL))
     laravel_major, laravel_version = latest_stable_laravel_major(packagist)
+    supported_major = max_supported_laravel_major(load_composer())
 
     repository = repo()
     issues = list_issues(repository)
@@ -307,11 +327,11 @@ def main() -> int:
             tracking_body([item["guid"] for item in rss_items]),
         )
         close_issue(repository, int(created["number"]))
-        if laravel_major not in laravel_seen:
+        if should_open_laravel(laravel_major, supported_major, laravel_seen):
             create_issue(
                 repository,
                 f"Adjust package: Laravel {laravel_major}",
-                laravel_issue_body(laravel_major, laravel_version),
+                laravel_issue_body(laravel_major, laravel_version, supported_major),
                 labels=[LABEL_PACKAGE_ADJUSTMENT, LABEL_ENHANCEMENT],
             )
         return 0
@@ -334,11 +354,11 @@ def main() -> int:
             labels=[LABEL_PACKAGE_ADJUSTMENT, LABEL_ENHANCEMENT],
         )
 
-    if laravel_major not in laravel_seen:
+    if should_open_laravel(laravel_major, supported_major, laravel_seen):
         create_issue(
             repository,
             f"Adjust package: Laravel {laravel_major}",
-            laravel_issue_body(laravel_major, laravel_version),
+            laravel_issue_body(laravel_major, laravel_version, supported_major),
             labels=[LABEL_PACKAGE_ADJUSTMENT, LABEL_ENHANCEMENT],
         )
 
