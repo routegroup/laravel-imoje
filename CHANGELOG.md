@@ -1,5 +1,7 @@
 # Changelog
 
+Package tags are SemVer of this PHP API, not imoje's OpenAPI `info.version`. From the next release, each entry lists imoje changelog items applied (date and guid or bump.sh link).
+
 ## v1.4.2 - 2026-03-16
 
 ### What's Changed

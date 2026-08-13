@@ -45,6 +45,10 @@ IMOJE_ENV=
 - [API](docs/api.md) 
 - [Notifications](docs/notifications.md)
 
+## Versioning
+
+Package tags are SemVer of this PHP API. They are not imoje's OpenAPI document version (`info.version` on bump.sh) and not the Laravel major. Which imoje changelog entries a release applied is listed in [CHANGELOG](CHANGELOG.md) as dates and guids, not as “package x.y.z = API x.y.z”.
+
 ## Changelog
 
 Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.

@@ -1,7 +1,6 @@
 {
     "name": "routegroup/laravel-imoje",
     "description": "Package for imoje payments",
-    "version": "1.4.2",
     "keywords": [
         "routegroup",
         "laravel",
