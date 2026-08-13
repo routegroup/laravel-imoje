@@ -2,6 +2,30 @@
 
 Package tags are SemVer of this PHP API, not imoje's OpenAPI `info.version`. From the next release, each entry lists imoje changelog items applied (date and guid or bump.sh link).
 
+## v1.5.0 - 2026-08-13
+
+### What's Changed
+
+* build(deps): bump actions/checkout from 6 to 7 by @dependabot[bot] in https://github.com/routegroup/laravel-imoje/pull/32
+* build(deps): bump dependabot/fetch-metadata from 2.5.0 to 3.1.0 by @dependabot[bot] in https://github.com/routegroup/laravel-imoje/pull/31
+* Add Laravel 13 support and update the test toolchain. by @alacienciala in https://github.com/routegroup/laravel-imoje/pull/33
+* Add agent skill configuration by @kajetan-nobel in https://github.com/routegroup/laravel-imoje/pull/34
+* docs: instruct agents to use conventional commits by @kajetan-nobel in https://github.com/routegroup/laravel-imoje/pull/35
+* docs: add branch naming convention for agents by @kajetan-nobel in https://github.com/routegroup/laravel-imoje/pull/36
+* ci: add scheduled upstream watcher by @kajetan-nobel in https://github.com/routegroup/laravel-imoje/pull/41
+* ci: skip Laravel majors the package already supports by @kajetan-nobel in https://github.com/routegroup/laravel-imoje/pull/44
+* feat: align payment client with current imoje API by @kajetan-nobel in https://github.com/routegroup/laravel-imoje/pull/46
+* ci: run the test suite on pull requests by @kajetan-nobel in https://github.com/routegroup/laravel-imoje/pull/47
+* docs: define package SemVer independent of imoje by @kajetan-nobel in https://github.com/routegroup/laravel-imoje/pull/49
+* Add PHP 8.5 to the tested support matrix by @kajetan-nobel in https://github.com/routegroup/laravel-imoje/pull/51
+* build(deps): bump composer package constraints by @kajetan-nobel in https://github.com/routegroup/laravel-imoje/pull/52
+
+### New Contributors
+
+* @alacienciala made their first contribution in https://github.com/routegroup/laravel-imoje/pull/33
+
+**Full Changelog**: https://github.com/routegroup/laravel-imoje/compare/v1.4.2...v1.5.0
+
 ## v1.4.2 - 2026-03-16
 
 ### What's Changed
