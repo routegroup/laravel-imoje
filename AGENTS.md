@@ -11,3 +11,7 @@ Canonical names: `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-hum
 ### Domain docs
 
 Single-context: `CONTEXT.md` and `docs/adr/` at the repo root. See `docs/agents/domain.md`.
+
+### Commits
+
+Always use [Conventional Commits](https://www.conventionalcommits.org/). See `docs/agents/conventional-commits.md`.
