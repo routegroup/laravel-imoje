@@ -1,5 +1,7 @@
 <?php
 
+namespace Routegroup\Imoje\Payment\Tests\Lib;
+
 use Illuminate\Support\Facades\Http;
 use Routegroup\Imoje\Payment\DTO\Api\CancelPaymentDto;
 use Routegroup\Imoje\Payment\DTO\Api\CanRefundDto;

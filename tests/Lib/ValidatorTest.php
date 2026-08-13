@@ -1,5 +1,7 @@
 <?php
 
+namespace Routegroup\Imoje\Payment\Tests\Lib;
+
 use Illuminate\Http\Request;
 use Routegroup\Imoje\Payment\Exceptions\InvalidSignatureException;
 use Routegroup\Imoje\Payment\Exceptions\SchemaValidationException;
