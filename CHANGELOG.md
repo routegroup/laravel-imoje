@@ -2,6 +2,14 @@
 
 Package tags are SemVer of this PHP API, not imoje's OpenAPI `info.version`. From the next release, each entry lists imoje changelog items applied (date and guid or bump.sh link).
 
+## v1.5.1 - 2026-08-17
+
+### What's Changed
+
+* build(deps): allow guzzlehttp/guzzle ^8.0.2 while keeping ^7.15.3 by @dependabot[bot] in https://github.com/routegroup/laravel-imoje/pull/53
+
+**Full Changelog**: https://github.com/routegroup/laravel-imoje/compare/v1.5.0...v1.5.1
+
 ## v1.5.0 - 2026-08-13
 
 ### What's Changed
