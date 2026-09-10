@@ -7,6 +7,7 @@ on:
     paths:
       - '**.php'
       - '.github/workflows/run-tests.yml'
+      - 'phpstan.neon.dist'
       - 'phpunit.xml.dist'
       - 'composer.json'
       - 'composer.lock'
@@ -14,6 +15,7 @@ on:
     paths:
       - '**.php'
       - '.github/workflows/run-tests.yml'
+      - 'phpstan.neon.dist'
       - 'phpunit.xml.dist'
       - 'composer.json'
       - 'composer.lock'
@@ -69,3 +71,26 @@ jobs:
 
       - name: Execute tests
         run: vendor/bin/pest --ci
+
+  analyse:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    name: Static analysis
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5'
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
+          coverage: none
+
+      - name: Install dependencies
+        run: composer update --prefer-stable --prefer-dist --no-interaction
+
+      - name: Analyse
+        run: composer analyse
