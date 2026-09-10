@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Routegroup\Imoje\Payment\DTO\Api;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use JetBrains\PhpStorm\ArrayShape;
 use Routegroup\Imoje\Payment\DTO\BaseDto;
 use Routegroup\Imoje\Payment\DTO\Casts\BillingDto;
 use Routegroup\Imoje\Payment\DTO\Casts\CardDto;
@@ -61,32 +60,34 @@ class TransactionDto extends BaseDto
         // 'invoice' => 'array' @todo
     ];
 
-    public function __construct(
-        #[ArrayShape([
-            // Required
-            'amount' => 'int',
-            'currency' => 'string',
-            'orderId' => 'string',
-            'paymentMethod' => 'string',
-            'paymentMethodCode' => 'string',
-            'successReturnUrl' => 'string',
-            'failureReturnUrl' => 'string',
-            'customer' => 'object',
-            // Required but provided,
-            'type' => 'string',
-            'serviceId' => 'string',
-            // Optional
-            'title' => 'string',
-            'visibleMethod' => 'array',
-            'billing' => 'object',
-            'shipping' => 'object',
-            'card' => 'object',
-            'additionalData' => 'array',
-            'validTo' => 'int',
-            'multipayout' => 'array',
-            'invoice' => 'array',
-        ])] array $attributes = []
-    ) {
+    /**
+     * @param array{
+     *     // Required
+     *     amount?: int,
+     *     currency?: Currency|string,
+     *     orderId?: string,
+     *     paymentMethod?: PaymentMethod|string,
+     *     paymentMethodCode?: PaymentMethodCode|string,
+     *     successReturnUrl?: string,
+     *     failureReturnUrl?: string,
+     *     customer?: CustomerDto|array<mixed>,
+     *     // Required but provided
+     *     type?: TransactionType|string,
+     *     serviceId?: string,
+     *     // Optional
+     *     title?: string,
+     *     visibleMethod?: list<string>,
+     *     billing?: BillingDto|array<mixed>,
+     *     shipping?: BillingDto|array<mixed>,
+     *     card?: CardDto|array<mixed>,
+     *     additionalData?: array<mixed>,
+     *     validTo?: int,
+     *     multipayout?: array<mixed>,
+     *     invoice?: array<mixed>,
+     * } $attributes
+     */
+    public function __construct(array $attributes = [])
+    {
         $config = app(Config::class);
 
         $attributes = array_merge_recursive([

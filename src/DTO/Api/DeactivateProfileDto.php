@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Routegroup\Imoje\Payment\DTO\Api;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use JetBrains\PhpStorm\ArrayShape;
 use Routegroup\Imoje\Payment\DTO\BaseDto;
 use Routegroup\Imoje\Payment\Factories\Api\DeactivateProfileDtoFactory;
 
@@ -18,12 +17,14 @@ class DeactivateProfileDto extends BaseDto
 {
     use HasFactory;
 
-    public function __construct(
-        #[ArrayShape([
-            // Required
-            'paymentProfileId' => 'string',
-        ])] array $attributes = []
-    ) {
+    /**
+     * @param array{
+     *     // Required
+     *     paymentProfileId?: string,
+     * } $attributes
+     */
+    public function __construct(array $attributes = [])
+    {
         parent::__construct($attributes);
     }
 

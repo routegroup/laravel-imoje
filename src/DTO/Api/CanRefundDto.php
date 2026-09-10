@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Routegroup\Imoje\Payment\DTO\Api;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use JetBrains\PhpStorm\ArrayShape;
 use Routegroup\Imoje\Payment\DTO\BaseDto;
 use Routegroup\Imoje\Payment\Factories\Api\CanRefundDtoFactory;
 
@@ -22,12 +21,14 @@ class CanRefundDto extends BaseDto
         'amount' => 'int',
     ];
 
-    public function __construct(
-        #[ArrayShape([
-            // Required
-            'amount' => 'int',
-        ])] array $attributes = []
-    ) {
+    /**
+     * @param array{
+     *     // Required
+     *     amount?: int,
+     * } $attributes
+     */
+    public function __construct(array $attributes = [])
+    {
         parent::__construct($attributes);
     }
 

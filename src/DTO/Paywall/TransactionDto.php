@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Routegroup\Imoje\Payment\DTO\Paywall;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use JetBrains\PhpStorm\ArrayShape;
 use Routegroup\Imoje\Payment\DTO\BaseDto;
 use Routegroup\Imoje\Payment\Factories\Paywall\TransactionDtoFactory;
 use Routegroup\Imoje\Payment\Lib\Config;
@@ -42,30 +41,32 @@ class TransactionDto extends BaseDto
         'amount' => 'int',
     ];
 
-    public function __construct(
-        #[ArrayShape([
-            // Required
-            'amount' => 'int',
-            'currency' => 'string',
-            'orderId' => 'string',
-            'customerFirstName' => 'string',
-            'customerLastName' => 'string',
-            // Required but provided
-            'serviceId' => 'string',
-            'merchantId' => 'string',
-            'signature' => 'string',
-            // Optional
-            'customerEmail' => 'string',
-            'customerPhone' => 'string',
-            'urlSuccess' => 'string',
-            'urlFailure' => 'string',
-            'urlReturn' => 'string',
-            'orderDescription' => 'string',
-            'visibleMethod' => 'string', // separated by comma
-            'validTo' => 'int',
-        ])] $attributes = [],
-        HashMethod $hashMethod = HashMethod::SHA256
-    ) {
+    /**
+     * @param array{
+     *     // Required
+     *     amount?: int,
+     *     currency?: Currency|string,
+     *     orderId?: string,
+     *     customerFirstName?: string,
+     *     customerLastName?: string,
+     *     // Required but provided
+     *     serviceId?: string,
+     *     merchantId?: string,
+     *     signature?: string,
+     *     // Optional
+     *     customerEmail?: string,
+     *     customerPhone?: string,
+     *     urlSuccess?: string,
+     *     urlFailure?: string,
+     *     urlReturn?: string,
+     *     orderDescription?: string,
+     *     // Separated by comma
+     *     visibleMethod?: string,
+     *     validTo?: int,
+     * } $attributes
+     */
+    public function __construct($attributes = [], HashMethod $hashMethod = HashMethod::SHA256)
+    {
         $config = app(Config::class);
         $utils = app(Utils::class);
 
