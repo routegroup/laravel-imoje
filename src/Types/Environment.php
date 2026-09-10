@@ -12,8 +12,8 @@ enum Environment: string
     public function apiUrl(): string
     {
         return match ($this) {
-            self::PRODUCTION => 'https://api.imoje.pl/v1',
-            self::SANDBOX => 'https://sandbox.api.imoje.pl/v1',
+            self::PRODUCTION => 'https://api.pay.ing.pl/v1',
+            self::SANDBOX => 'https://api.sandbox.pay.ing.pl/v1',
         };
     }
 
@@ -21,22 +21,22 @@ enum Environment: string
     {
         if ($lang) {
             return match ($this) {
-                self::PRODUCTION => "https://paywall.imoje.pl/$lang->value/payment",
-                self::SANDBOX => "https://sandbox.paywall.imoje.pl/$lang->value/payment",
+                self::PRODUCTION => "https://paywall.pay.ing.pl/$lang->value/payment",
+                self::SANDBOX => "https://paywall.sandbox.pay.ing.pl/$lang->value/payment",
             };
         }
 
         return match ($this) {
-            self::PRODUCTION => 'https://paywall.imoje.pl/payment',
-            self::SANDBOX => 'https://sandbox.paywall.imoje.pl/payment',
+            self::PRODUCTION => 'https://paywall.pay.ing.pl/payment',
+            self::SANDBOX => 'https://paywall.sandbox.pay.ing.pl/payment',
         };
     }
 
     public function widgetUrl(): string
     {
         return match ($this) {
-            self::PRODUCTION => 'https://paywall.imoje.pl/js/widget.min.js',
-            self::SANDBOX => 'https://sandbox.paywall.imoje.pl/js/widget.min.js',
+            self::PRODUCTION => 'https://paywall.pay.ing.pl/js/widget.min.js',
+            self::SANDBOX => 'https://paywall.sandbox.pay.ing.pl/js/widget.min.js',
         };
     }
 
