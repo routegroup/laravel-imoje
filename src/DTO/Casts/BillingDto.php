@@ -9,6 +9,18 @@ use Routegroup\Imoje\Payment\DTO\BaseDto;
 use Routegroup\Imoje\Payment\Factories\Casts\BillingDtoFactory;
 
 /**
+ * @phpstan-type BillingShape array{
+ *     firstName?: string,
+ *     lastName?: string,
+ *     company?: string,
+ *     street?: string,
+ *     city?: string,
+ *     region?: string,
+ *     postalCode?: string,
+ *     countryCodeAlpha2?: string,
+ *     taxId?: string,
+ * }
+ *
  * @property-read string $firstName
  * @property-read string $lastName
  * @property-read string|null $company

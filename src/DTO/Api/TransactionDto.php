@@ -17,6 +17,10 @@ use Routegroup\Imoje\Payment\Types\PaymentMethodCode;
 use Routegroup\Imoje\Payment\Types\TransactionType;
 
 /**
+ * @phpstan-import-type CustomerShape from CustomerDto
+ * @phpstan-import-type BillingShape from BillingDto
+ * @phpstan-import-type CardShape from CardDto
+ *
  * @property-read TransactionType $type
  * @property-read string $serviceId
  * @property-read int $amount
@@ -70,16 +74,16 @@ class TransactionDto extends BaseDto
      *     paymentMethodCode?: PaymentMethodCode|string,
      *     successReturnUrl?: string,
      *     failureReturnUrl?: string,
-     *     customer?: CustomerDto|array<mixed>,
+     *     customer?: CustomerDto|CustomerShape,
      *     // Required but provided
      *     type?: TransactionType|string,
      *     serviceId?: string,
      *     // Optional
      *     title?: string,
      *     visibleMethod?: list<string>,
-     *     billing?: BillingDto|array<mixed>,
-     *     shipping?: BillingDto|array<mixed>,
-     *     card?: CardDto|array<mixed>,
+     *     billing?: BillingDto|BillingShape,
+     *     shipping?: BillingDto|BillingShape,
+     *     card?: CardDto|CardShape,
      *     additionalData?: array<mixed>,
      *     validTo?: int,
      *     multipayout?: array<mixed>,

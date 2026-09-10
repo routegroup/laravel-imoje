@@ -12,6 +12,8 @@ use Routegroup\Imoje\Payment\Lib\Config;
 use Routegroup\Imoje\Payment\Types\Currency;
 
 /**
+ * @phpstan-import-type CustomerShape from CustomerDto
+ *
  * @property-read string $serviceId
  * @property-read int $amount
  * @property-read Currency $currency
@@ -47,7 +49,7 @@ class PaymentDto extends BaseDto
      *     amount?: int,
      *     currency?: Currency|string,
      *     orderId?: string,
-     *     customer?: CustomerDto|array<mixed>,
+     *     customer?: CustomerDto|CustomerShape,
      *     // Required but provided
      *     serviceId?: string,
      *     // Optional

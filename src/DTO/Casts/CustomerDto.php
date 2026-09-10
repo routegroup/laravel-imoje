@@ -10,6 +10,16 @@ use Routegroup\Imoje\Payment\Factories\Casts\CustomerDtoFactory;
 use Routegroup\Imoje\Payment\Types\Lang;
 
 /**
+ * @phpstan-type CustomerShape array{
+ *     firstName?: string,
+ *     lastName?: string,
+ *     email?: string,
+ *     cid?: string,
+ *     company?: string,
+ *     phone?: string,
+ *     locale?: Lang|string,
+ * }
+ *
  * @property-read string $firstName
  * @property-read string $lastName
  * @property-read string|null $email
