@@ -1,4 +1,31 @@
 parameters:
-    level: 0
+    level: 4
     paths:
         - src
+
+    ignoreErrors:
+        # The factories reuse Eloquent's factory machinery for DTOs, which are
+        # not Eloquent models, so this one file cannot be covariant with
+        # Factory<Model>. Typing $model as class-string<BaseDto> is load-bearing:
+        # it is what lets all thirty concrete factories typecheck. Dropping the
+        # annotation to satisfy the parent pushes the same error into every one
+        # of them instead, turning six errors into thirty-six.
+        -
+            identifier: property.phpDocType
+            path: src/Factories/Factory.php
+        -
+            identifier: method.childReturnType
+            path: src/Factories/Factory.php
+        -
+            identifier: generics.notSubtype
+            path: src/Factories/Factory.php
+        -
+            identifier: return.type
+            path: src/Factories/Factory.php
+
+        # This endpoint answers with a bare JSON array, so the fixture has to be
+        # a list. Eloquent's definition() is typed array<string, mixed> because
+        # it expects model attributes.
+        -
+            identifier: return.type
+            path: src/Factories/Responses/PaymentMethodsResponseDtoFactory.php
