@@ -23,7 +23,7 @@ class ServicesResponseDto extends ResponseDto
         $raw = $this->attributes;
         $services = array_map(
             fn (array $item): ServiceDataDto => new ServiceDataDto($item['service'] ?? []),
-            is_array($raw) && array_is_list($raw) ? $raw : []
+            array_is_list($raw) ? $raw : []
         );
         $this->attributes = ['services' => $services];
     }

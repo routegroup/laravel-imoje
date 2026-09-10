@@ -21,7 +21,7 @@ class PaymentMethodsResponseDto extends ResponseDto
         parent::__construct($incomingData);
         $raw = $this->attributes;
         $this->attributes = [
-            'methods' => is_array($raw) ? $raw : [],
+            'methods' => $raw,
         ];
     }
 
