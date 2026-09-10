@@ -91,7 +91,7 @@ it('verifies signature', function (): void {
         ],
         'action' => [
             'type' => 'redirect',
-            'url' => 'https://sandbox.paywall.imoje.pl/sandbox/07980a69-a884-46f7-ad16-216c88a13b98',
+            'url' => 'https://paywall.sandbox.pay.ing.pl/sandbox/07980a69-a884-46f7-ad16-216c88a13b98',
             'method' => 'GET',
             'contentType' => '',
             'contentBodyRaw' => '',

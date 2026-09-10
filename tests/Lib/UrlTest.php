@@ -8,7 +8,7 @@ beforeEach(function (): void {
     $this->url = app(Url::class);
 });
 
-$base = 'https://sandbox.api.imoje.pl/v1/merchant/$merchant_id$';
+$base = 'https://api.sandbox.pay.ing.pl/v1/merchant/$merchant_id$';
 
 it('creates transaction url')
     ->expect(fn () => $this->url->createTransactionUrl())
