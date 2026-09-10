@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Routegroup\Imoje\Payment\DTO\Api;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use JetBrains\PhpStorm\ArrayShape;
 use Routegroup\Imoje\Payment\DTO\BaseDto;
 use Routegroup\Imoje\Payment\DTO\Casts\CustomerDto;
 use Routegroup\Imoje\Payment\Factories\Api\PaymentDtoFactory;
@@ -13,6 +12,8 @@ use Routegroup\Imoje\Payment\Lib\Config;
 use Routegroup\Imoje\Payment\Types\Currency;
 
 /**
+ * @phpstan-import-type CustomerShape from CustomerDto
+ *
  * @property-read string $serviceId
  * @property-read int $amount
  * @property-read Currency $currency
@@ -42,27 +43,29 @@ class PaymentDto extends BaseDto
         'customer' => CustomerDto::class,
     ];
 
-    public function __construct(
-        #[ArrayShape([
-            // Required
-            'amount' => 'int',
-            'currency' => 'string',
-            'orderId' => 'string',
-            'customer' => 'object',
-            // Required but provided,
-            'serviceId' => 'string',
-            // Optional
-            'title' => 'string',
-            'visibleMethod' => 'array',
-            'preselectMethodCode' => 'string',
-            'returnUrl' => 'string',
-            'successReturnUrl' => 'string',
-            'failureReturnUrl' => 'string',
-            'simp' => 'string',
-            'validTo' => 'int',
-            'cart' => 'array',
-        ])] array $attributes = []
-    ) {
+    /**
+     * @param array{
+     *     // Required
+     *     amount?: int,
+     *     currency?: Currency|string,
+     *     orderId?: string,
+     *     customer?: CustomerDto|CustomerShape,
+     *     // Required but provided
+     *     serviceId?: string,
+     *     // Optional
+     *     title?: string,
+     *     visibleMethod?: list<string>,
+     *     preselectMethodCode?: string,
+     *     returnUrl?: string,
+     *     successReturnUrl?: string,
+     *     failureReturnUrl?: string,
+     *     simp?: string,
+     *     validTo?: int,
+     *     cart?: array<mixed>,
+     * } $attributes
+     */
+    public function __construct(array $attributes = [])
+    {
         $config = app(Config::class);
 
         $attributes = array_merge_recursive([

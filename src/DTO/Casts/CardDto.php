@@ -9,6 +9,15 @@ use Routegroup\Imoje\Payment\DTO\BaseDto;
 use Routegroup\Imoje\Payment\Factories\Casts\CardDtoFactory;
 
 /**
+ * @phpstan-type CardShape array{
+ *     firstName?: string,
+ *     lastName?: string,
+ *     number?: string,
+ *     month?: string,
+ *     year?: string,
+ *     cvv?: string,
+ * }
+ *
  * @property-read string $firstName
  * @property-read string $lastName
  * @property-read string $number

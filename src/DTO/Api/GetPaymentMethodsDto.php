@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Routegroup\Imoje\Payment\DTO\Api;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use JetBrains\PhpStorm\ArrayShape;
 use Routegroup\Imoje\Payment\DTO\BaseDto;
 use Routegroup\Imoje\Payment\Factories\Api\GetPaymentMethodsDtoFactory;
 use Routegroup\Imoje\Payment\Types\Currency;
@@ -29,16 +28,18 @@ class GetPaymentMethodsDto extends BaseDto
         'currency' => Currency::class,
     ];
 
-    public function __construct(
-        #[ArrayShape([
-            // Required
-            'amount' => 'int',
-            'currency' => Currency::class,
-            // Optional
-            'device' => 'string',
-            'locale' => 'string',
-        ])] array $attributes = []
-    ) {
+    /**
+     * @param array{
+     *     // Required
+     *     amount?: int,
+     *     currency?: Currency|string,
+     *     // Optional
+     *     device?: string,
+     *     locale?: string,
+     * } $attributes
+     */
+    public function __construct(array $attributes = [])
+    {
         parent::__construct($attributes);
     }
 
