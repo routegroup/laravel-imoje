@@ -42,6 +42,7 @@ abstract class Factory extends BaseFactory
 
     public function newModel(array $attributes = [])
     {
+        /** @var class-string<BaseDto> $model */
         $model = $this->modelName();
 
         if (is_a($model, ResponseDto::class, true)) {
