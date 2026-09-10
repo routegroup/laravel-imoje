@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Routegroup\Imoje\Payment\DTO;
 
+use BackedEnum;
 use Illuminate\Support\Fluent;
 use Routegroup\Imoje\Payment\Exceptions\ReadOnlyDtoException;
 use Routegroup\Imoje\Payment\Lib\Utils;
@@ -45,7 +46,7 @@ abstract class BaseDto extends Fluent
                 : new $castType($value ?? []);
         }
 
-        if (enum_exists($castType)) {
+        if (is_subclass_of($castType, BackedEnum::class)) {
             if ($value instanceof $castType) {
                 return $value;
             }
