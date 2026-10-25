@@ -57,10 +57,9 @@ it('validates notification with only payment (e.g. link cancelled)', function ()
     expect($result)->toBeTrue();
 });
 
-it('verifies signature', function (): void {
-    config(['services.imoje.service_key' => 'PIcMy86ssE5wuNHAuQn5zPKf6hCAwX3Oxvjw']);
-
-    $requestData = [
+function notificationPayload(): array
+{
+    return [
         'transaction' => [
             'id' => '07938437-cae3-4d46-877d-e1b9d6e6c58f',
             'type' => 'sale',
@@ -72,53 +71,94 @@ it('verifies signature', function (): void {
             'serviceId' => 'a33f331b-23fc-42b0-9fd1-67f310028b46',
             'amount' => 100,
             'currency' => 'PLN',
-            'title' => '',
+            'title' => 'Zamówienie ćwierć',
             'orderId' => 'Zamowienie test',
             'paymentMethod' => 'pbl',
             'paymentMethodCode' => 'ipko',
         ],
-        'payment' => [
-            'id' => '07980a69-a884-46f7-ad16-216c88a13b98',
-            'title' => '',
-            'amount' => 100,
-            'status' => 'pending',
-            'created' => 1666339083,
-            'orderId' => 'Zamowienie test',
-            'currency' => 'PLN',
-            'modified' => 1666339083,
-            'serviceId' => 'a33f331b-23fc-42b0-9fd1-67f310028b46',
-            'notificationUrl' => 'https://example.com/notification',
-        ],
-        'action' => [
-            'type' => 'redirect',
-            'url' => 'https://paywall.sandbox.pay.ing.pl/sandbox/07980a69-a884-46f7-ad16-216c88a13b98',
-            'method' => 'GET',
-            'contentType' => '',
-            'contentBodyRaw' => '',
-        ],
     ];
+}
 
-    $rawBody = json_encode($requestData, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+function signedRequest(array $header = [], ?string $body = null): Request
+{
+    $rawBody = $body ?? json_encode(notificationPayload(), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+
     $request = Request::create('/notification', 'POST', [], [], [], [], $rawBody);
     $request->headers->set('Content-Type', 'application/json; charset=UTF-8');
 
-    $signature = hash(HashMethod::SHA256->value, $rawBody.config('services.imoje.service_key'));
+    $header = array_merge([
+        'merchantid' => config('services.imoje.merchant_id'),
+        'serviceid' => config('services.imoje.service_id'),
+        'signature' => hash(HashMethod::SHA256->value, $rawBody.config('services.imoje.service_key')),
+        'alg' => HashMethod::SHA256->value,
+    ], $header);
+
     $request->headers->set(
         'X-Imoje-Signature',
-        'merchantid=mdy7zxvxudgarxbsou9n;serviceid=a33f331b-23fc-42b0-9fd1-67f310028b46;signature='.$signature.';alg=sha256'
+        implode(';', array_map(fn (string $k, ?string $v): string => "$k=$v", array_keys($header), $header))
     );
 
-    $validator = app(Validator::class);
-    $validator->verifySignature($request);
+    return $request;
+}
+
+it('accepts a correctly signed notification', function (): void {
+    $this->validator->verifySignature(signedRequest());
 })->expectNotToPerformAssertions();
 
-it('expects to throw InvalidSignatureException', function (): void {
+it('accepts a signature over a body carrying diacritics', function (): void {
+    $body = json_encode(notificationPayload(), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+
+    expect($body)->toContain('ćwierć')
+        ->and(fn () => $this->validator->verifySignature(signedRequest(body: $body)))
+        ->not->toThrow(InvalidSignatureException::class);
+});
+
+it('rejects a tampered signature', function (): void {
+    $this->validator->verifySignature(signedRequest([
+        'signature' => str_repeat('0', 64),
+    ]));
+})->throws(InvalidSignatureException::class);
+
+it('rejects a signature computed over a different body', function (): void {
+    $request = signedRequest();
+    $tampered = Request::create('/notification', 'POST', [], [], [], [], '{"transaction":{"amount":999}}');
+    $tampered->headers->set('X-Imoje-Signature', (string) $request->headers->get('X-Imoje-Signature'));
+
+    $this->validator->verifySignature($tampered);
+})->throws(InvalidSignatureException::class);
+
+it('rejects an unknown hashing algorithm', function (): void {
+    $this->validator->verifySignature(signedRequest(['alg' => 'md5']));
+})->throws(InvalidSignatureException::class);
+
+it('rejects a missing hashing algorithm', function (): void {
+    $request = Request::create('/notification', 'POST', [], [], [], [], '{"transaction":{}}');
+    $request->headers->set('X-Imoje-Signature', 'merchantid=m;serviceid=s;signature=deadbeef');
+
+    $this->validator->verifySignature($request);
+})->throws(InvalidSignatureException::class);
+
+it('rejects a notification with no signature header at all', function (): void {
+    $this->validator->verifySignature(
+        Request::create('/notification', 'POST', [], [], [], [], '{"transaction":{}}')
+    );
+})->throws(InvalidSignatureException::class);
+
+it('rejects a notification with an empty body', function (): void {
     $request = new Request;
 
     $request->headers->set(
         'X-Imoje-Signature',
-        'merchantid=mdy7zxvxudgarxbsou9n;serviceid=a33f331b-23fc-42b0-9fd1-67f310028b46;signature=b73321c9e8bcc414b8c08198db4084dafb1b4dc252f512ffe71b1fbce857fd23;alg=sha256'
+        'merchantid=m;serviceid=s;signature=b73321c9e8bcc414b8c08198db4084dafb1b4dc252f512ffe71b1fbce857fd23;alg=sha256'
     );
 
     $this->validator->verifySignature($request);
+})->throws(InvalidSignatureException::class);
+
+it('rejects a notification issued for another merchant', function (): void {
+    $this->validator->verifySignature(signedRequest(['merchantid' => 'someone-else']));
+})->throws(InvalidSignatureException::class);
+
+it('rejects a notification issued for another service', function (): void {
+    $this->validator->verifySignature(signedRequest(['serviceid' => 'someone-else']));
 })->throws(InvalidSignatureException::class);

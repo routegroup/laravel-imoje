@@ -116,20 +116,25 @@ class Validator
         throw new SchemaValidationException($errors);
     }
 
-    /** @throws InvalidSignatureException */
+    /**
+     * Report notifications are delivered unsigned, to their own notification
+     * address, and must not be routed here: an unsigned payload is rejected.
+     *
+     * @throws InvalidSignatureException
+     */
     public function verifySignature(Request $request): void
     {
-        $header = [];
-
-        parse_str(
-            str_replace(';', '&', $request->headers->get('x-imoje-signature', '')),
-            $header
-        );
-
-        $hashMethod = HashMethod::from($header['alg'] ?? '');
-
         $rawBody = $request->getContent();
+
         if ($rawBody === '') {
+            throw new InvalidSignatureException;
+        }
+
+        $header = $this->parseSignatureHeader($request);
+
+        $hashMethod = HashMethod::tryFrom($header['alg'] ?? '');
+
+        if (! $hashMethod instanceof HashMethod) {
             throw new InvalidSignatureException;
         }
 
@@ -141,6 +146,47 @@ class Validator
 
         if (! $result) {
             throw new InvalidSignatureException;
+        }
+
+        $this->verifyIdentifiers($header);
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    private function parseSignatureHeader(Request $request): array
+    {
+        $header = [];
+
+        parse_str(
+            str_replace(';', '&', (string) $request->headers->get('x-imoje-signature', '')),
+            $header
+        );
+
+        return array_filter($header, 'is_string');
+    }
+
+    /**
+     * A valid signature only proves the body was signed with our service key.
+     * The header also carries the merchant and service it was issued for.
+     *
+     * @param  array<string, string>  $header
+     *
+     * @throws InvalidSignatureException
+     */
+    private function verifyIdentifiers(array $header): void
+    {
+        $config = app(Config::class);
+
+        $expected = [
+            'merchantid' => $config->merchantId,
+            'serviceid' => $config->serviceId,
+        ];
+
+        foreach ($expected as $key => $value) {
+            if (! isset($header[$key]) || ! hash_equals($value, $header[$key])) {
+                throw new InvalidSignatureException;
+            }
         }
     }
 }

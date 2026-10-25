@@ -29,7 +29,10 @@ class Utils
         string $rawBody,
         HashMethod $hashMethod
     ): bool {
-        return $signature === hash($hashMethod->value, $rawBody.$this->config->serviceKey);
+        return hash_equals(
+            hash($hashMethod->value, $rawBody.$this->config->serviceKey),
+            $signature
+        );
     }
 
     public function buildQuery(array $orderData): string
@@ -71,7 +74,7 @@ class Utils
         BaseDto $dto,
         HashMethod $hashMethod = HashMethod::SHA256
     ): array {
-        $body = json_encode($dto->toArray(), JSON_UNESCAPED_SLASHES);
+        $body = json_encode($dto->toArray(), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
         $signature = hash($hashMethod->value, $body.$this->config->serviceKey);
 
         $value = "merchantid={$this->config->merchantId};";
