@@ -7,14 +7,16 @@ namespace Routegroup\Imoje\Payment\DTO\Notifications;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Routegroup\Imoje\Payment\DTO\BaseDto;
 use Routegroup\Imoje\Payment\DTO\Casts\ActionDto;
+use Routegroup\Imoje\Payment\DTO\Casts\PaymentProfileDto;
 use Routegroup\Imoje\Payment\DTO\Casts\TransactionDto;
 use Routegroup\Imoje\Payment\DTO\Casts\TransactionPaymentDto;
 use Routegroup\Imoje\Payment\Factories\Notifications\GenericNotificationDtoFactory;
 
 /**
- * @property-read TransactionDto $transaction
- * @property-read TransactionPaymentDto $payment
+ * @property-read TransactionDto|null $transaction
+ * @property-read TransactionPaymentDto|null $payment
  * @property-read ActionDto|null $action
+ * @property-read PaymentProfileDto|null $paymentProfile
  *
  * @method static GenericNotificationDtoFactory factory($count = null, $state = [])
  */
@@ -28,6 +30,7 @@ class GenericNotificationDto extends BaseDto
         'transaction' => TransactionDto::class,
         'payment' => TransactionPaymentDto::class,
         'action' => ActionDto::class,
+        'paymentProfile' => PaymentProfileDto::class,
     ];
 
     protected static function newFactory(): GenericNotificationDtoFactory
