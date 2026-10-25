@@ -18,6 +18,7 @@ beforeEach(function (): void {
 it('validates notification successfully', function (): void {
     $response = [
         'transaction' => [
+            'id' => '07938437-cae3-4d46-877d-e1b9d6e6c58f',
             'amount' => 1000,
             'currency' => Currency::EUR->value,
             'status' => TransactionStatus::SETTLED->value,
@@ -35,6 +36,36 @@ it('validates notification successfully', function (): void {
 it('validates notification and throws an exception', function (): void {
     $this->validator->fromNotification([]);
 })->throws(SchemaValidationException::class);
+
+it('rejects a payload carrying none of the documented objects', function (): void {
+    $this->validator->fromNotification(['anything' => 1]);
+})->throws(SchemaValidationException::class);
+
+it('rejects a transaction without an id', function (): void {
+    $payload = notificationPayload();
+    unset($payload['transaction']['id']);
+
+    $this->validator->fromNotification($payload);
+})->throws(SchemaValidationException::class);
+
+it('validates a notification carrying only a payment profile', function (): void {
+    $result = $this->validator->fromNotification([
+        'paymentProfile' => [
+            'id' => 'a1b2c3d4-0000-4000-8000-000000000000',
+            'isActive' => true,
+        ],
+    ]);
+
+    expect($result)->toBeTrue();
+});
+
+it('keeps an unknown top-level key alongside a documented one', function (): void {
+    $result = $this->validator->fromNotification(
+        notificationPayload() + ['somethingNew' => ['a' => 1]]
+    );
+
+    expect($result)->toBeTrue();
+});
 
 it('validates notification with only payment (e.g. link cancelled)', function (): void {
     $data = [

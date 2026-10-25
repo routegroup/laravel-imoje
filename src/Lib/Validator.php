@@ -30,10 +30,22 @@ class Validator
         $schema = [
             'type' => 'object',
             'minProperties' => 1,
+            // A notification carries at least one of the four documented
+            // objects. Unknown keys stay allowed so a new one ING adds does
+            // not start rejecting otherwise valid payloads.
+            'anyOf' => [
+                ['required' => ['transaction']],
+                ['required' => ['payment']],
+                ['required' => ['action']],
+                ['required' => ['paymentProfile']],
+            ],
             'properties' => [
                 'transaction' => [
                     'type' => 'object',
                     'properties' => [
+                        'id' => [
+                            'type' => 'string',
+                        ],
                         'amount' => [
                             'type' => 'integer',
                             'minimum' => 0,
@@ -59,6 +71,7 @@ class Validator
                         ],
                     ],
                     'required' => [
+                        'id',
                         'amount',
                         'currency',
                         'status',
