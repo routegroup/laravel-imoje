@@ -70,7 +70,7 @@ class TransactionDto extends BaseDto
         $config = app(Config::class);
         $utils = app(Utils::class);
 
-        $attributes = array_merge_recursive([
+        $attributes = array_merge([
             'serviceId' => $config->serviceId,
             'merchantId' => $config->merchantId,
         ], $attributes);

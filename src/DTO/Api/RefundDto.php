@@ -45,7 +45,7 @@ class RefundDto extends BaseDto
     {
         $config = app(Config::class);
 
-        $attributes = array_merge_recursive([
+        $attributes = array_merge([
             'type' => TransactionType::REFUND,
             'serviceId' => $config->serviceId,
         ], $attributes);

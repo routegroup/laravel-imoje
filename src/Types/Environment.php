@@ -42,6 +42,6 @@ enum Environment: string
 
     public function cdnUrl(): string
     {
-        return 'https://data.imoje.pl';
+        return 'https://cdn.pay.ing.pl';
     }
 }

@@ -94,7 +94,7 @@ class TransactionDto extends BaseDto
     {
         $config = app(Config::class);
 
-        $attributes = array_merge_recursive([
+        $attributes = array_merge([
             'type' => TransactionType::SALE,
             'serviceId' => $config->serviceId,
         ], $attributes);
