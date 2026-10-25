@@ -36,7 +36,7 @@ class CancelPaymentDto extends BaseDto
     {
         $config = app(Config::class);
 
-        $attributes = array_merge_recursive([
+        $attributes = array_merge([
             'serviceId' => $config->serviceId,
         ], $attributes);
 
