@@ -35,18 +35,50 @@ class Utils
         );
     }
 
+    /**
+     * @param  array<array-key, mixed>  $orderData
+     */
     public function buildQuery(array $orderData): string
     {
-        ksort($orderData);
+        return $this->prepareData($orderData);
+    }
 
-        $orderData = $this->transformValues($orderData);
-        $data = [];
+    /**
+     * Mirrors the reference prepareData() published in the paywall
+     * documentation: sort by key at every level, write a nested key as
+     * parent[child], join the pairs with '&'.
+     *
+     * A null is skipped rather than emitted as "key=". The request itself is
+     * built with Arr::query(), which drops nulls, so emitting one here would
+     * sign a parameter the gateway never receives.
+     *
+     * @param  array<array-key, mixed>  $data
+     */
+    private function prepareData(array $data, string $prefix = ''): string
+    {
+        $data = $this->transformValues($data);
 
-        foreach ($orderData as $key => $value) {
-            $data[] = $key.'='.$value;
+        ksort($data);
+
+        $pairs = [];
+
+        foreach ($data as $key => $value) {
+            if ($value === null) {
+                continue;
+            }
+
+            $key = $prefix === '' ? (string) $key : $prefix.'['.$key.']';
+
+            $pair = is_array($value)
+                ? $this->prepareData($value, $key)
+                : $key.'='.$value;
+
+            if ($pair !== '') {
+                $pairs[] = $pair;
+            }
         }
 
-        return implode('&', $data);
+        return implode('&', $pairs);
     }
 
     public function transformValues(array $values): array
