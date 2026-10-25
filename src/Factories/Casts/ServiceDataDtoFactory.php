@@ -29,8 +29,8 @@ class ServiceDataDtoFactory extends Factory
                         'maxTransaction' => ['type' => 'number', 'value' => 5000000],
                         'minTransaction' => ['type' => 'number', 'value' => 1],
                     ],
-                    'paymentMethodImage' => [['png' => 'https://data.imoje.pl/img/pay/blik.png']],
-                    'paymentMethodCodeImage' => [['png' => 'https://data.imoje.pl/img/pay/blik.png']],
+                    'paymentMethodImage' => [['png' => 'https://cdn.pay.ing.pl/img/pay/blik.png']],
+                    'paymentMethodCodeImage' => [['png' => 'https://cdn.pay.ing.pl/img/pay/blik.png']],
                 ],
             ],
         ];

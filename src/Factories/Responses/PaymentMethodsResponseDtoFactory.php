@@ -18,7 +18,7 @@ class PaymentMethodsResponseDtoFactory extends Factory
                 'label' => 'Płatność BLIK',
                 'isOnline' => true,
                 'image' => [
-                    ['png' => 'https://data.imoje.pl/img/pay/blik.png'],
+                    ['png' => 'https://cdn.pay.ing.pl/img/pay/blik.png'],
                 ],
                 'channels' => [
                     [
@@ -28,7 +28,7 @@ class PaymentMethodsResponseDtoFactory extends Factory
                         'priority' => 1,
                         'isOnline' => true,
                         'image' => [
-                            ['png' => 'https://data.imoje.pl/img/pay/blik.png'],
+                            ['png' => 'https://cdn.pay.ing.pl/img/pay/blik.png'],
                         ],
                     ],
                 ],
