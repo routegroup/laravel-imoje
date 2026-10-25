@@ -22,10 +22,3 @@ parameters:
         -
             identifier: return.type
             path: src/Factories/Factory.php
-
-        # This endpoint answers with a bare JSON array, so the fixture has to be
-        # a list. Eloquent's definition() is typed array<string, mixed> because
-        # it expects model attributes.
-        -
-            identifier: return.type
-            path: src/Factories/Responses/PaymentMethodsResponseDtoFactory.php
