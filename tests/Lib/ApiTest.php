@@ -168,7 +168,7 @@ it('tests api requests and responses', function (
     ],
     'successfully calls put trusted ips' => [
         fn (Api $api) => [
-            $api->url->createSettingsIpsUrl() => Http::response(TrustedIpsResponseDto::factory()->make()->toArray()),
+            $api->url->createSettingsIpsUrl() => Http::response(TrustedIpsResponseDto::factory()->afterPut()->make()->toArray()),
         ],
         fn (Api $api) => $api->putTrustedIps(PutTrustedIpsDto::factory()->make()),
         TrustedIpsResponseDto::class,
