@@ -29,6 +29,8 @@ class PaymentProfileDto extends BaseDto
 {
     use HasFactory;
 
+    protected bool $allowNull = true;
+
     protected $attributes = [
         'id' => null,
         'merchantMid' => null,

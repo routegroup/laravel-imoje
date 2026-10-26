@@ -8,10 +8,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Routegroup\Imoje\Payment\Factories\Responses\CanRefundResponseDtoFactory;
 
 /**
- * @property-read string $id
- * @property-read bool $refundable
- * @property-read bool $balance
- * @property-read int $fullRefund
+ * @property-read string|null $id
+ * @property-read bool|null $refundable
+ * @property-read bool|null $balance
+ * @property-read int|null $fullRefund
  * @property-read PartialRefundDto|null $partialRefund
  *
  * @method static CanRefundResponseDtoFactory factory($count = null, $state = [])
@@ -19,6 +19,8 @@ use Routegroup\Imoje\Payment\Factories\Responses\CanRefundResponseDtoFactory;
 class CanRefundResponseDto extends ResponseDto
 {
     use HasFactory;
+
+    protected bool $allowNull = true;
 
     protected array $casts = [
         'id' => 'string',

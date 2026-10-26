@@ -36,3 +36,12 @@ nullable.
 
 Requests are unchanged: an unknown value passed into a request DTO still throws,
 so a typo in your own code fails before it reaches the gateway.
+
+## Falsy values
+
+A `0`, `false`, `''` or `'0'` you set is sent, and one the gateway returns is
+kept. Only `null` is dropped from a request, which matches the gateway: it
+accepts an empty `title` but rejects a null one.
+
+To create a payment link with no expiry, omit `validTo` rather than passing
+`null` — the gateway reports `validTo: null` for such a link either way.
