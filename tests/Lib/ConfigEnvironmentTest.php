@@ -2,6 +2,7 @@
 
 namespace Routegroup\Imoje\Payment\Tests\Lib;
 
+use Routegroup\Imoje\Payment\Exceptions\InvalidEnvironmentException;
 use Routegroup\Imoje\Payment\Lib\Config;
 use Routegroup\Imoje\Payment\Types\Environment;
 
@@ -49,7 +50,31 @@ it('rejects an invalid environment with a message naming the config key', functi
 
     expect(fn () => app(Config::class))
         ->toThrow(
-            \ValueError::class,
+            InvalidEnvironmentException::class,
             'Invalid [services.imoje.env] value [staging]. Allowed values: production, sandbox.'
         );
+});
+
+it('carries the rejected value for logging', function (): void {
+    config()->set('services.imoje', imojeConfig(['env' => 'staging']));
+
+    try {
+        app(Config::class);
+    } catch (InvalidEnvironmentException $e) {
+        expect($e->given)->toBe('staging')
+            ->and($e->context())->toBe([
+                'given' => 'staging',
+                'allowed' => ['production', 'sandbox'],
+            ]);
+
+        return;
+    }
+
+    $this->fail('InvalidEnvironmentException was not thrown.');
+});
+
+it('is catchable as a standard invalid argument', function (): void {
+    config()->set('services.imoje', imojeConfig(['env' => 'staging']));
+
+    expect(fn () => app(Config::class))->toThrow(\InvalidArgumentException::class);
 });
