@@ -82,10 +82,6 @@ Nothing special is needed. They are ordinary channels — `paypo`,
 `imoje_twisto`, `blik_paylater`, `pragma_go` — so select them through
 `visibleMethod` or `preselectMethodCode` like any other.
 
-## Multipayout
-
-Not implemented — [#78](https://github.com/routegroup/laravel-imoje/issues/78).
-
 ## ING Księgowość (bookkeeping solution)
 
 Not implemented — [#74](https://github.com/routegroup/laravel-imoje/issues/74).
@@ -116,6 +112,11 @@ on the API side.
 `/ua/`, and the API rejects `ua` in `customer.locale` with a 422. It still
 resolves to `Lang::UK` so existing code keeps working — use `Lang::UK`.
 
+## Multipayout
+
+Supported. Pass `multipayout` as a flat list on the transaction DTO; it is
+validated the same way as on the API side and signed as nested parameters —
+`multipayout[0][ban]` and so on — which is what the gateway expects.
 ## Instalments
 
 Instalments appear among the other methods by default. If you pass
