@@ -23,6 +23,8 @@ class RefundDto extends BaseDto
 {
     use HasFactory;
 
+    protected bool $strictEnums = true;
+
     /**
      * sendRefundConfirmationEmail is deliberately absent. BaseDto materialises
      * every key listed here, and (bool) null is false, so declaring it would

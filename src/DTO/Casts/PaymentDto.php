@@ -12,7 +12,7 @@ use Routegroup\Imoje\Payment\Types\Currency;
 /**
  * @property-read string $serviceId
  * @property-read int $amount
- * @property-read Currency $currency
+ * @property-read Currency|null $currency
  * @property-read string $orderId
  * @property-read CustomerDto $customer
  * @property-read string $id

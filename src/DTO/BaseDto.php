@@ -15,6 +15,9 @@ abstract class BaseDto extends Fluent
 
     protected bool $allowNull = false;
 
+    /** Requests reject an unknown enum value; responses hydrate it to null. */
+    protected bool $strictEnums = false;
+
     public function __construct($attributes = [])
     {
         $attributes = $this->castAttributes($attributes);
@@ -55,7 +58,9 @@ abstract class BaseDto extends Fluent
                 return null;
             }
 
-            return $castType::from($value);
+            return $this->strictEnums
+                ? $castType::from($value)
+                : $castType::tryFrom($value);
         }
 
         return match ($castType) {

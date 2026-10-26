@@ -9,7 +9,7 @@ use Routegroup\Imoje\Payment\Types\TransactionStatus;
 
 /**
  * @property-read string $id
- * @property-read TransactionStatus $status
+ * @property-read TransactionStatus|null $status
  */
 class PaymentSummaryDto extends BaseDto
 {
