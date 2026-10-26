@@ -5,6 +5,7 @@ namespace Routegroup\Imoje\Payment\Tests\Lib;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Arr;
 use Routegroup\Imoje\Payment\Lib\Utils;
+use Routegroup\Imoje\Payment\Types\HashMethod;
 use Routegroup\Imoje\Payment\Types\PaymentMethod;
 
 beforeEach(function (): void {
@@ -18,7 +19,31 @@ it('creates signature')
     ]))
     ->toEqual('df8bdc2e4d0d93be22222ea57b5b0e196b897629e9089f05baadffee96baa90d;sha256');
 
-it('verifies signature')->skip('Tested in ValidatorTest');
+it('verifies a signature over the raw body', function (): void {
+    config(['services.imoje.service_key' => 'PIcMy86ssE5wuNHAuQn5zPKf6hCAwX3Oxvjw']);
+
+    $body = '{"transaction":{"id":"tx-1"}}';
+    $digest = hash('sha256', $body.config('services.imoje.service_key'));
+
+    expect(app(Utils::class)->verifySignature($digest, $body, HashMethod::SHA256))->toBeTrue();
+});
+
+it('rejects a signature over a different body', function (): void {
+    config(['services.imoje.service_key' => 'PIcMy86ssE5wuNHAuQn5zPKf6hCAwX3Oxvjw']);
+
+    $digest = hash('sha256', '{"a":1}'.config('services.imoje.service_key'));
+
+    expect(app(Utils::class)->verifySignature($digest, '{"a":2}', HashMethod::SHA256))->toBeFalse();
+});
+
+it('rejects a signature computed with another key', function (): void {
+    config(['services.imoje.service_key' => 'ours']);
+
+    $body = '{"a":1}';
+
+    expect(app(Utils::class)->verifySignature(hash('sha256', $body.'theirs'), $body, HashMethod::SHA256))
+        ->toBeFalse();
+});
 
 it('builds query for create signature')
     ->expect(fn () => $this->utils->buildQuery([

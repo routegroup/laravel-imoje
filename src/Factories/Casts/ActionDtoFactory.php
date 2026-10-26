@@ -23,10 +23,17 @@ class ActionDtoFactory extends Factory
         ];
     }
 
+    /** A real transfer action carries only these three; the redirect keys are absent. */
     public function wireTransfer(): static
     {
         return $this->state([
-            'iban' => $this->faker->iban,
+            'type' => ActionType::TRANSFER,
+            'ban' => $this->faker->numerify(str_repeat('#', 26)),
+            'title' => '/OPT/X///// Płatność E'.$this->faker->numerify('############'),
+            'url' => null,
+            'method' => null,
+            'contentType' => null,
+            'contentBodyRaw' => null,
         ]);
     }
 }
