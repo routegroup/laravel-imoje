@@ -6,6 +6,7 @@ namespace Routegroup\Imoje\Payment\DTO\Paywall;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Routegroup\Imoje\Payment\DTO\BaseDto;
+use Routegroup\Imoje\Payment\DTO\Casts\CartDto;
 use Routegroup\Imoje\Payment\DTO\Casts\InvoiceDto;
 use Routegroup\Imoje\Payment\DTO\Concerns\HasMultipayout;
 use Routegroup\Imoje\Payment\Factories\Paywall\TransactionDtoFactory;
@@ -32,6 +33,7 @@ use Routegroup\Imoje\Payment\Types\HashMethod;
  * @property-read string $orderDescription
  * @property-read string $visibleMethod
  * @property-read int $validTo
+ * @property-read string $cart Encoded by the constructor
  *
  * @method static TransactionDtoFactory factory($count = null, $state = [])
  */
@@ -66,6 +68,7 @@ class TransactionDto extends BaseDto
      *     // Separated by comma
      *     visibleMethod?: string,
      *     invoice?: InvoiceDto|array<mixed>,
+     *     cart?: CartDto|array<mixed>,
      *     validTo?: int,
      * } $attributes
      */
@@ -86,6 +89,13 @@ class TransactionDto extends BaseDto
             $attributes['invoice'] = $invoice instanceof InvoiceDto
                 ? $invoice->encoded()
                 : (is_array($invoice) ? (new InvoiceDto($invoice))->encoded() : $invoice);
+        }
+
+        if (isset($attributes['cart'])) {
+            $cart = $attributes['cart'];
+            $attributes['cart'] = $cart instanceof CartDto
+                ? $cart->encoded()
+                : (is_array($cart) ? (new CartDto($cart))->encoded() : $cart);
         }
 
         $attributes['signature'] = $utils->createSignature($attributes, $hashMethod);

@@ -6,6 +6,7 @@ namespace Routegroup\Imoje\Payment\DTO\Api;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Routegroup\Imoje\Payment\DTO\BaseDto;
+use Routegroup\Imoje\Payment\DTO\Casts\CartDto;
 use Routegroup\Imoje\Payment\DTO\Casts\CustomerDto;
 use Routegroup\Imoje\Payment\DTO\Casts\InvoiceDto;
 use Routegroup\Imoje\Payment\DTO\Concerns\HasMultipayout;
@@ -29,7 +30,7 @@ use Routegroup\Imoje\Payment\Types\Currency;
  * @property-read string $failureReturnUrl
  * @property-read string $simp
  * @property-read int $validTo
- * @property-read array $cart
+ * @property-read CartDto|null $cart
  *
  * @method static PaymentDtoFactory factory($count = null, $state = [])
  */
@@ -45,6 +46,7 @@ class PaymentDto extends BaseDto
     protected array $casts = [
         'amount' => 'int',
         'currency' => Currency::class,
+        'cart' => CartDto::class,
         'invoice' => InvoiceDto::class,
         'isKsef' => 'bool',
         'customer' => CustomerDto::class,
@@ -68,7 +70,7 @@ class PaymentDto extends BaseDto
      *     failureReturnUrl?: string,
      *     simp?: string,
      *     validTo?: int,
-     *     cart?: array<mixed>,
+     *     cart?: CartDto|array<mixed>,
      *     multipayout?: array<mixed>,
      *     invoice?: InvoiceDto|array<mixed>,
      *     isKsef?: bool,
