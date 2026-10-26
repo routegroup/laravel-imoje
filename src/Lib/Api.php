@@ -237,14 +237,13 @@ class Api
         Response $response,
         array $request = [],
     ): void {
-        if ($response->ok()) {
+        if ($response->successful()) {
             return;
         }
 
-        match ($response->status()) {
-            422 => throw new ApiErrorException($response, $request),
-            500 => throw new ApiErrorException($response),
-            default => null
-        };
+        /** Without the flag only 422 and 500 throw, as they always have. */
+        if ($this->config->strictErrors || in_array($response->status(), [422, 500], true)) {
+            throw new ApiErrorException($response, $request);
+        }
     }
 }

@@ -17,4 +17,16 @@ abstract class ResponseDto extends BaseDto
         $attributes = $incomingData->collect()->toArray();
         parent::__construct($attributes);
     }
+
+    public function failed(): bool
+    {
+        return ! $this->response->successful();
+    }
+
+    public function error(): ?ApiErrorResponseDto
+    {
+        return $this->failed()
+            ? ApiErrorResponseDto::fromResponse($this->response)
+            : null;
+    }
 }
