@@ -162,6 +162,34 @@ Two cases are deprecated rather than removed, each refused by the gateway on
 the field its name promises: `PaymentMethod::VISA_MOBILE` is a channel, not a
 method, and `PaymentMethodCode::IMOJE_INSTALLMENTS` is a method, not a channel.
 
+## Addresses, and the one field shipping may not carry
+
+`billing` and `shipping` take the same shape but one field apart: `taxId`
+belongs to billing only, and sending it under `shipping` answers `422` with
+*is not allowed to have the additional property*. `ShippingDto` drops it, so
+passing one address object to both fields works:
+
+```php
+$api->createTransaction(new TransactionDto([
+    // ...
+    'billing' => $address,   // taxId kept
+    'shipping' => $address,  // taxId dropped
+]));
+```
+
+It extends `BillingDto`, so code typed against that is unaffected.
+
+## Card profiles
+
+`profileType` is `ProfileType::FIRST` or `ProfileType::STANDARD`, and belongs
+to the `oneclick` and `recurring` channels. Sent on any other channel the
+gateway refuses it with an empty list of permitted types — an unhelpful
+message for what is really "this field does not apply here".
+
+Five more fields that always reached the gateway are now part of the DTO
+contract rather than slipping through untyped: `notificationUrl`,
+`additionalDescription`, `blikCode`, `clientIp` and `data`.
+
 ## Multipayout
 
 Pass `multipayout` as a flat list; the package puts it where each endpoint
