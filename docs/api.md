@@ -4,8 +4,25 @@ Reference documentation: [ING Pay RESTful API](https://bump.sh/pgw/doc/ing-pay-a
 
 ## Error handling
 
-Non-2xx responses are reported on the response object, whatever the gateway
-sends:
+Every non-2xx response raises `ApiErrorException`, with `getCode()` carrying
+the real HTTP status:
+
+```php
+try {
+    $response = $api->getTransaction($id);
+} catch (ApiErrorException $e) {
+    $error = $e->dto;              // code, message, errors, instance
+    $status = $e->status();        // 404, 406, 503 …
+}
+```
+
+**This changed in 2.0.** Before it, only `422` and `500` raised; `404`, `406`,
+`503` and `504` came back quietly and left you a response object full of
+nulls. A payment client that swallows a `503` is worse than one that
+interrupts, so the safe behaviour became the default.
+
+To keep checking rather than catching — reasonable when you process responses
+in bulk — set `services.imoje.strict_errors` to `false`:
 
 ```php
 $response = $api->getTransaction($id);
@@ -15,9 +32,7 @@ if ($response->failed()) {
 }
 ```
 
-By default only `422` and `500` raise `ApiErrorException`. Set
-`services.imoje.strict_errors` to `true` and every non-2xx raises it instead,
-with `getCode()` carrying the real HTTP status.
+`422` and `500` raise even then; they always have.
 
 The gateway answers errors in two shapes — most codes wrap the detail in an
 `apiErrorResponse` envelope, `400` and `401` arrive bare — and both are read the
