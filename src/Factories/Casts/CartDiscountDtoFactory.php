@@ -13,9 +13,11 @@ class CartDiscountDtoFactory extends Factory
 
     public function definition(): array
     {
+        $amount = $this->faker->numberBetween(1, 50) * 100;
+
         return [
-            'amount' => 100,
-            'tax' => 23,
+            'amount' => $amount,
+            'tax' => (int) round($amount * 0.23),
         ];
     }
 }

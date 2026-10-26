@@ -14,7 +14,10 @@ class TrustedIpsResponseDtoFactory extends Factory
     public function definition(): array
     {
         return [
-            'trustedIps' => ['127.0.0.1', '10.10.10.10'],
+            'trustedIps' => array_map(
+                fn (): string => $this->faker->unique()->ipv4,
+                range(1, $this->faker->numberBetween(1, 5)),
+            ),
         ];
     }
 

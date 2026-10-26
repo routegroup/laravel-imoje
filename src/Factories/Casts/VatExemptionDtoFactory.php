@@ -12,10 +12,14 @@ class VatExemptionDtoFactory extends Factory
 {
     protected $model = VatExemptionDto::class;
 
+    /** Every basis but OTHER, which needs a description and gets its own state. */
     public function definition(): array
     {
         return [
-            'type' => VatExemptionType::TUTORING,
+            'type' => $this->faker->randomElement(array_filter(
+                VatExemptionType::cases(),
+                static fn (VatExemptionType $type): bool => $type !== VatExemptionType::OTHER,
+            )),
         ];
     }
 
@@ -23,7 +27,7 @@ class VatExemptionDtoFactory extends Factory
     {
         return $this->state(fn (): array => [
             'type' => VatExemptionType::OTHER,
-            'text' => 'Zwolnienie na innej podstawie',
+            'text' => 'Zwolnienie na podstawie '.$this->faker->numerify('art. ###'),
         ]);
     }
 }
