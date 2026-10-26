@@ -1,9 +1,6 @@
 # API
 
-For more details, please follow the provider's docs.
-
-- [PL](https://imojeapi.docs.apiary.io/)
-- [EN](https://imojeapieng.docs.apiary.io/)
+Reference documentation: [ING Pay RESTful API](https://bump.sh/pgw/doc/ing-pay-api).
 
 ## Error handling
 

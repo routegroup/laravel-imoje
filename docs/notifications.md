@@ -1,6 +1,9 @@
 # Notifications
 
-This package provides base verification for signature, schema structure and mappings for responses.
+Reference documentation: [Notifications](https://bump.sh/pgw/doc/ing-pay-api#topic-notyfikacje).
+
+This package verifies the signature, checks the payload against the documented
+structure and maps it onto DTOs.
 
 ```php
 use Illuminate\Http\JsonResponse;
