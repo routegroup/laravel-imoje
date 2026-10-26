@@ -1,14 +1,16 @@
 # Paywall
 
-For more details, please follow the provider's docs.
-
-- [PL](https://imojepaywall.docs.apiary.io/)
-- [EN](https://imojepaywalleng.docs.apiary.io/)
+Reference documentation: [ING Pay FRONT API](https://bump.sh/pgw/doc/ing-pay-paywall).
 
 ## How to make a transaction
 
 You can easily utilize creating an transaction without exposing data in views.
 It'll add `serviceId`, `merchantId` and `signature` by default.
+
+`createTransaction()` returns a `RedirectResponse`: the parameters travel in the
+query string of a GET. The specification allows POST or GET, and a form POST is
+what its own examples show, so prefer a form of your own for payloads carrying
+personal data or a cart.
 
 **Please be aware that it's only an example!**
 
@@ -58,7 +60,7 @@ public function getForm(Config $config)
     $auth = Auth::user();
     
     $dto = new OneClickDto([
-        'amount' => 100 * 100 // 100zł
+        'amount' => 100 * 100, // 100zł
         'currency' => Currency::PLN,
         'orderId' => (string) Str::uuid(),
         'customerId' => $auth->id,
@@ -74,17 +76,28 @@ public function getForm(Config $config)
 }
 ```
 
+## Deferred payments
+
+Nothing special is needed. They are ordinary channels — `paypo`,
+`imoje_twisto`, `blik_paylater`, `pragma_go` — so select them through
+`visibleMethod` or `preselectMethodCode` like any other.
+
 ## Multipayout
 
-Not implemented.
+Not implemented — [#78](https://github.com/routegroup/laravel-imoje/issues/78).
 
 ## ING Księgowość (bookkeeping solution)
 
-Not implemented.
+Not implemented — [#74](https://github.com/routegroup/laravel-imoje/issues/74).
 
 ## ING Lease Now
 
-Not implemented.
+Not implemented — [#75](https://github.com/routegroup/laravel-imoje/issues/75).
+
+## Card widget
+
+Partially supported: the URLs and most parameters exist, but the package does
+not render the script tag — [#79](https://github.com/routegroup/laravel-imoje/issues/79).
 
 ## Language
 
