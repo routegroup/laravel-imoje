@@ -20,22 +20,25 @@ class ApiErrorException extends Exception
         Response $response,
         array $request = [],
     ) {
-        $data = $response->collect()->toArray();
-
-        if (array_key_exists('apiErrorResponse', $data)) {
-            $data = $data['apiErrorResponse'];
-        }
-
         $this->response = $response;
-        $this->dto = new ApiErrorResponseDto($data);
+        $this->dto = ApiErrorResponseDto::fromResponse($response);
         $this->request = $request;
 
-        parent::__construct($this->dto->message, 422);
+        parent::__construct(
+            $this->dto->message ?: ($response->reason() ?: 'HTTP '.$response->status()),
+            $response->status(),
+        );
+    }
+
+    public function status(): int
+    {
+        return $this->response->status();
     }
 
     public function context(): array
     {
         return [
+            'status' => $this->status(),
             'response' => $this->dto->toArray(),
             'request' => $this->request,
         ];

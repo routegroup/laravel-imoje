@@ -28,6 +28,7 @@ class ImojeServiceProvider extends ServiceProvider
                     $config->get('services.imoje.service_key'),
                     $config->get('services.imoje.api_key'),
                     $this->resolveEnvironment($config->get('services.imoje.env')),
+                    (bool) $config->get('services.imoje.strict_errors', false),
                 );
             }
         );

@@ -28,6 +28,7 @@ Add to your `config/services.php`
     'service_key' => env('IMOJE_SERVICE_KEY'),
     'api_key' => env('IMOJE_API_KEY'),
     'env' => env('IMOJE_ENV'),
+    'strict_errors' => env('IMOJE_STRICT_ERRORS', false),
 ],
 ```
 
@@ -39,6 +40,7 @@ IMOJE_SERVICE_ID=
 IMOJE_SERVICE_KEY=
 IMOJE_API_KEY=
 IMOJE_ENV=
+IMOJE_STRICT_ERRORS=false
 ```
 
 ## Usage
