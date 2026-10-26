@@ -24,6 +24,7 @@ use Routegroup\Imoje\Payment\DTO\Responses\GetTransactionResponseDto;
 use Routegroup\Imoje\Payment\DTO\Responses\PaymentMethodsResponseDto;
 use Routegroup\Imoje\Payment\DTO\Responses\PaymentResponseDto;
 use Routegroup\Imoje\Payment\DTO\Responses\ProfileResponseDto;
+use Routegroup\Imoje\Payment\DTO\Responses\ProfilesResponseDto;
 use Routegroup\Imoje\Payment\DTO\Responses\RefundResponseDto;
 use Routegroup\Imoje\Payment\DTO\Responses\ServiceResponseDto;
 use Routegroup\Imoje\Payment\DTO\Responses\ServicesResponseDto;
@@ -147,6 +148,9 @@ class Api
         return new TransactionResponseDto($response);
     }
 
+    /**
+     * @deprecated The endpoint answers with a list, which this DTO drops. Use getProfilesByCid().
+     */
     public function getProfileByCid(string $cid): ProfileResponseDto
     {
         $url = $this->url->createProfileCidUrl($cid);
@@ -154,6 +158,15 @@ class Api
         $this->validateResponse($response, compact('cid'));
 
         return new ProfileResponseDto($response);
+    }
+
+    public function getProfilesByCid(string $cid): ProfilesResponseDto
+    {
+        $url = $this->url->createProfileCidUrl($cid);
+        $response = $this->request()->get($url);
+        $this->validateResponse($response, compact('cid'));
+
+        return new ProfilesResponseDto($response);
     }
 
     public function deactivateProfileByPost(DeactivateProfileDto $dto): ProfileResponseDto

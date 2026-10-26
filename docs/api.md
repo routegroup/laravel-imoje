@@ -50,6 +50,28 @@ To create a payment link with no expiry, omit `validTo` rather than passing
 other property is `null`. An empty allowlist reads as `[]`, not `null`, so it is
 distinguishable from a response that carried no list at all.
 
+## Payment profiles
+
+`GET /profile/cid/{cid}` is a list endpoint: one customer id can hold several
+cards. Use `getProfilesByCid()`, which hydrates every entry:
+
+```php
+foreach ($api->getProfilesByCid($cid)->paymentProfiles as $profile) {
+    echo $profile->maskedNumber;
+}
+```
+
+`getProfileByCid()` is deprecated. It returns the singular `ProfileResponseDto`,
+whose `paymentProfile` is always `null` here, because the endpoint sends a list
+and that DTO has nowhere to put one. It keeps its signature so existing code
+compiles, but it cannot see the data.
+
+`getProfile()` and `deactivateProfile()` take a profile id and stay singular.
+
+An unknown `cid` answers `404` with an empty body. That is not an exception —
+`paymentProfiles` is then `[]` and `failed()` is `true`, so check `failed()`
+rather than reading an empty list as "this customer has no cards".
+
 ## Multipayout
 
 Pass `multipayout` as a flat list; the package puts it where each endpoint
