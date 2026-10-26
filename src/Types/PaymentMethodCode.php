@@ -25,8 +25,6 @@ enum PaymentMethodCode: string
     case GETIN = 'getin';
     case GOOGLE_PAY = 'gpay';
     case IDEABANK = 'ideabank';
-    /** @deprecated The gateway refuses it as a channel; it is a PaymentMethod. */
-    case IMOJE_INSTALLMENTS = 'imoje_installments';
     case INBANK = 'inbank';
     case INBANK_0 = 'inbank_0';
     case ING = 'ing';

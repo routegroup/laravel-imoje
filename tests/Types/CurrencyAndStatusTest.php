@@ -33,10 +33,9 @@ it('offers every currency the gateway accepts', function (): void {
     expect(enumValues(Currency::class))->toContain(...GATEWAY_CURRENCIES);
 });
 
-/** Probed: the gateway answers 422 for both, where PLN and EUR answer 200. */
-it('carries only the two refused currencies beyond that', function (): void {
-    expect(array_values(array_diff(enumValues(Currency::class), sortedList(GATEWAY_CURRENCIES))))
-        ->toBe([Currency::HRK->value, Currency::UAH->value]);
+/** UAH and HRK are gone in 2.0; the gateway answered 422 for both. */
+it('carries nothing beyond what the gateway accepts', function (): void {
+    expect(enumValues(Currency::class))->toBe(sortedList(GATEWAY_CURRENCIES));
 });
 
 it('offers every status the chapter documents', function (): void {

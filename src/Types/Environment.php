@@ -20,7 +20,7 @@ enum Environment: string
     public function paywallUrl(?Lang $lang = null): string
     {
         if ($lang) {
-            $locale = $lang->canonical()->value;
+            $locale = $lang->value;
 
             return match ($this) {
                 self::PRODUCTION => "https://paywall.pay.ing.pl/$locale/payment",

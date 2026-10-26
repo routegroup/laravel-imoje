@@ -24,7 +24,7 @@ We accept contributions via Pull Requests on [Github](https://github.com/evilnet
 
 Tags follow [SemVer v2.0.0](https://semver.org/) of **this** package's PHP API. The contract is the entire namespace `Routegroup\Imoje\Payment\*` — clients, DTOs, enums, exceptions, factories, `BaseDto`, `Utils`, `Url`, and the service provider. Nothing in that namespace is free to break in a minor. The number is not imoje's OpenAPI `info.version` and not the Laravel major. Why: [ADR 0001](docs/adr/0001-package-semver.md).
 
-Stay on the `1.x` line. Do not cut a major to wash `v1.4.0` (that tag mirrored an imoje document label). The unpublished API catch-up from #46 is a minor (`1.5.0`) when that GitHub Release is cut.
+Cut a major only when it carries breaking changes worth making. The rule this replaces — stay on `1.x` — was there to stop `v1.4.0` being washed by a cosmetic bump, since that tag mirrored an imoje document label rather than this API. It was never a ban on breaking changes, and `2.0.0` removes symbols the gateway refuses outright. A major still has to earn its number: do not reach for one to tidy a version string.
 
 The published version is the git tag `vX.Y.Z`. Packagist reads tags. Do not put a `version` field in `composer.json`. Feature PRs do not bump the number; a GitHub Release / tag does, and updates `CHANGELOG.md`.
 

@@ -119,13 +119,6 @@ it('tests api requests and responses', function (
         fn (Api $api) => $api->voidTransaction('$transaction_id$'),
         TransactionResponseDto::class,
     ],
-    'successfully calls get profile by cid' => [
-        fn (Api $api) => [
-            $api->url->createProfileCidUrl('$cid$') => Http::response(ProfileResponseDto::factory()->make()->toArray()),
-        ],
-        fn (Api $api) => $api->getProfileByCid('$cid$'),
-        ProfileResponseDto::class,
-    ],
     'successfully calls get profiles by cid' => [
         fn (Api $api) => [
             $api->url->createProfileCidUrl('$cid_list$') => Http::response([

@@ -51,15 +51,10 @@ it('offers every channel the gateway accepts', function (): void {
     expect(values(PaymentMethodCode::class))->toContain(...GATEWAY_CODES);
 });
 
-/**
- * Both are deprecated rather than removed, which would be a major. Each is
- * refused by the gateway on the field its name promises.
- */
-it('carries nothing the gateway refuses, beyond what is marked deprecated', function (): void {
-    expect(array_values(array_diff(values(PaymentMethod::class), sorted(GATEWAY_METHODS))))
-        ->toBe([PaymentMethod::VISA_MOBILE->value])
-        ->and(array_values(array_diff(values(PaymentMethodCode::class), sorted(GATEWAY_CODES))))
-        ->toBe([PaymentMethodCode::IMOJE_INSTALLMENTS->value]);
+/** VISA_MOBILE and IMOJE_INSTALLMENTS are gone in 2.0: each was refused on the field its name promised. */
+it('carries nothing the gateway refuses', function (): void {
+    expect(values(PaymentMethod::class))->toBe(sorted(GATEWAY_METHODS))
+        ->and(values(PaymentMethodCode::class))->toBe(sorted(GATEWAY_CODES));
 });
 
 /**

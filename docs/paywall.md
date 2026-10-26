@@ -123,9 +123,10 @@ $paywall->createTransaction($dto, Lang::UK);
 Omit it and the gateway picks for itself. The same enum types `customer.locale`
 on the API side.
 
-`Lang::UA` is deprecated. ING spells Ukrainian `uk`: the gateway does not serve
-`/ua/`, and the API rejects `ua` in `customer.locale` with a 422. It still
-resolves to `Lang::UK` so existing code keeps working — use `Lang::UK`.
+`Lang::UA` was removed in 2.0, along with `Lang::canonical()`, which existed
+only to translate it. ING spells Ukrainian `uk`: the gateway does not serve
+`/ua/`, and the API rejects `ua` in `customer.locale` with a 422. Use
+`Lang::UK`.
 
 ## Multipayout
 

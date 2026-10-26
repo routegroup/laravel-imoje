@@ -22,11 +22,4 @@ enum Lang: string
     case BG = 'bg';
     case SV = 'sv';
 
-    /** @deprecated ING uses `uk` for Ukrainian. Resolves to Lang::UK; use that instead. */
-    case UA = 'ua';
-
-    public function canonical(): self
-    {
-        return $this === self::UA ? self::UK : $this;
-    }
 }

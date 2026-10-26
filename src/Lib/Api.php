@@ -148,18 +148,6 @@ class Api
         return new TransactionResponseDto($response);
     }
 
-    /**
-     * @deprecated The endpoint answers with a list, which this DTO drops. Use getProfilesByCid().
-     */
-    public function getProfileByCid(string $cid): ProfileResponseDto
-    {
-        $url = $this->url->createProfileCidUrl($cid);
-        $response = $this->request()->get($url);
-        $this->validateResponse($response, compact('cid'));
-
-        return new ProfileResponseDto($response);
-    }
-
     public function getProfilesByCid(string $cid): ProfilesResponseDto
     {
         $url = $this->url->createProfileCidUrl($cid);
