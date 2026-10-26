@@ -12,6 +12,7 @@ use Routegroup\Imoje\Payment\DTO\Api\PaymentDto;
 use Routegroup\Imoje\Payment\DTO\Api\PutTrustedIpsDto;
 use Routegroup\Imoje\Payment\DTO\Api\RefundDto;
 use Routegroup\Imoje\Payment\DTO\Api\TransactionDto;
+use Routegroup\Imoje\Payment\DTO\Casts\PaymentProfileDto;
 use Routegroup\Imoje\Payment\DTO\Responses\CancelPaymentResponseDto;
 use Routegroup\Imoje\Payment\DTO\Responses\CanRefundResponseDto;
 use Routegroup\Imoje\Payment\DTO\Responses\ChargeProfileResponseDto;
@@ -20,6 +21,7 @@ use Routegroup\Imoje\Payment\DTO\Responses\GetTransactionResponseDto;
 use Routegroup\Imoje\Payment\DTO\Responses\PaymentMethodsResponseDto;
 use Routegroup\Imoje\Payment\DTO\Responses\PaymentResponseDto;
 use Routegroup\Imoje\Payment\DTO\Responses\ProfileResponseDto;
+use Routegroup\Imoje\Payment\DTO\Responses\ProfilesResponseDto;
 use Routegroup\Imoje\Payment\DTO\Responses\RefundResponseDto;
 use Routegroup\Imoje\Payment\DTO\Responses\ServiceResponseDto;
 use Routegroup\Imoje\Payment\DTO\Responses\ServicesResponseDto;
@@ -123,6 +125,15 @@ it('tests api requests and responses', function (
         ],
         fn (Api $api) => $api->getProfileByCid('$cid$'),
         ProfileResponseDto::class,
+    ],
+    'successfully calls get profiles by cid' => [
+        fn (Api $api) => [
+            $api->url->createProfileCidUrl('$cid_list$') => Http::response([
+                'paymentProfiles' => [PaymentProfileDto::factory()->make()->toArray()],
+            ]),
+        ],
+        fn (Api $api) => $api->getProfilesByCid('$cid_list$'),
+        ProfilesResponseDto::class,
     ],
     'successfully calls deactivate profile by post' => [
         fn (Api $api) => [
