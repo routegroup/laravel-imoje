@@ -115,3 +115,22 @@ on the API side.
 `Lang::UA` is deprecated. ING spells Ukrainian `uk`: the gateway does not serve
 `/ua/`, and the API rejects `ua` in `customer.locale` with a 422. It still
 resolves to `Lang::UK` so existing code keeps working — use `Lang::UK`.
+
+## Instalments
+
+Instalments appear among the other methods by default. If you pass
+`visibleMethod`, include `imoje_installments`.
+
+The calculator widget is rendered into an element with id
+`imoje-installments__wrapper` by the script at `Environment::installmentsUrl()`.
+`InstallmentsCalculatorDto` builds and signs its options:
+
+```php
+$options = new InstallmentsCalculatorDto(['amount' => 50000]);
+// merchantId, serviceId, amount, currency and signature, ready for the widget
+```
+
+The amount must be between 30 000 and 5 000 000 (300 to 50 000 PLN), which the
+DTO enforces. The widget posts a `message` event carrying `channel` and
+`period`: `channel` is the `paymentMethodCode` to use and `period` goes under
+`installment` when you create the transaction.

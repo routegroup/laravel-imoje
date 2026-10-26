@@ -49,3 +49,26 @@ To create a payment link with no expiry, omit `validTo` rather than passing
 `getTrustedIps()` fills `trustedIps`, `putTrustedIps()` fills `status`, and the
 other property is `null`. An empty allowlist reads as `[]`, not `null`, so it is
 distinguishable from a response that carried no list at all.
+
+## Instalments
+
+Instalments are `paymentMethod` `imoje_installments` with `paymentMethodCode`
+`inbank` or `inbank_0`. The number of instalments goes under `installment`, not
+as a top-level field, and is optional — omit it and the payer chooses on the
+gateway.
+
+```php
+$api->createTransaction(new TransactionDto([
+    // ...
+    'paymentMethod' => PaymentMethod::IMOJE_INSTALLMENTS,
+    'paymentMethodCode' => PaymentMethodCode::INBANK,
+    'installment' => ['period' => 12],
+]));
+```
+
+`period` is validated before the request leaves: 3 to 36 for `inbank`, 3 to 10
+for `inbank_0`. A violation raises `InvalidInstallmentException` rather than a
+round trip ending in `TRX-ERROR-120022`.
+
+The order must be between 300 and 50 000 PLN. That is not checked locally; the
+gateway answers `TRX-ERROR-120011` below the floor.
