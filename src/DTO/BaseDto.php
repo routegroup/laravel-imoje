@@ -31,7 +31,7 @@ abstract class BaseDto extends Fluent
         }
 
         if ($this->allowNull) {
-            $attributes = array_filter($attributes);
+            $attributes = array_filter($attributes, static fn (mixed $value): bool => $value !== null);
         }
 
         return $attributes;
@@ -39,7 +39,7 @@ abstract class BaseDto extends Fluent
 
     public function castAttribute(string $castType, mixed $value): mixed
     {
-        if ($this->allowNull && empty($value)) {
+        if ($this->allowNull && $value === null) {
             return null;
         }
 
