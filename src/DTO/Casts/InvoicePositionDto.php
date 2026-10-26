@@ -17,7 +17,7 @@ use Routegroup\Imoje\Payment\Types\TaxStake;
  * @property-read string $unit
  * @property-read int $grossAmount
  * @property-read TaxStake $taxStake
- * @property-read int $taxAmount
+ * @property-read int|null $taxAmount
  * @property-read int|null $discountAmount
  *
  * @method static InvoicePositionDtoFactory factory($count = null, $state = [])
@@ -39,20 +39,20 @@ class InvoicePositionDto extends BaseDto
      *
      * @throws InvalidInvoiceException
      */
-    public static function fromList(array $positions): array
+    public static function fromList(array $positions, bool $requireTaxAmount = false): array
     {
         if ($positions === []) {
             throw new InvalidInvoiceException('positions', 'must hold at least one position');
         }
 
         return array_map(
-            static fn (mixed $p): self => $p instanceof self ? $p : new self((array) $p),
+            static fn (mixed $p): self => $p instanceof self ? $p : new self((array) $p, $requireTaxAmount),
             array_values($positions),
         );
     }
 
     /** @throws InvalidInvoiceException */
-    public function __construct($attributes = [])
+    public function __construct($attributes = [], bool $requireTaxAmount = false)
     {
         $attributes = (array) $attributes;
 
@@ -66,7 +66,13 @@ class InvoicePositionDto extends BaseDto
             $attributes['taxStake'] = $stake;
         }
 
-        foreach (['name', 'code', 'unit', 'taxStake', 'grossAmount', 'taxAmount'] as $field) {
+        $required = ['name', 'code', 'unit', 'taxStake', 'grossAmount'];
+
+        if ($requireTaxAmount) {
+            $required[] = 'taxAmount';
+        }
+
+        foreach ($required as $field) {
             if (($attributes[$field] ?? null) === null || $attributes[$field] === '') {
                 throw new InvalidInvoiceException("positions.$field", 'is required');
             }

@@ -55,12 +55,6 @@ distinguishable from a response that carried no list at all.
 Pass `multipayout` as a flat list; the package puts it where each endpoint
 expects it — under `data` for a transaction and a profile charge, at the top
 level for a payment link.
-## Instalments
-
-Instalments are `paymentMethod` `imoje_installments` with `paymentMethodCode`
-`inbank` or `inbank_0`. The number of instalments goes under `installment`, not
-as a top-level field, and is optional — omit it and the payer chooses on the
-gateway.
 
 ```php
 $api->createTransaction(new TransactionDto([
@@ -80,6 +74,17 @@ raises `InvalidMultipayoutException`, which names the offending index and field.
 Only `PLN` is supported, the feature has to be enabled for the merchant, and
 under Split Payment the total is capped at the order's net amount. None of those
 three is checkable locally, so the gateway reports them.
+
+## Instalments
+
+Instalments are `paymentMethod` `imoje_installments` with `paymentMethodCode`
+`inbank` or `inbank_0`. The number of instalments goes under `installment`, not
+as a top-level field, and is optional — omit it and the payer chooses on the
+gateway.
+
+```php
+$api->createTransaction(new TransactionDto([
+    // ...
     'paymentMethod' => PaymentMethod::IMOJE_INSTALLMENTS,
     'paymentMethodCode' => PaymentMethodCode::INBANK,
     'installment' => ['period' => 12],
