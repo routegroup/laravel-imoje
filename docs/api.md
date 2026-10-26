@@ -97,6 +97,30 @@ order, and no timeout tells you which side of that line you are on. Backing off
 is the caller's decision to make, with the order context the package does not
 have.
 
+## Methods and channels
+
+`PaymentMethod` is the method, `PaymentMethodCode` the channel inside it, and
+both now hold exactly what the gateway accepts — twelve methods and
+seventy-five channels, which is more than the published schema lists.
+
+`visibleMethod` and `preselectMethodCode` take the enums as readily as strings:
+
+```php
+$api->createPayment(new PaymentDto([
+    // ...
+    'visibleMethod' => [PaymentMethod::BLIK, PaymentMethod::LEASE],
+    'preselectMethodCode' => PaymentMethodCode::BLIK,
+]));
+```
+
+One enum covers `paymentMethod` and `visibleMethod` both. The schema describes
+them as two lists — `ing` in one, `lease` in the other — but the gateway
+answers either field with the same twelve values, so there is nothing to split.
+
+Two cases are deprecated rather than removed, each refused by the gateway on
+the field its name promises: `PaymentMethod::VISA_MOBILE` is a channel, not a
+method, and `PaymentMethodCode::IMOJE_INSTALLMENTS` is a method, not a channel.
+
 ## Multipayout
 
 Pass `multipayout` as a flat list; the package puts it where each endpoint
