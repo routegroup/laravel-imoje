@@ -5,7 +5,6 @@ namespace Routegroup\Imoje\Payment\Tests\DTO;
 use Routegroup\Imoje\Payment\DTO\Api\TransactionDto;
 use Routegroup\Imoje\Payment\DTO\Casts\AdditionalDataDto;
 use Routegroup\Imoje\Payment\DTO\Casts\ApplePayHeaderDto;
-use Routegroup\Imoje\Payment\DTO\Casts\ApplePayPaymentDataDto;
 use Routegroup\Imoje\Payment\DTO\Casts\BrowserDto;
 use Routegroup\Imoje\Payment\DTO\Casts\WalletDto;
 use Routegroup\Imoje\Payment\Exceptions\InvalidWalletException;
@@ -172,62 +171,4 @@ it('types the wallet and the browser data on a transaction', function (): void {
         ->and($dto->additionalData)->toBeInstanceOf(AdditionalDataDto::class)
         ->and($dto->additionalData->browser)->toBeInstanceOf(BrowserDto::class)
         ->and($dto->additionalData->browser->timezoneOffset)->toBe(100);
-});
-
-/** A factory that always returns the same row tests one point in the input space. */
-it('varies what it builds', function (string $dto, string $field): void {
-    $seen = array_map(
-        static fn (): mixed => data_get($dto::factory()->make()->toArray(), $field),
-        range(1, 20),
-    );
-
-    expect(array_unique($seen, SORT_REGULAR))->not->toHaveCount(1);
-})->with([
-    [BrowserDto::class, 'ip'],
-    [BrowserDto::class, 'userAgent'],
-    [BrowserDto::class, 'screenWidth'],
-    [BrowserDto::class, 'timezoneOffset'],
-    [AdditionalDataDto::class, 'browser.ip'],
-    [WalletDto::class, 'signature'],
-    [ApplePayHeaderDto::class, 'transactionId'],
-    [ApplePayPaymentDataDto::class, 'header.transactionId'],
-]);
-
-/** Building the DTO runs its validation, so twenty rounds is twenty chances to break it. */
-it('never builds a row its own DTO would reject', function (string $dto): void {
-    foreach (range(1, 20) as $ignored) {
-        expect($dto::factory()->make()->toArray())->toBeArray()->not->toBeEmpty();
-    }
-})->with([
-    [BrowserDto::class],
-    [AdditionalDataDto::class],
-    [WalletDto::class],
-    [ApplePayHeaderDto::class],
-    [ApplePayPaymentDataDto::class],
-]);
-
-it('builds an Apple Pay wallet that carries no Google Pay keys', function (): void {
-    foreach (range(1, 20) as $ignored) {
-        expect(array_keys(WalletDto::factory()->applePay()->make()->toArray()))->toBe(['paymentData']);
-    }
-});
-
-it('keeps the generated transaction id long enough for the gateway', function (): void {
-    foreach (range(1, 20) as $ignored) {
-        expect(strlen(ApplePayHeaderDto::factory()->make()->transactionId))
-            ->toBeGreaterThanOrEqual(ApplePayHeaderDto::TRANSACTION_ID_LENGTH);
-    }
-});
-
-it('keeps the generated browser scalars typed the way the gateway demands', function (): void {
-    foreach (range(1, 20) as $ignored) {
-        $browser = BrowserDto::factory()->make()->toArray();
-
-        expect($browser['jsEnabled'])->toBeBool()
-            ->and($browser['javaEnabled'])->toBeBool()
-            ->and($browser['timezoneOffset'])->toBeInt()
-            ->and($browser['screenColorDepth'])->toBeInt()
-            ->and($browser['screenHeight'])->toBeInt()
-            ->and($browser['screenWidth'])->toBeInt();
-    }
 });

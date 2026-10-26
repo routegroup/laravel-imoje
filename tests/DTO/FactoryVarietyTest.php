@@ -3,6 +3,10 @@
 namespace Routegroup\Imoje\Payment\Tests\DTO;
 
 use Routegroup\Imoje\Payment\DTO\Api\PutTrustedIpsDto;
+use Routegroup\Imoje\Payment\DTO\Casts\AdditionalDataDto;
+use Routegroup\Imoje\Payment\DTO\Casts\ApplePayHeaderDto;
+use Routegroup\Imoje\Payment\DTO\Casts\ApplePayPaymentDataDto;
+use Routegroup\Imoje\Payment\DTO\Casts\BrowserDto;
 use Routegroup\Imoje\Payment\DTO\Casts\CartDiscountDto;
 use Routegroup\Imoje\Payment\DTO\Casts\CartDto;
 use Routegroup\Imoje\Payment\DTO\Casts\CartItemDto;
@@ -10,6 +14,7 @@ use Routegroup\Imoje\Payment\DTO\Casts\InvoiceDto;
 use Routegroup\Imoje\Payment\DTO\Casts\InvoicePositionDto;
 use Routegroup\Imoje\Payment\DTO\Casts\ServiceDataDto;
 use Routegroup\Imoje\Payment\DTO\Casts\VatExemptionDto;
+use Routegroup\Imoje\Payment\DTO\Casts\WalletDto;
 use Routegroup\Imoje\Payment\DTO\Responses\ChargeProfileResponseDto;
 use Routegroup\Imoje\Payment\DTO\Responses\ProfileResponseDto;
 use Routegroup\Imoje\Payment\DTO\Responses\ProfilesResponseDto;
@@ -42,6 +47,12 @@ it('varies what it builds', function (string $dto, string $field): void {
     'vat exemption' => [VatExemptionDto::class, 'type'],
     'service data created' => [ServiceDataDto::class, 'created'],
     'service data channel' => [ServiceDataDto::class, 'paymentMethods.0.paymentMethodCode'],
+    'browser address' => [BrowserDto::class, 'ip'],
+    'browser agent' => [BrowserDto::class, 'userAgent'],
+    'browser width' => [BrowserDto::class, 'screenWidth'],
+    'browser offset' => [BrowserDto::class, 'timezoneOffset'],
+    'google pay token' => [WalletDto::class, 'signature'],
+    'apple pay transaction id' => [ApplePayHeaderDto::class, 'transactionId'],
 ]);
 
 /** These delegate to a factory that already varies, so they inherit it rather than repeat it. */
@@ -59,6 +70,8 @@ it('inherits variety from the factory it delegates to', function (string $dto, s
     'transaction' => [TransactionResponseDto::class, 'transaction.id'],
     'refund' => [RefundResponseDto::class, 'transaction.id'],
     'charge profile' => [ChargeProfileResponseDto::class, 'transaction.id'],
+    'additional data' => [AdditionalDataDto::class, 'browser.ip'],
+    'apple pay payment data' => [ApplePayPaymentDataDto::class, 'header.transactionId'],
 ]);
 
 /** Building the DTO runs its validation, so twenty rounds is twenty chances to break it. */
@@ -76,6 +89,11 @@ it('never builds a row its own DTO would reject', function (string $dto): void {
     [InvoicePositionDto::class],
     [VatExemptionDto::class],
     [ServiceDataDto::class],
+    [BrowserDto::class],
+    [AdditionalDataDto::class],
+    [WalletDto::class],
+    [ApplePayHeaderDto::class],
+    [ApplePayPaymentDataDto::class],
 ]);
 
 /** Randomising a rate must not leave a tax that contradicts it. */
@@ -117,4 +135,31 @@ it('builds an exemption that does not need a description', function (): void {
 
 it('builds the described exemption on request', function (): void {
     expect(VatExemptionDto::factory()->other()->make()->text)->toStartWith('Zwolnienie na podstawie');
+});
+
+it('builds an Apple Pay wallet that carries no Google Pay keys', function (): void {
+    foreach (range(1, 20) as $ignored) {
+        expect(array_keys(WalletDto::factory()->applePay()->make()->toArray()))->toBe(['paymentData']);
+    }
+});
+
+it('keeps the generated transaction id long enough for the gateway', function (): void {
+    foreach (range(1, 20) as $ignored) {
+        expect(strlen(ApplePayHeaderDto::factory()->make()->transactionId))
+            ->toBeGreaterThanOrEqual(ApplePayHeaderDto::TRANSACTION_ID_LENGTH);
+    }
+});
+
+/** The gateway refuses '100' and 'true' where it wants 100 and true. */
+it('keeps the generated browser scalars typed the way the gateway demands', function (): void {
+    foreach (range(1, 20) as $ignored) {
+        $browser = BrowserDto::factory()->make()->toArray();
+
+        expect($browser['jsEnabled'])->toBeBool()
+            ->and($browser['javaEnabled'])->toBeBool()
+            ->and($browser['timezoneOffset'])->toBeInt()
+            ->and($browser['screenColorDepth'])->toBeInt()
+            ->and($browser['screenHeight'])->toBeInt()
+            ->and($browser['screenWidth'])->toBeInt();
+    }
 });
