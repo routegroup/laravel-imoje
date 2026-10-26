@@ -19,6 +19,4 @@ enum PaymentMethod: string
     case IDEAL = 'ideal';
     case PIS_PROXY = 'pis_proxy';
 
-    /** @deprecated The gateway refuses it as a method; it is a PaymentMethodCode. */
-    case VISA_MOBILE = 'visa_mobile';
 }

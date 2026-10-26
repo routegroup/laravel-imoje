@@ -59,21 +59,18 @@ nullable.
 Requests are unchanged: an unknown value passed into a request DTO still throws,
 so a typo in your own code fails before it reaches the gateway.
 
-That asymmetry is why two deprecations read differently. `Currency::UAH` and
-`Currency::HRK` are deprecated because the gateway answers `422` for both and
-no specification mentions either — they are request values, so nothing is lost
-by leaving them unused.
+That asymmetry decided what 2.0 removed and what it left. `Currency::UAH` and
+`Currency::HRK` are gone: the gateway answers `422` for both and no
+specification mentions either, and a request value nobody can send is only a
+trap.
 
 `TransactionStatus::SUBMITTED_FOR_SETTLEMENT` and `TransactionStatus::REFUND`
 appear in no specification either — chapter 04 lists seven statuses and makes
-`refund` a transaction *type* — but they are **kept**. A status is a response
-value nobody chooses, and under the rule above a case that is gone comes back
-as `null`, so removing one the gateway does send would hide it rather than
-report it. Neither could be observed: the sandbox never settles a payment.
-
-`TransactionStatus::canChange()` is deprecated. Nothing calls it, no
-specification describes a state machine, and its settled-to-refund transition
-is not one the gateway makes.
+`refund` a transaction *type* — and they **stay**. A status is a response value
+nobody chooses, and under the rule above a case that is gone comes back as
+`null`, so removing one the gateway does send would hide it rather than report
+it. Neither could be observed: the sandbox never settles a payment. A major
+made removing them permitted, not safe.
 
 ## Falsy values
 
@@ -102,10 +99,10 @@ foreach ($api->getProfilesByCid($cid)->paymentProfiles as $profile) {
 }
 ```
 
-`getProfileByCid()` is deprecated. It returns the singular `ProfileResponseDto`,
-whose `paymentProfile` is always `null` here, because the endpoint sends a list
-and that DTO has nowhere to put one. It keeps its signature so existing code
-compiles, but it cannot see the data.
+`getProfileByCid()` was removed in 2.0. It returned the singular
+`ProfileResponseDto`, whose `paymentProfile` was always `null` here, because
+the endpoint sends a list and that DTO had nowhere to put one. The name stays
+plural rather than reverting, so one name never means two return types.
 
 `getProfile()` and `deactivateProfile()` take a profile id and stay singular.
 
@@ -158,9 +155,9 @@ One enum covers `paymentMethod` and `visibleMethod` both. The schema describes
 them as two lists — `ing` in one, `lease` in the other — but the gateway
 answers either field with the same twelve values, so there is nothing to split.
 
-Two cases are deprecated rather than removed, each refused by the gateway on
-the field its name promises: `PaymentMethod::VISA_MOBILE` is a channel, not a
-method, and `PaymentMethodCode::IMOJE_INSTALLMENTS` is a method, not a channel.
+Two cases were removed in 2.0, each refused by the gateway on the field its
+name promised: `PaymentMethod::VISA_MOBILE` is a channel, not a method, and
+`PaymentMethodCode::IMOJE_INSTALLMENTS` is a method, not a channel.
 
 ## Addresses, and the one field shipping may not carry
 

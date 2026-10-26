@@ -26,38 +26,4 @@ enum TransactionStatus: string
     case SUBMITTED_FOR_SETTLEMENT = 'submitted_for_settlement';
 
     case REFUND = 'refund';
-
-    /**
-     * @deprecated Nothing calls it, no specification describes a state machine,
-     *     and its settled-to-refund transition is not one the gateway makes:
-     *     a refund is a separate transaction of type refund.
-     */
-    public function canChange(TransactionStatus $newStatus): bool
-    {
-        if ($newStatus === self::NEW) {
-            return false;
-        }
-
-        if ($this === self::SETTLED && $newStatus === self::REFUND) {
-            return true;
-        }
-
-        if (
-            in_array($this, [
-                self::ERROR,
-                self::CANCELLED,
-                self::REJECTED,
-                self::SETTLED,
-                self::REFUND,
-            ])
-        ) {
-            return false;
-        }
-
-        if ($this === $newStatus) {
-            return false;
-        }
-
-        return true;
-    }
 }

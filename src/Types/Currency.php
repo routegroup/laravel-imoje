@@ -17,9 +17,4 @@ enum Currency: string
     case CHF = 'CHF';
     case BGN = 'BGN';
 
-    /** @deprecated The gateway answers 422 for it, and no specification mentions it. */
-    case UAH = 'UAH';
-
-    /** @deprecated Retired in 2023, and the gateway answers 422 for it. */
-    case HRK = 'HRK';
 }

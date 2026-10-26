@@ -16,28 +16,19 @@ it('hydrates the locales that used to blow up', function (string $value): void {
     expect((new CustomerDto(['locale' => $value]))->locale)->toBe(Lang::from($value));
 })->with([['uk'], ['bg'], ['sv']]);
 
-it('keeps ua as a deprecated alias', function (): void {
-    expect(Lang::tryFrom('ua'))->toBe(Lang::UA)
-        ->and(Lang::UA->canonical())->toBe(Lang::UK);
+/** ua was an alias for uk until 2.0 removed it; ING only ever served uk. */
+it('no longer answers to the spelling ING never used', function (): void {
+    expect(Lang::tryFrom('ua'))->toBeNull();
 });
 
-it('leaves every other locale alone', function (Lang $lang): void {
-    expect($lang->canonical())->toBe($lang);
-})->with(array_map(
-    fn (Lang $lang): array => [$lang],
-    array_values(array_filter(Lang::cases(), fn (Lang $l): bool => $l !== Lang::UA)),
-));
-
-it('sends uk on the wire when the caller used the deprecated ua', function (): void {
-    $payload = (new CustomerDto(['locale' => Lang::UA]))->toArray();
-
-    expect($payload['locale'])->toBe('uk');
-});
-
-it('builds the ukrainian paywall url for both spellings', function (Lang $lang): void {
-    expect(Environment::SANDBOX->paywallUrl($lang))
+it('builds the ukrainian paywall url', function (): void {
+    expect(Environment::SANDBOX->paywallUrl(Lang::UK))
         ->toBe('https://paywall.sandbox.pay.ing.pl/uk/payment');
-})->with([[Lang::UK], [Lang::UA]]);
+});
+
+it('sends the locale it was given', function (): void {
+    expect((new CustomerDto(['locale' => Lang::UK]))->toArray()['locale'])->toBe('uk');
+});
 
 it('builds a paywall url for the newly added locales', function (Lang $lang, string $segment): void {
     expect(Environment::PRODUCTION->paywallUrl($lang))

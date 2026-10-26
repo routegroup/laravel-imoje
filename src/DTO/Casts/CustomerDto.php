@@ -43,15 +43,6 @@ class CustomerDto extends BaseDto
         'locale' => Lang::class,
     ];
 
-    public function __construct($attributes = [])
-    {
-        parent::__construct($attributes);
-
-        if (($this->attributes['locale'] ?? null) instanceof Lang) {
-            $this->attributes['locale'] = $this->attributes['locale']->canonical();
-        }
-    }
-
     protected static function newFactory(): CustomerDtoFactory
     {
         return CustomerDtoFactory::new();
