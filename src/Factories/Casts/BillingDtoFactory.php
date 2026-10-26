@@ -22,6 +22,7 @@ class BillingDtoFactory extends Factory
             'region' => $this->faker->word,
             'postalCode' => $this->faker->postcode,
             'countryCodeAlpha2' => $this->faker->countryCode,
+            'taxId' => $this->faker->numerify('##########'),
         ];
     }
 }
