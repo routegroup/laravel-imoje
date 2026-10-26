@@ -236,10 +236,18 @@ class Api
         return new TrustedIpsResponseDto($response);
     }
 
+    /**
+     * Deliberately without retries. Chapter 05 answers a 500 with "disable the
+     * channel for a few minutes" and a 503 or 504 with a single GET five
+     * minutes later, not with another attempt — and repeating a POST the
+     * gateway may already have accepted risks a second transaction.
+     */
     protected function request(): PendingRequest
     {
         return Http::asJson()
             ->acceptJson()
+            ->timeout($this->config->timeout)
+            ->connectTimeout($this->config->connectTimeout)
             ->withToken($this->config->apiKey);
     }
 
