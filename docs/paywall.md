@@ -135,3 +135,38 @@ The amount must be between 30 000 and 5 000 000 (300 to 50 000 PLN), which the
 DTO enforces. The widget posts a `message` event carrying `channel` and
 `period`: `channel` is the `paymentMethodCode` to use and `period` goes under
 `installment` when you create the transaction.
+
+## Split Payment
+
+Attach an `invoice` to the transaction. The package builds it, validates it and
+encodes it the way the gateway expects — gzip at level 5, base64, carried as one
+signed field.
+
+```php
+$dto = new TransactionDto([
+    // ...
+    'visibleMethod' => 'wt',
+    'invoice' => [
+        'invoiceId' => '04/12/23',
+        'buyer' => [
+            'type' => 'COMPANY', 'idType' => 'VAT_ID', 'idNumber' => '5354235387',
+            'email' => 'firma@example.com', 'fullName' => 'Nazwa firmy',
+            'street' => 'Ulica', 'city' => 'Miasto', 'postalCode' => '12-345',
+            'countryCodeAlpha2' => 'PL', 'idCountryCodeAlpha2' => 'PL',
+        ],
+        'positions' => [[
+            'name' => 'Produkt', 'code' => 'produkt-01', 'quantity' => 1,
+            'unit' => 'Sztuki', 'taxStake' => 'TAX_23',
+            'grossAmount' => 12300, 'taxAmount' => 2300,
+        ]],
+    ],
+]);
+```
+
+`invoiceId` sits beside `buyer` and `positions`, not inside `buyer`. A company
+buyer needs `idType` and `idNumber`, and a `VAT_ID` needs
+`idCountryCodeAlpha2`. `taxStake` takes either `TAX_23` or a bare `23`.
+Violations raise `InvalidInvoiceException` naming the field.
+
+The same `invoice` works on the API side, where it travels as a plain object
+rather than encoded.

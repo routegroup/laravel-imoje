@@ -7,6 +7,7 @@ namespace Routegroup\Imoje\Payment\DTO\Api;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Routegroup\Imoje\Payment\DTO\BaseDto;
 use Routegroup\Imoje\Payment\DTO\Casts\CustomerDto;
+use Routegroup\Imoje\Payment\DTO\Casts\InvoiceDto;
 use Routegroup\Imoje\Payment\DTO\Concerns\HasMultipayout;
 use Routegroup\Imoje\Payment\Factories\Api\PaymentDtoFactory;
 use Routegroup\Imoje\Payment\Lib\Config;
@@ -44,6 +45,7 @@ class PaymentDto extends BaseDto
     protected array $casts = [
         'amount' => 'int',
         'currency' => Currency::class,
+        'invoice' => InvoiceDto::class,
         'customer' => CustomerDto::class,
     ];
 
@@ -67,6 +69,7 @@ class PaymentDto extends BaseDto
      *     validTo?: int,
      *     cart?: array<mixed>,
      *     multipayout?: array<mixed>,
+     *     invoice?: InvoiceDto|array<mixed>,
      * } $attributes
      */
     public function __construct(array $attributes = [])

@@ -6,6 +6,7 @@ namespace Routegroup\Imoje\Payment\DTO\Api;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Routegroup\Imoje\Payment\DTO\BaseDto;
+use Routegroup\Imoje\Payment\DTO\Casts\InvoiceDto;
 use Routegroup\Imoje\Payment\DTO\Concerns\HasMultipayout;
 use Routegroup\Imoje\Payment\Factories\Api\ChargeProfileDtoFactory;
 use Routegroup\Imoje\Payment\Lib\Config;
@@ -20,7 +21,7 @@ use Routegroup\Imoje\Payment\Types\Currency;
  * @property-read string|null $title
  * @property-read string|null $notificationUrl
  * @property-read array|null $data
- * @property-read array|null $invoice
+ * @property-read InvoiceDto|null $invoice
  * @property-read array|null $multipayout Serialised as data.multipayout
  *
  * @method static ChargeProfileDtoFactory factory($count = null, $state = [])
@@ -37,6 +38,7 @@ class ChargeProfileDto extends BaseDto
     protected array $casts = [
         'amount' => 'int',
         'currency' => Currency::class,
+        'invoice' => InvoiceDto::class,
     ];
 
     /**
@@ -53,7 +55,7 @@ class ChargeProfileDto extends BaseDto
      *     notificationUrl?: string,
      *     // @todo: add proper DTO for data and invoice
      *     data?: array<mixed>,
-     *     invoice?: array<mixed>,
+     *     invoice?: InvoiceDto|array<mixed>,
      *     // Sent as data.multipayout, which is where the schema wants it.
      *     multipayout?: array<mixed>,
      * } $attributes
