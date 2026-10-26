@@ -85,3 +85,20 @@ Not implemented.
 ## ING Lease Now
 
 Not implemented.
+
+## Language
+
+`Paywall::createTransaction()` takes an optional `Lang`, which selects the
+gateway's language segment:
+
+```php
+$paywall->createTransaction($dto, Lang::UK);
+// https://paywall.pay.ing.pl/uk/payment
+```
+
+Omit it and the gateway picks for itself. The same enum types `customer.locale`
+on the API side.
+
+`Lang::UA` is deprecated. ING spells Ukrainian `uk`: the gateway does not serve
+`/ua/`, and the API rejects `ua` in `customer.locale` with a 422. It still
+resolves to `Lang::UK` so existing code keeps working — use `Lang::UK`.
