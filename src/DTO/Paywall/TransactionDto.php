@@ -6,6 +6,7 @@ namespace Routegroup\Imoje\Payment\DTO\Paywall;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Routegroup\Imoje\Payment\DTO\BaseDto;
+use Routegroup\Imoje\Payment\DTO\Concerns\HasMultipayout;
 use Routegroup\Imoje\Payment\Factories\Paywall\TransactionDtoFactory;
 use Routegroup\Imoje\Payment\Lib\Config;
 use Routegroup\Imoje\Payment\Lib\Utils;
@@ -36,6 +37,7 @@ use Routegroup\Imoje\Payment\Types\HashMethod;
 class TransactionDto extends BaseDto
 {
     use HasFactory;
+    use HasMultipayout;
 
     protected array $casts = [
         'amount' => 'int',
@@ -75,9 +77,16 @@ class TransactionDto extends BaseDto
             'merchantId' => $config->merchantId,
         ], $attributes);
 
+        $attributes = self::castMultipayout($attributes);
+
         $attributes['signature'] = $utils->createSignature($attributes, $hashMethod);
 
         parent::__construct($attributes);
+    }
+
+    public function toArray(): array
+    {
+        return $this->flattenMultipayout(parent::toArray());
     }
 
     protected static function newFactory(): TransactionDtoFactory

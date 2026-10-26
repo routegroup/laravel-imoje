@@ -9,6 +9,7 @@ use Routegroup\Imoje\Payment\DTO\BaseDto;
 use Routegroup\Imoje\Payment\DTO\Casts\BillingDto;
 use Routegroup\Imoje\Payment\DTO\Casts\CardDto;
 use Routegroup\Imoje\Payment\DTO\Casts\CustomerDto;
+use Routegroup\Imoje\Payment\DTO\Concerns\HasMultipayout;
 use Routegroup\Imoje\Payment\Factories\Api\TransactionDtoFactory;
 use Routegroup\Imoje\Payment\Lib\Config;
 use Routegroup\Imoje\Payment\Types\Currency;
@@ -46,6 +47,7 @@ use Routegroup\Imoje\Payment\Types\TransactionType;
 class TransactionDto extends BaseDto
 {
     use HasFactory;
+    use HasMultipayout;
 
     protected bool $strictEnums = true;
 
@@ -102,7 +104,7 @@ class TransactionDto extends BaseDto
             'serviceId' => $config->serviceId,
         ], $attributes);
 
-        parent::__construct($attributes);
+        parent::__construct(self::castMultipayout($attributes));
     }
 
     /**
@@ -113,7 +115,7 @@ class TransactionDto extends BaseDto
      */
     public function toArray(): array
     {
-        $attributes = parent::toArray();
+        $attributes = $this->flattenMultipayout(parent::toArray());
 
         if (! isset($attributes['multipayout'])) {
             return $attributes;

@@ -3,6 +3,7 @@
 namespace Routegroup\Imoje\Payment\Tests\DTO;
 
 use Routegroup\Imoje\Payment\DTO\Api\TransactionDto;
+use Routegroup\Imoje\Payment\DTO\Casts\MultipayoutDto;
 
 function multipayout(): array
 {
@@ -47,8 +48,11 @@ it('adds no data key when multipayout is absent', function (): void {
         ->and($payload)->not->toHaveKey('multipayout');
 });
 
-it('still exposes multipayout as a property', function (): void {
+it('exposes multipayout as typed entries', function (): void {
     $dto = new TransactionDto(['multipayout' => multipayout()]);
 
-    expect($dto->multipayout)->toBe(multipayout());
+    expect($dto->multipayout)->toHaveCount(2)
+        ->and($dto->multipayout[0])->toBeInstanceOf(MultipayoutDto::class)
+        ->and($dto->multipayout[0]->ban)->toBe('72105000028166973380325415')
+        ->and($dto->multipayout[0]->amount)->toBe(100);
 });

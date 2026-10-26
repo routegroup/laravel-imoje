@@ -49,3 +49,28 @@ To create a payment link with no expiry, omit `validTo` rather than passing
 `getTrustedIps()` fills `trustedIps`, `putTrustedIps()` fills `status`, and the
 other property is `null`. An empty allowlist reads as `[]`, not `null`, so it is
 distinguishable from a response that carried no list at all.
+
+## Multipayout
+
+Pass `multipayout` as a flat list; the package puts it where each endpoint
+expects it — under `data` for a transaction and a profile charge, at the top
+level for a payment link.
+
+```php
+$api->createTransaction(new TransactionDto([
+    // ...
+    'multipayout' => [
+        ['ban' => '72105000028166973380325415', 'amount' => 100, 'label' => 'Nazwa firmy 0'],
+        ['ban' => '58105000025503268251444948', 'amount' => 200, 'label' => 'Nazwa firmy 1'],
+    ],
+]));
+```
+
+Entries are validated before the request leaves: `ban` must be 26 digits,
+`label` at most 70 characters, `amount` at least 1, and `title` — optional —
+becomes mandatory for every recipient once any one of them has it. A violation
+raises `InvalidMultipayoutException`, which names the offending index and field.
+
+Only `PLN` is supported, the feature has to be enabled for the merchant, and
+under Split Payment the total is capped at the order's net amount. None of those
+three is checkable locally, so the gateway reports them.
