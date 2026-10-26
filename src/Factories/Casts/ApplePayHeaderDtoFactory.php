@@ -14,9 +14,10 @@ class ApplePayHeaderDtoFactory extends Factory
     public function definition(): array
     {
         return [
-            'ephemeralPublicKey' => 'MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE',
-            'publicKeyHash' => 'xrJqUFO2jN5edGS8iETkfNXtwqnwSqRUUrQJBysFpZ8=',
-            'transactionId' => str_repeat('a', ApplePayHeaderDto::TRANSACTION_ID_LENGTH),
+            'ephemeralPublicKey' => base64_encode($this->faker->sha256.$this->faker->sha256),
+            'publicKeyHash' => base64_encode((string) hex2bin($this->faker->sha256)),
+            // Apple sends a 64-character hex digest, which is also the gateway's minimum.
+            'transactionId' => $this->faker->sha256,
         ];
     }
 }

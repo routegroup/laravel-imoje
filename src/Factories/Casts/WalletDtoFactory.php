@@ -16,9 +16,13 @@ class WalletDtoFactory extends Factory
     public function definition(): array
     {
         return [
-            'signature' => 'signature',
-            'protocolVersion' => 'ECv2',
-            'signedMessage' => 'signedMessage',
+            'signature' => base64_encode($this->faker->text(200)),
+            'protocolVersion' => $this->faker->randomElement(['ECv1', 'ECv2']),
+            'signedMessage' => json_encode([
+                'encryptedMessage' => base64_encode($this->faker->text(300)),
+                'ephemeralPublicKey' => base64_encode($this->faker->sha256),
+                'tag' => base64_encode((string) hex2bin($this->faker->sha256)),
+            ]),
         ];
     }
 

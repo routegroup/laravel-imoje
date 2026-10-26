@@ -15,9 +15,9 @@ class ApplePayPaymentDataDtoFactory extends Factory
     public function definition(): array
     {
         return [
-            'version' => 'EC_v1',
-            'data' => 'DjI8Ez7nPhVo742aGEzABz/TfxCPt9LSdf2/h+0xIgVJbi3fQqd4lv3ogoTI3SQ7',
-            'signature' => 'MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0B',
+            'version' => $this->faker->randomElement(['EC_v1', 'RSA_v1']),
+            'data' => base64_encode($this->faker->text(400)),
+            'signature' => base64_encode($this->faker->text(600)),
             'header' => ApplePayHeaderDto::factory()->make()->toArray(),
         ];
     }

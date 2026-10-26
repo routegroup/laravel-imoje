@@ -11,20 +11,24 @@ class BrowserDtoFactory extends Factory
 {
     protected $model = BrowserDto::class;
 
-    /** The example from the Google Pay and Apple Pay chapter. */
     public function definition(): array
     {
         return [
-            'ip' => '127.0.0.1',
-            'language' => 'pl-PL',
-            'jsEnabled' => true,
-            'timezoneOffset' => 100,
-            'userAgent' => 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.66 Safari/537.36',
-            'accept' => 'application/json, text/javascript, */*; q=0.01',
-            'javaEnabled' => false,
-            'screenColorDepth' => 24,
-            'screenHeight' => 1080,
-            'screenWidth' => 2560,
+            'ip' => $this->faker->ipv4,
+            'language' => str_replace('_', '-', $this->faker->locale),
+            'jsEnabled' => $this->faker->boolean,
+            // Real UTC offsets in minutes, from Baker Island to Kiritimati.
+            'timezoneOffset' => $this->faker->numberBetween(-12, 14) * 60,
+            'userAgent' => $this->faker->userAgent,
+            'accept' => $this->faker->randomElement([
+                'application/json, text/javascript, */*; q=0.01',
+                'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+                '*/*',
+            ]),
+            'javaEnabled' => $this->faker->boolean,
+            'screenColorDepth' => $this->faker->randomElement([16, 24, 30, 32, 48]),
+            'screenHeight' => $this->faker->numberBetween(480, 2160),
+            'screenWidth' => $this->faker->numberBetween(640, 3840),
         ];
     }
 }
