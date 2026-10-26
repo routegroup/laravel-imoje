@@ -7,6 +7,7 @@ namespace Routegroup\Imoje\Payment\DTO\Api;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Routegroup\Imoje\Payment\DTO\BaseDto;
 use Routegroup\Imoje\Payment\DTO\Casts\CustomerDto;
+use Routegroup\Imoje\Payment\DTO\Concerns\HasMultipayout;
 use Routegroup\Imoje\Payment\Factories\Api\PaymentDtoFactory;
 use Routegroup\Imoje\Payment\Lib\Config;
 use Routegroup\Imoje\Payment\Types\Currency;
@@ -34,6 +35,7 @@ use Routegroup\Imoje\Payment\Types\Currency;
 class PaymentDto extends BaseDto
 {
     use HasFactory;
+    use HasMultipayout;
 
     protected bool $strictEnums = true;
 
@@ -64,6 +66,7 @@ class PaymentDto extends BaseDto
      *     simp?: string,
      *     validTo?: int,
      *     cart?: array<mixed>,
+     *     multipayout?: array<mixed>,
      * } $attributes
      */
     public function __construct(array $attributes = [])
@@ -74,7 +77,13 @@ class PaymentDto extends BaseDto
             'serviceId' => $config->serviceId,
         ], $attributes);
 
-        parent::__construct($attributes);
+        parent::__construct(self::castMultipayout($attributes));
+    }
+
+    /** The payment-link schema is the one place multipayout stays at the top level. */
+    public function toArray(): array
+    {
+        return $this->flattenMultipayout(parent::toArray());
     }
 
     protected static function newFactory(): PaymentDtoFactory
