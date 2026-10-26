@@ -32,7 +32,6 @@ use Routegroup\Imoje\Payment\Types\PaymentMethodCode;
  * @property-read string $returnUrl
  * @property-read string $successReturnUrl
  * @property-read string $failureReturnUrl
- * @property-read string $simp
  * @property-read int $validTo
  * @property-read CartDto|null $cart
  *
@@ -74,7 +73,6 @@ class PaymentDto extends BaseDto
      *     returnUrl?: string,
      *     successReturnUrl?: string,
      *     failureReturnUrl?: string,
-     *     simp?: string,
      *     validTo?: int,
      *     cart?: CartDto|array<mixed>,
      *     multipayout?: array<mixed>,

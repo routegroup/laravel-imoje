@@ -231,6 +231,41 @@ rules err towards accepting. Being a shade more permissive costs a round trip
 the gateway would have refused anyway; being stricter would refuse a call that
 works.
 
+## Checking availability before you offer a channel
+
+Two endpoints answer that question in two different shapes, and both are typed
+now.
+
+`getService()` reports a flat list, one entry per channel:
+
+```php
+foreach ($api->getService($serviceId)->service->paymentMethods as $method) {
+    if (! $method->isOnline) {
+        continue;                                  // offering it earns a 406
+    }
+
+    $min = $method->transactionLimits->minTransaction->value;
+}
+```
+
+`getPaymentMethods()` groups by method and lists the channels inside each:
+
+```php
+foreach ($api->getPaymentMethods($serviceId, $dto)->methods as $group) {
+    foreach ($group->channels as $channel) {
+        echo $channel->paymentMethodCode->value, $channel->isOnline ? ' ✓' : ' ✗';
+    }
+}
+```
+
+`isOnline` is the flag chapter 05 points at for avoiding a `406`: a channel
+switched off for the shop, or globally during an incident, reports `false`
+here rather than failing at the transaction.
+
+The random three-character keys the gateway adds to every object ride along
+untouched, as they do elsewhere.
+
+
 ## Multipayout
 
 Pass `multipayout` as a flat list; the package puts it where each endpoint
