@@ -82,14 +82,6 @@ Nothing special is needed. They are ordinary channels — `paypo`,
 `imoje_twisto`, `blik_paylater`, `pragma_go` — so select them through
 `visibleMethod` or `preselectMethodCode` like any other.
 
-## ING Księgowość (bookkeeping solution)
-
-Not implemented — [#74](https://github.com/routegroup/laravel-imoje/issues/74).
-
-## ING Lease Now
-
-Not implemented — [#75](https://github.com/routegroup/laravel-imoje/issues/75).
-
 ## Card widget
 
 Partially supported: the URLs and most parameters exist, but the package does
@@ -215,3 +207,49 @@ invoice schema declares the field with an empty list of permitted types, so no
 object, string, number, array, boolean or null can satisfy it. Probed on the
 sandbox in October 2026; the rest of the variant is accepted. Until ING fixes
 the schema, send that one field through the paywall rather than the API.
+
+## ING Lease Now
+
+Attach a `cart` to the transaction. It is built, validated and encoded the same
+way as `invoice` — gzip at level 5, base64, carried as one signed field — and
+works on the API side too, where it travels as a plain object.
+
+```php
+$dto = new TransactionDto([
+    // ...
+    'visibleMethod' => 'lease',
+    'cart' => [
+        'items' => [[
+            'id' => '1', 'categoryId' => 'category123', 'name' => 'Product name',
+            'amount' => 500000, 'tax' => 115000, 'taxStake' => 23, 'quantity' => 1,
+            'unit' => 'szt', 'url' => 'https://product.url', 'state' => 'NEW',
+            'discount' => ['amount' => 100, 'tax' => 23],
+        ]],
+    ],
+]);
+```
+
+`amount` is **net**, in the currency's smallest unit. `id`, `name`, `amount`,
+`tax`, `taxStake`, `quantity`, `url` and `categoryId` are required; `unit`,
+`state` and `discount` are not. `quantity` must be at least 1, `url` must parse,
+and a `discount` needs both `amount` and `tax` or neither. Violations raise
+`InvalidCartException` naming the field.
+
+`taxStake` uses a vocabulary of its own, **not** the invoice's. The percentages
+go as numbers — `23`, not `'23'` and not `TAX_23` — while `TAX_EXEMPT`,
+`TAX_NOT_LIABLE`, `TAX_REVERSE_CHARGE` and `TAX_EXCLUDING` stay strings. You may
+write any of the three spellings; `LeaseTaxStake` translates them to the one the
+gateway takes, so `TAX_0` is sent as `0`.
+
+`state` is `NEW` or `USED` — a string, despite the chapter typing it `integer`.
+
+`visibleMethod` set to `lease` shows leasing alone on the gateway. Note that
+`lease` is a `visibleMethod` value only: it is not a `paymentMethod`, even
+though one PHP enum currently serves both.
+
+A single product must be at least 1000 PLN net and the whole cart at least
+5000 PLN net. Neither is checked locally, and the sandbox accepts smaller
+amounts at this stage, so the limit surfaces later in the leasing flow.
+
+`categoryId` is required here because both the chapter and the API schema say
+so, though the sandbox currently accepts an item without it.
