@@ -6,6 +6,7 @@ namespace Routegroup\Imoje\Payment\DTO\Paywall;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Routegroup\Imoje\Payment\DTO\BaseDto;
+use Routegroup\Imoje\Payment\DTO\Casts\InvoiceDto;
 use Routegroup\Imoje\Payment\DTO\Concerns\HasMultipayout;
 use Routegroup\Imoje\Payment\Factories\Paywall\TransactionDtoFactory;
 use Routegroup\Imoje\Payment\Lib\Config;
@@ -64,6 +65,7 @@ class TransactionDto extends BaseDto
      *     orderDescription?: string,
      *     // Separated by comma
      *     visibleMethod?: string,
+     *     invoice?: InvoiceDto|array<mixed>,
      *     validTo?: int,
      * } $attributes
      */
@@ -78,6 +80,13 @@ class TransactionDto extends BaseDto
         ], $attributes);
 
         $attributes = self::castMultipayout($attributes);
+
+        if (isset($attributes['invoice'])) {
+            $invoice = $attributes['invoice'];
+            $attributes['invoice'] = $invoice instanceof InvoiceDto
+                ? $invoice->encoded()
+                : (is_array($invoice) ? (new InvoiceDto($invoice))->encoded() : $invoice);
+        }
 
         $attributes['signature'] = $utils->createSignature($attributes, $hashMethod);
 

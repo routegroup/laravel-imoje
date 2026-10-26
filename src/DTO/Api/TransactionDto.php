@@ -9,6 +9,7 @@ use Routegroup\Imoje\Payment\DTO\BaseDto;
 use Routegroup\Imoje\Payment\DTO\Casts\BillingDto;
 use Routegroup\Imoje\Payment\DTO\Casts\CardDto;
 use Routegroup\Imoje\Payment\DTO\Casts\CustomerDto;
+use Routegroup\Imoje\Payment\DTO\Casts\InvoiceDto;
 use Routegroup\Imoje\Payment\DTO\Concerns\HasMultipayout;
 use Routegroup\Imoje\Payment\Factories\Api\TransactionDtoFactory;
 use Routegroup\Imoje\Payment\Lib\Config;
@@ -40,7 +41,7 @@ use Routegroup\Imoje\Payment\Types\TransactionType;
  * @property-read array $additionalData
  * @property-read int $validTo
  * @property-read array $multipayout Serialised as data.multipayout; see toArray()
- * @property-read array $invoice
+ * @property-read InvoiceDto|null $invoice
  *
  * @method static TransactionDtoFactory factory($count = null, $state = [])
  */
@@ -65,7 +66,7 @@ class TransactionDto extends BaseDto
         'card' => CardDto::class,
         // 'additionalData' => 'array' @todo
         // 'multipayout' => 'array' @todo
-        // 'invoice' => 'array' @todo
+        'invoice' => InvoiceDto::class,
     ];
 
     /**
@@ -92,7 +93,7 @@ class TransactionDto extends BaseDto
      *     validTo?: int,
      *     // Sent as data.multipayout, which is where the schema wants it.
      *     multipayout?: array<mixed>,
-     *     invoice?: array<mixed>,
+     *     invoice?: InvoiceDto|array<mixed>,
      * } $attributes
      */
     public function __construct(array $attributes = [])

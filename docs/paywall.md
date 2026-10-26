@@ -117,3 +117,38 @@ resolves to `Lang::UK` so existing code keeps working — use `Lang::UK`.
 Supported. Pass `multipayout` as a flat list on the transaction DTO; it is
 validated the same way as on the API side and signed as nested parameters —
 `multipayout[0][ban]` and so on — which is what the gateway expects.
+
+## Split Payment
+
+Attach an `invoice` to the transaction. The package builds it, validates it and
+encodes it the way the gateway expects — gzip at level 5, base64, carried as one
+signed field.
+
+```php
+$dto = new TransactionDto([
+    // ...
+    'visibleMethod' => 'wt',
+    'invoice' => [
+        'invoiceId' => '04/12/23',
+        'buyer' => [
+            'type' => 'COMPANY', 'idType' => 'VAT_ID', 'idNumber' => '5354235387',
+            'email' => 'firma@example.com', 'fullName' => 'Nazwa firmy',
+            'street' => 'Ulica', 'city' => 'Miasto', 'postalCode' => '12-345',
+            'countryCodeAlpha2' => 'PL', 'idCountryCodeAlpha2' => 'PL',
+        ],
+        'positions' => [[
+            'name' => 'Produkt', 'code' => 'produkt-01', 'quantity' => 1,
+            'unit' => 'Sztuki', 'taxStake' => 'TAX_23',
+            'grossAmount' => 12300, 'taxAmount' => 2300,
+        ]],
+    ],
+]);
+```
+
+`invoiceId` sits beside `buyer` and `positions`, not inside `buyer`. A company
+buyer needs `idType` and `idNumber`, and a `VAT_ID` needs
+`idCountryCodeAlpha2`. `taxStake` takes either `TAX_23` or a bare `23`.
+Violations raise `InvalidInvoiceException` naming the field.
+
+The same `invoice` works on the API side, where it travels as a plain object
+rather than encoded.
