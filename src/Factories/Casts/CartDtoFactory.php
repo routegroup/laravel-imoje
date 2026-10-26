@@ -15,7 +15,10 @@ class CartDtoFactory extends Factory
     public function definition(): array
     {
         return [
-            'items' => [CartItemDto::factory()->make()->toArray()],
+            'items' => array_map(
+                static fn (): array => CartItemDto::factory()->make()->toArray(),
+                range(1, $this->faker->numberBetween(1, 4)),
+            ),
         ];
     }
 }

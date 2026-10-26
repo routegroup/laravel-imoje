@@ -13,12 +13,16 @@ class InvoiceDtoFactory extends Factory
 {
     protected $model = InvoiceDto::class;
 
+    /** invoiceId is set, so this is the Split Payment variant and positions carry taxAmount. */
     public function definition(): array
     {
         return [
-            'invoiceId' => '04/12/23',
+            'invoiceId' => $this->faker->numerify('##/##/##'),
             'buyer' => InvoiceBuyerDto::factory()->make()->toArray(),
-            'positions' => [InvoicePositionDto::factory()->make()->toArray()],
+            'positions' => array_map(
+                static fn (): array => InvoicePositionDto::factory()->make()->toArray(),
+                range(1, $this->faker->numberBetween(1, 3)),
+            ),
         ];
     }
 }

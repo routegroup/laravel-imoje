@@ -75,4 +75,9 @@ class InvoiceDto extends BaseDto
     {
         return base64_encode((string) gzencode((string) json_encode($this->toArray()), 5));
     }
+
+    protected static function newFactory(): InvoiceDtoFactory
+    {
+        return InvoiceDtoFactory::new();
+    }
 }

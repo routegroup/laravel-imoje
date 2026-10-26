@@ -6,6 +6,7 @@ namespace Routegroup\Imoje\Payment\Factories\Casts;
 
 use Routegroup\Imoje\Payment\DTO\Casts\ServiceDataDto;
 use Routegroup\Imoje\Payment\Factories\Factory;
+use Routegroup\Imoje\Payment\Types\PaymentMethodCode;
 
 class ServiceDataDtoFactory extends Factory
 {
@@ -13,24 +14,36 @@ class ServiceDataDtoFactory extends Factory
 
     public function definition(): array
     {
+        $code = $this->faker->randomElement([
+            PaymentMethodCode::BLIK,
+            PaymentMethodCode::IPKO,
+            PaymentMethodCode::MTRANSFER,
+            PaymentMethodCode::WIRE_TRANSFER,
+        ]);
+        $logo = [['png' => $code->getLogo('png')]];
+
         return [
             'id' => $this->faker->unique()->uuid,
-            'created' => 1735686000,
-            'isActive' => true,
+            'created' => $this->faker->unixTime,
+            'isActive' => $this->faker->boolean(90),
             'paymentMethods' => [
                 [
-                    'paymentMethod' => 'blik',
-                    'paymentMethodCode' => 'blik',
+                    'paymentMethod' => match ($code) {
+                        PaymentMethodCode::BLIK => 'blik',
+                        PaymentMethodCode::WIRE_TRANSFER => 'wt',
+                        default => 'pbl',
+                    },
+                    'paymentMethodCode' => $code->value,
                     'isActive' => true,
-                    'isOnline' => true,
-                    'description' => 'BLIK',
+                    'isOnline' => $this->faker->boolean(80),
+                    'description' => ucfirst($code->value),
                     'currency' => 'PLN',
                     'transactionLimits' => [
-                        'maxTransaction' => ['type' => 'number', 'value' => 5000000],
-                        'minTransaction' => ['type' => 'number', 'value' => 1],
+                        'maxTransaction' => ['type' => 'number', 'value' => $this->faker->numberBetween(10000, 5000000)],
+                        'minTransaction' => ['type' => 'number', 'value' => $this->faker->numberBetween(1, 1000)],
                     ],
-                    'paymentMethodImage' => [['png' => 'https://cdn.pay.ing.pl/img/pay/blik.png']],
-                    'paymentMethodCodeImage' => [['png' => 'https://cdn.pay.ing.pl/img/pay/blik.png']],
+                    'paymentMethodImage' => $logo,
+                    'paymentMethodCodeImage' => $logo,
                 ],
             ],
         ];

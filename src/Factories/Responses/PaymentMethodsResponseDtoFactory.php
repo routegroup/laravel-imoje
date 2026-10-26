@@ -17,6 +17,9 @@ class PaymentMethodsResponseDtoFactory extends Factory
         // wrapped in a {timestamp, data} envelope. The three-character keys
         // are not a typo — the gateway injects random ones alongside the
         // documented fields, and they differ between calls.
+        //
+        // Deliberately not randomised. Its worth is being a faithful copy of
+        // what the gateway actually sent; generated values would lose that.
         return [
             'timestamp' => 1792953644448,
             'data' => [
