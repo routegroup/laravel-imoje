@@ -64,6 +64,8 @@ it('casts the scalars the singular DTO casts', function (): void {
 
 /** The sandbox answers an unknown cid with 404 and an empty body. */
 it('reads an unknown cid as a failure carrying no profiles', function (): void {
+    config()->set('services.imoje.strict_errors', false);
+
     $response = fetchProfiles(null, 404);
 
     expect($response->paymentProfiles)->toBe([])
