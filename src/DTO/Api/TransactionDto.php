@@ -16,6 +16,7 @@ use Routegroup\Imoje\Payment\DTO\Casts\ShippingDto;
 use Routegroup\Imoje\Payment\DTO\Casts\WalletDto;
 use Routegroup\Imoje\Payment\DTO\Concerns\HasMultipayout;
 use Routegroup\Imoje\Payment\DTO\Concerns\HasVisibleMethod;
+use Routegroup\Imoje\Payment\DTO\Concerns\ValidatesGatewayFields;
 use Routegroup\Imoje\Payment\Factories\Api\TransactionDtoFactory;
 use Routegroup\Imoje\Payment\Lib\Config;
 use Routegroup\Imoje\Payment\Types\Currency;
@@ -64,6 +65,7 @@ class TransactionDto extends BaseDto
     use HasFactory;
     use HasMultipayout;
     use HasVisibleMethod;
+    use ValidatesGatewayFields;
 
     protected bool $strictEnums = true;
 
@@ -129,6 +131,12 @@ class TransactionDto extends BaseDto
             'type' => TransactionType::SALE,
             'serviceId' => $config->serviceId,
         ], $attributes);
+
+        self::checkGatewayFields($attributes, [
+            'orderId' => 'orderId',
+            'title' => 'description',
+            'additionalDescription' => 'description',
+        ]);
 
         parent::__construct(self::castVisibleMethod(self::castMultipayout($attributes)));
 

@@ -9,6 +9,7 @@ use Routegroup\Imoje\Payment\DTO\BaseDto;
 use Routegroup\Imoje\Payment\DTO\Casts\CartDto;
 use Routegroup\Imoje\Payment\DTO\Casts\InvoiceDto;
 use Routegroup\Imoje\Payment\DTO\Concerns\HasMultipayout;
+use Routegroup\Imoje\Payment\DTO\Concerns\ValidatesGatewayFields;
 use Routegroup\Imoje\Payment\Factories\Paywall\TransactionDtoFactory;
 use Routegroup\Imoje\Payment\Lib\Config;
 use Routegroup\Imoje\Payment\Lib\Utils;
@@ -41,6 +42,7 @@ class TransactionDto extends BaseDto
 {
     use HasFactory;
     use HasMultipayout;
+    use ValidatesGatewayFields;
 
     protected array $casts = [
         'amount' => 'int',
@@ -81,6 +83,16 @@ class TransactionDto extends BaseDto
             'serviceId' => $config->serviceId,
             'merchantId' => $config->merchantId,
         ], $attributes);
+
+        self::checkGatewayFields($attributes, [
+            'orderId' => 'orderId',
+            'orderDescription' => 'description',
+            'customerFirstName' => 'name',
+            'customerLastName' => 'name',
+            'customerPhone' => 'phone',
+            'customerId' => 'customerId',
+            'customerEmail' => 'email',
+        ]);
 
         $attributes = self::castMultipayout($attributes);
 
