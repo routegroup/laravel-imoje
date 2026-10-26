@@ -23,10 +23,16 @@ class RefundDto extends BaseDto
 {
     use HasFactory;
 
+    /**
+     * sendRefundConfirmationEmail is deliberately absent. BaseDto materialises
+     * every key listed here, and (bool) null is false, so declaring it would
+     * put sendRefundConfirmationEmail=false in every request and silently
+     * switch off the payer's confirmation e-mail. It is cast below instead,
+     * only when the caller actually passed it.
+     */
     protected array $casts = [
         'amount' => 'int',
         'type' => TransactionType::class,
-        'sendRefundConfirmationEmail' => 'bool',
     ];
 
     /**
@@ -49,6 +55,13 @@ class RefundDto extends BaseDto
             'type' => TransactionType::REFUND,
             'serviceId' => $config->serviceId,
         ], $attributes);
+
+        // Cast in place rather than through $casts, so an omitted flag stays
+        // omitted while an explicit false is still sent as false. allowNull
+        // would not do: it filters out every falsy value, false included.
+        if (array_key_exists('sendRefundConfirmationEmail', $attributes)) {
+            $attributes['sendRefundConfirmationEmail'] = (bool) $attributes['sendRefundConfirmationEmail'];
+        }
 
         parent::__construct($attributes);
     }
