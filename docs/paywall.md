@@ -43,49 +43,72 @@ Please refer to [docs of notifications](notifications.md).
 
 Refund is only possible through API interface. Please refer to [API docs](api.md).
 
-## OneClick payment
+## Card widget
 
-The package helps you quickly apply the widget form on your page.
-In an example, I'll use an authorized user who is making a new transaction.
+One script tag on your summary page takes a card payment without sending the
+payer to the gateway. `OneClickDto` builds it — the name is historical, the
+widget serves all three `WidgetType` values: `oneclick`, `recurring` and
+`ecom3ds`.
 
 ```php
-use Routegroup\Imoje\Payment\Lib\Config;
-use Routegroup\Imoje\Payment\DTO\Paywall\OneClickDto;
-use Routegroup\Imoje\Payment\Types\Currency;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Auth;
-
-public function getForm(Config $config)
-{
-    $auth = Auth::user();
-    
-    $dto = new OneClickDto([
-        'amount' => 100 * 100, // 100zł
-        'currency' => Currency::PLN,
-        'orderId' => (string) Str::uuid(),
-        'customerId' => $auth->id,
-        'customerFirstName' => $auth->firstname,
-        'customerLastName' => $auth->lastname,
-        'customerEmail' => $auth->email,
-    ]);
-    
-    return view('view-with-widget', [
-        'widgetUrl' => $config->env->widgetUrl(),
-        'dto' => $dto,
-    ]);
-}
+$dto = new OneClickDto([
+    'amount' => 10000,
+    'currency' => Currency::PLN,
+    'orderId' => (string) Str::uuid(),
+    'customerId' => $user->id,
+    'customerFirstName' => $user->firstname,
+    'customerLastName' => $user->lastname,
+    'customerEmail' => $user->email,
+    'widgetType' => WidgetType::ECOM3DS,
+]);
 ```
+
+`$dto->script()` returns the finished tag as an `HtmlString`, so Blade prints
+it with `{{ }}` and does not escape it twice:
+
+```blade
+{{ $dto->script() }}
+```
+
+Values are escaped on the way in, which matters for `orderDescription` and a
+payer's name. Anything else the page needs goes in as extra attributes — a CSP
+nonce above all — and never reaches the signature:
+
+```php
+$dto->script(['nonce' => $nonce, 'async' => true]);
+```
+
+`$dto->attributes()` gives the same set as a plain array, keyed the way the
+widget reads it (`data-order-id`, plus `src` and `id`), for a tag you would
+rather build yourself. `id` must stay `imoje-widget__script` or the widget
+never starts.
+
+### What the signature leaves out
+
+`locale`, `inline`, `elementId` and `elementEvent` configure the widget rather
+than the payment, and the chapter excludes them from the signature — as it
+excludes `src` and `id`. The DTO holds that list in `OneClickDto::UNSIGNED`
+and drops it before signing, so adding one of them cannot break the hash:
+
+```php
+$dto = new OneClickDto([
+    // ...
+    'locale' => Lang::EN,
+    'inline' => true,          // needs an #imoje-widget__wrapper element on the page
+    'elementId' => 'pay-now',  // the element that opens the widget
+    'elementEvent' => 'click',
+]);
+```
+
+`invoice` and `multipayout` work as they do elsewhere: pass the same arrays and
+the DTO encodes them, the invoice gzipped and base64-encoded, the multipayout
+as JSON in the attribute while the signature still sees it expanded.
 
 ## Deferred payments
 
 Nothing special is needed. They are ordinary channels — `paypo`,
 `imoje_twisto`, `blik_paylater`, `pragma_go` — so select them through
 `visibleMethod` or `preselectMethodCode` like any other.
-
-## Card widget
-
-Partially supported: the URLs and most parameters exist, but the package does
-not render the script tag — [#79](https://github.com/routegroup/laravel-imoje/issues/79).
 
 ## Language
 
