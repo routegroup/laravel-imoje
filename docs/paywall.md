@@ -82,10 +82,6 @@ Nothing special is needed. They are ordinary channels — `paypo`,
 `imoje_twisto`, `blik_paylater`, `pragma_go` — so select them through
 `visibleMethod` or `preselectMethodCode` like any other.
 
-## ING Księgowość (bookkeeping solution)
-
-Not implemented — [#74](https://github.com/routegroup/laravel-imoje/issues/74).
-
 ## ING Lease Now
 
 Not implemented — [#75](https://github.com/routegroup/laravel-imoje/issues/75).
