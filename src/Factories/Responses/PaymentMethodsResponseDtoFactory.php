@@ -13,26 +13,60 @@ class PaymentMethodsResponseDtoFactory extends Factory
 
     public function definition(): array
     {
+        // Mirrors a real sandbox response: the documented list of methods
+        // wrapped in a {timestamp, data} envelope. The three-character keys
+        // are not a typo — the gateway injects random ones alongside the
+        // documented fields, and they differ between calls.
         return [
-            [
-                'label' => 'Płatność BLIK',
-                'isOnline' => true,
-                'image' => [
-                    ['png' => 'https://cdn.pay.ing.pl/img/pay/blik.png'],
-                ],
-                'channels' => [
-                    [
-                        'paymentMethod' => 'blik',
-                        'paymentMethodCode' => 'blik',
-                        'label' => 'Płatność BLIK',
-                        'priority' => 1,
-                        'isOnline' => true,
-                        'image' => [
-                            ['png' => 'https://cdn.pay.ing.pl/img/pay/blik.png'],
+            'timestamp' => 1792953644448,
+            'data' => [
+                [
+                    'label' => 'Płatność BLIK',
+                    'isOnline' => true,
+                    'image' => [
+                        ['png' => 'https://cdn.pay.ing.pl/img/pay/blik.png', 'dzP' => 'NNp'],
+                    ],
+                    'channels' => [
+                        [
+                            'paymentMethod' => 'blik',
+                            'paymentMethodCode' => 'blik',
+                            'label' => 'Płatność BLIK',
+                            'priority' => 1,
+                            'isOnline' => true,
+                            'image' => [
+                                ['png' => 'https://cdn.pay.ing.pl/img/pay/blik.png'],
+                            ],
                         ],
                     ],
+                    'priority' => 1,
+                    '24M' => 'yTN',
                 ],
-                'priority' => 1,
+                [
+                    'label' => 'Przelew tradycyjny',
+                    'isOnline' => true,
+                    'image' => [
+                        ['png' => 'https://cdn.pay.ing.pl/img/pay/wt.png'],
+                    ],
+                    'channels' => [
+                        [
+                            'paymentMethod' => 'wt',
+                            'paymentMethodCode' => 'wt',
+                            'label' => 'Przelew tradycyjny',
+                            'priority' => 1,
+                            'isOnline' => true,
+                            'image' => [['png' => 'https://cdn.pay.ing.pl/img/pay/wt.png']],
+                        ],
+                        [
+                            'paymentMethod' => 'wt',
+                            'paymentMethodCode' => 'wt_split',
+                            'label' => 'Split Payment',
+                            'priority' => 2,
+                            'isOnline' => true,
+                            'image' => [['png' => 'https://cdn.pay.ing.pl/img/pay/wt_split.png']],
+                        ],
+                    ],
+                    'priority' => 2,
+                ],
             ],
         ];
     }
