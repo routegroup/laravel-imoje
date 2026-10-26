@@ -9,6 +9,7 @@ use Routegroup\Imoje\Payment\DTO\BaseDto;
 use Routegroup\Imoje\Payment\DTO\Casts\BillingDto;
 use Routegroup\Imoje\Payment\DTO\Casts\CardDto;
 use Routegroup\Imoje\Payment\DTO\Casts\CustomerDto;
+use Routegroup\Imoje\Payment\DTO\Casts\InstallmentDto;
 use Routegroup\Imoje\Payment\DTO\Casts\InvoiceDto;
 use Routegroup\Imoje\Payment\DTO\Concerns\HasMultipayout;
 use Routegroup\Imoje\Payment\Factories\Api\TransactionDtoFactory;
@@ -29,7 +30,7 @@ use Routegroup\Imoje\Payment\Types\TransactionType;
  * @property-read Currency $currency
  * @property-read string $orderId
  * @property-read PaymentMethod $paymentMethod
- * @property-read PaymentMethodCode $paymentMethodCode
+ * @property-read PaymentMethodCode|null $paymentMethodCode
  * @property-read string $successReturnUrl
  * @property-read string $failureReturnUrl
  * @property-read CustomerDto $customer
@@ -41,6 +42,7 @@ use Routegroup\Imoje\Payment\Types\TransactionType;
  * @property-read array $additionalData
  * @property-read int $validTo
  * @property-read array $multipayout Serialised as data.multipayout; see toArray()
+ * @property-read InstallmentDto|null $installment
  * @property-read InvoiceDto|null $invoice
  *
  * @method static TransactionDtoFactory factory($count = null, $state = [])
@@ -64,6 +66,7 @@ class TransactionDto extends BaseDto
         'billing' => BillingDto::class,
         'shipping' => BillingDto::class,
         'card' => CardDto::class,
+        'installment' => InstallmentDto::class,
         // 'additionalData' => 'array' @todo
         // 'multipayout' => 'array' @todo
         'invoice' => InvoiceDto::class,
@@ -93,6 +96,7 @@ class TransactionDto extends BaseDto
      *     validTo?: int,
      *     // Sent as data.multipayout, which is where the schema wants it.
      *     multipayout?: array<mixed>,
+     *     installment?: InstallmentDto|array{period: int},
      *     invoice?: InvoiceDto|array<mixed>,
      * } $attributes
      */
@@ -106,6 +110,10 @@ class TransactionDto extends BaseDto
         ], $attributes);
 
         parent::__construct(self::castMultipayout($attributes));
+
+        if ($this->installment instanceof InstallmentDto && $this->paymentMethodCode instanceof PaymentMethodCode) {
+            $this->installment->assertFitsChannel($this->paymentMethodCode);
+        }
     }
 
     /**
