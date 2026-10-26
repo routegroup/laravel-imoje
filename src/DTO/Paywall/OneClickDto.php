@@ -9,7 +9,6 @@ use Illuminate\Support\HtmlString;
 use Routegroup\Imoje\Payment\DTO\BaseDto;
 use Routegroup\Imoje\Payment\DTO\Casts\InvoiceDto;
 use Routegroup\Imoje\Payment\DTO\Concerns\HasMultipayout;
-use Routegroup\Imoje\Payment\DTO\Concerns\ValidatesGatewayFields;
 use Routegroup\Imoje\Payment\Factories\Paywall\OneClickDtoFactory;
 use Routegroup\Imoje\Payment\Lib\Config;
 use Routegroup\Imoje\Payment\Lib\Utils;
@@ -53,7 +52,6 @@ class OneClickDto extends BaseDto
 {
     use HasFactory;
     use HasMultipayout;
-    use ValidatesGatewayFields;
 
     /** The widget refuses to initialise under any other id. */
     public const SCRIPT_ID = 'imoje-widget__script';
@@ -112,16 +110,6 @@ class OneClickDto extends BaseDto
             'serviceId' => $config->serviceId,
             'merchantId' => $config->merchantId,
         ], $attributes);
-
-        self::checkGatewayFields($attributes, [
-            'orderId' => 'orderId',
-            'orderDescription' => 'description',
-            'customerFirstName' => 'name',
-            'customerLastName' => 'name',
-            'customerPhone' => 'phone',
-            'customerId' => 'customerId',
-            'customerEmail' => 'email',
-        ]);
 
         $attributes = self::castMultipayout($attributes);
 

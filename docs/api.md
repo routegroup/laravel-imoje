@@ -202,34 +202,30 @@ Five more fields that always reached the gateway are now part of the DTO
 contract rather than slipping through untyped: `notificationUrl`,
 `additionalDescription`, `blikCode`, `clientIp` and `data`.
 
-## Field limits
+## Field limits are the gateway's to enforce
 
-Order and customer fields are checked before the request leaves, on the API
-and on both paywall channels alike, so one payload gets the same answer
-whichever way it is sent. A violation raises `InvalidFieldException` naming
-the field.
+Order, customer and address fields carry length and character limits, and this
+package does not check them. A `422` comes back naming the field, and
+`ApiErrorException` carries it.
 
-| field | limit |
-| --- | --- |
-| `orderId` | 100 characters; letters, digits, `_ - # . \ /`, space, Latin-1 |
-| `customerId` / `cid` | 36 characters, same set |
-| `firstName`, `lastName` | 100 characters; the above plus apostrophe, backtick, quote, `&`, `,` and Cyrillic |
-| `phone` | 20 characters; digits, `+`, `-`, space |
-| `email` | 200 characters, an address |
-| `title`, `orderDescription` | 255 characters, the name set without Cyrillic |
+That is a deliberate retreat. An earlier version of this package transcribed
+the gateway's own patterns and checked them locally, which read well until the
+cost became clear: every rule was a **copy of a remote ruleset we do not own**.
+When ING widens a character class, a stale copy starts refusing payloads the
+gateway would have taken — a blocked payment rather than a round trip, and the
+failure mode is worse than the one it set out to prevent.
 
-**These are the gateway's own patterns, not the specification's.** Both
-documents describe narrower sets than it actually accepts — `cid` is the
-plainest case, written as letters, digits and a hyphen while the gateway takes
-`cid_1` without complaint. Enforcing the document would have refused calls that
-work, so the rules were transcribed from the `422`s the gateway answers with
-and then checked back against it: fifteen borderline values, in both
-directions, no disagreement.
+The published schemas make the risk concrete. They describe narrower sets than
+the gateway accepts in at least three places: `cid` is written as letters,
+digits and a hyphen while `cid_1` goes through, and `street` is written
+`^[A-Za-z0-9 ]+$`, which would refuse every Polish address with a diacritic.
+If the documentation can drift that far, so can a transcription of it.
 
-Where PCRE and the gateway's JavaScript read a character class differently the
-rules err towards accepting. Being a shade more permissive costs a round trip
-the gateway would have refused anyway; being stricter would refuse a call that
-works.
+What the package does still check is what it **assembles itself**, where it
+knows the construction rules and the gateway cannot help: the multipayout
+all-or-nothing rule, instalment periods, invoice variants, cart items, the
+wallet token shapes. Those are not copies of a remote ruleset — they are the
+shape of the request this package builds.
 
 ## Checking availability before you offer a channel
 
