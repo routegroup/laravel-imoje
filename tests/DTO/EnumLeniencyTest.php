@@ -70,6 +70,5 @@ it('is lenient inside a cast nested in a request', function (string $locale): vo
     expect((new CustomerDto(['locale' => $locale]))->locale)->toBeNull();
 })->with([
     'nonsense' => ['zz'],
-    // The locale ING actually sends for Ukrainian, which Lang still lacks (#66).
-    'uk' => ['uk'],
+    'plausible but not a locale' => ['en-GB'],
 ]);
