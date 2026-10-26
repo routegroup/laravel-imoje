@@ -3,6 +3,8 @@
 namespace Routegroup\Imoje\Payment\Tests\Lib;
 
 use Routegroup\Imoje\Payment\Lib\Url;
+use Routegroup\Imoje\Payment\Types\Environment;
+use Routegroup\Imoje\Payment\Types\Lang;
 
 beforeEach(function (): void {
     $this->url = app(Url::class);
@@ -77,3 +79,22 @@ it('creates get payment methods url')
 it('creates settings ips url')
     ->expect(fn () => $this->url->createSettingsIpsUrl())
     ->toEqual($base.'/settings/ips');
+
+it('creates paywall url without a language')
+    ->expect(fn () => Environment::SANDBOX->paywallUrl())
+    ->toEqual('https://paywall.sandbox.pay.ing.pl/payment');
+
+it('creates paywall url for a language', function (Lang $lang, string $segment): void {
+    expect(Environment::SANDBOX->paywallUrl($lang))
+        ->toEqual("https://paywall.sandbox.pay.ing.pl/$segment/payment");
+})->with([
+    [Lang::PL, 'pl'],
+    [Lang::UK, 'uk'],
+]);
+
+it('creates widget and cdn urls')
+    ->expect(fn () => [Environment::SANDBOX->widgetUrl(), Environment::SANDBOX->cdnUrl()])
+    ->toEqual([
+        'https://paywall.sandbox.pay.ing.pl/js/widget.min.js',
+        'https://cdn.pay.ing.pl',
+    ]);

@@ -11,10 +11,10 @@ use Routegroup\Imoje\Payment\Types\ActionType;
 
 /**
  * @property-read ActionType|null $type
- * @property-read string $url
- * @property-read string $method
- * @property-read string $contentType
- * @property-read string $contentBodyRaw
+ * @property-read string|null $url
+ * @property-read string|null $method
+ * @property-read string|null $contentType
+ * @property-read string|null $contentBodyRaw
  * @property-read string|null $ban
  * @property-read string|null $title
  *
@@ -23,6 +23,8 @@ use Routegroup\Imoje\Payment\Types\ActionType;
 class ActionDto extends BaseDto
 {
     use HasFactory;
+
+    protected bool $allowNull = true;
 
     protected array $casts = [
         'type' => ActionType::class,

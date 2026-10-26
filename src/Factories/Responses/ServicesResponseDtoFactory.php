@@ -11,8 +11,21 @@ class ServicesResponseDtoFactory extends Factory
 {
     protected $model = ServicesResponseDto::class;
 
+    /** The gateway answers with a top-level list of {service} objects. */
     public function definition(): array
     {
-        return [];
+        return [
+            [
+                'service' => [
+                    'id' => $this->faker->uuid,
+                    'created' => $this->faker->unixTime,
+                    'isActive' => true,
+                    'name' => $this->faker->company,
+                    'paymentMethods' => [
+                        ['paymentMethod' => 'pbl', 'paymentMethodCode' => 'ipko'],
+                    ],
+                ],
+            ],
+        ];
     }
 }

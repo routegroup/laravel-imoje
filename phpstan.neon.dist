@@ -22,3 +22,10 @@ parameters:
         -
             identifier: return.type
             path: src/Factories/Factory.php
+
+        # GET /services answers with a top-level JSON list, confirmed against
+        # the sandbox, so this fixture has to be a list. Eloquent's
+        # definition() is typed array<string, mixed> for model attributes.
+        -
+            identifier: return.type
+            path: src/Factories/Responses/ServicesResponseDtoFactory.php
