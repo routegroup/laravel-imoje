@@ -59,6 +59,22 @@ nullable.
 Requests are unchanged: an unknown value passed into a request DTO still throws,
 so a typo in your own code fails before it reaches the gateway.
 
+That asymmetry is why two deprecations read differently. `Currency::UAH` and
+`Currency::HRK` are deprecated because the gateway answers `422` for both and
+no specification mentions either — they are request values, so nothing is lost
+by leaving them unused.
+
+`TransactionStatus::SUBMITTED_FOR_SETTLEMENT` and `TransactionStatus::REFUND`
+appear in no specification either — chapter 04 lists seven statuses and makes
+`refund` a transaction *type* — but they are **kept**. A status is a response
+value nobody chooses, and under the rule above a case that is gone comes back
+as `null`, so removing one the gateway does send would hide it rather than
+report it. Neither could be observed: the sandbox never settles a payment.
+
+`TransactionStatus::canChange()` is deprecated. Nothing calls it, no
+specification describes a state machine, and its settled-to-refund transition
+is not one the gateway makes.
+
 ## Falsy values
 
 A `0`, `false`, `''` or `'0'` you set is sent, and one the gateway returns is
