@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace Routegroup\Imoje\Payment\DTO\Responses;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Routegroup\Imoje\Payment\DTO\Casts\PaymentMethodGroupDto;
 use Routegroup\Imoje\Payment\Factories\Responses\PaymentMethodsResponseDtoFactory;
 
 /**
- * @property-read array $methods Payment methods, unwrapped from the gateway's envelope
+ * @property-read list<PaymentMethodGroupDto> $methods Grouped by method, unwrapped from the gateway's envelope
  * @property-read int|null $timestamp Present only when the gateway sends the envelope
  *
  * @method static PaymentMethodsResponseDtoFactory factory($count = null, $state = [])
@@ -34,9 +35,28 @@ class PaymentMethodsResponseDto extends ResponseDto
         };
 
         $this->attributes = [
-            'methods' => $methods,
+            'methods' => array_map(
+                static fn (mixed $method): mixed => is_array($method)
+                    ? new PaymentMethodGroupDto($method)
+                    : $method,
+                $methods,
+            ),
             'timestamp' => $raw['timestamp'] ?? null,
         ];
+    }
+
+    public function toArray(): array
+    {
+        $attributes = parent::toArray();
+
+        $attributes['methods'] = array_map(
+            static fn (mixed $method): mixed => $method instanceof PaymentMethodGroupDto
+                ? $method->toArray()
+                : $method,
+            is_array($attributes['methods'] ?? null) ? $attributes['methods'] : [],
+        );
+
+        return $attributes;
     }
 
     protected static function newFactory(): PaymentMethodsResponseDtoFactory
