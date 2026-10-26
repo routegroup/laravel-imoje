@@ -42,6 +42,14 @@ enum Environment: string
         };
     }
 
+    public function installmentsUrl(): string
+    {
+        return match ($this) {
+            self::PRODUCTION => 'https://paywall.pay.ing.pl/js/installments.js',
+            self::SANDBOX => 'https://paywall.sandbox.pay.ing.pl/js/installments.js',
+        };
+    }
+
     public function cdnUrl(): string
     {
         return 'https://cdn.pay.ing.pl';
