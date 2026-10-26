@@ -14,6 +14,11 @@ enum PaymentMethod: string
     case WIRE_TRANSFER = 'wt'; // Wire transfer
     case ING = 'ing';
     case WALLET = 'wallet'; // Electronic wallets
-    case VISA_MOBILE = 'visa_mobile';
     case IMOJE_INSTALLMENTS = 'imoje_installments';
+    case TWISTO = 'twisto';
+    case IDEAL = 'ideal';
+    case PIS_PROXY = 'pis_proxy';
+
+    /** @deprecated The gateway refuses it as a method; it is a PaymentMethodCode. */
+    case VISA_MOBILE = 'visa_mobile';
 }

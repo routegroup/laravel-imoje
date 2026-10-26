@@ -14,6 +14,7 @@ use Routegroup\Imoje\Payment\DTO\Casts\InstallmentDto;
 use Routegroup\Imoje\Payment\DTO\Casts\InvoiceDto;
 use Routegroup\Imoje\Payment\DTO\Casts\WalletDto;
 use Routegroup\Imoje\Payment\DTO\Concerns\HasMultipayout;
+use Routegroup\Imoje\Payment\DTO\Concerns\HasVisibleMethod;
 use Routegroup\Imoje\Payment\Factories\Api\TransactionDtoFactory;
 use Routegroup\Imoje\Payment\Lib\Config;
 use Routegroup\Imoje\Payment\Types\Currency;
@@ -40,7 +41,7 @@ use Routegroup\Imoje\Payment\Types\TransactionType;
  * @property-read BillingDto $billing
  * @property-read BillingDto $shipping
  * @property-read CardDto $card
- * @property-read array $visibleMethod
+ * @property-read list<string> $visibleMethod
  * @property-read AdditionalDataDto|null $additionalData
  * @property-read WalletDto|null $wallet
  * @property-read int $validTo
@@ -54,6 +55,7 @@ class TransactionDto extends BaseDto
 {
     use HasFactory;
     use HasMultipayout;
+    use HasVisibleMethod;
 
     protected bool $strictEnums = true;
 
@@ -92,7 +94,7 @@ class TransactionDto extends BaseDto
      *     serviceId?: string,
      *     // Optional
      *     title?: string,
-     *     visibleMethod?: list<string>,
+     *     visibleMethod?: list<PaymentMethod|string>,
      *     billing?: BillingDto|BillingShape,
      *     shipping?: BillingDto|BillingShape,
      *     card?: CardDto|CardShape,
@@ -114,7 +116,7 @@ class TransactionDto extends BaseDto
             'serviceId' => $config->serviceId,
         ], $attributes);
 
-        parent::__construct(self::castMultipayout($attributes));
+        parent::__construct(self::castVisibleMethod(self::castMultipayout($attributes)));
 
         if ($this->installment instanceof InstallmentDto && $this->paymentMethodCode instanceof PaymentMethodCode) {
             $this->installment->assertFitsChannel($this->paymentMethodCode);

@@ -25,6 +25,7 @@ enum PaymentMethodCode: string
     case GETIN = 'getin';
     case GOOGLE_PAY = 'gpay';
     case IDEABANK = 'ideabank';
+    /** @deprecated The gateway refuses it as a channel; it is a PaymentMethod. */
     case IMOJE_INSTALLMENTS = 'imoje_installments';
     case INBANK = 'inbank';
     case INBANK_0 = 'inbank_0';
@@ -58,6 +59,28 @@ enum PaymentMethodCode: string
     case VUB = 'vub';
     case WIRE_TRANSFER = 'wt';
     case WIRE_TRANSFER_SPLIT = 'wt_split';
+
+    case ALIOR_PIS_PROXY = 'alior_pis_proxy';
+    case BLIK_RECURRING = 'blik_recurring';
+    case BLIK_TEST = 'blik_test';
+    case BNPPARIBAS_PIS_PROXY = 'bnpparibas_pis_proxy';
+    case BREBANK = 'brebank';
+    case BSPW = 'bspw';
+    case DEUTSCHEBANK = 'deutschebank';
+    case EUROBANK = 'eurobank';
+    case IDEAL = 'ideal';
+    case INTELIGO_PIS_PROXY = 'inteligo_pis_proxy';
+    case IPKO_PIS_PROXY = 'ipko_pis_proxy';
+    case LEASE_NOW = 'lease_now';
+    case MBANK_PIS_PROXY = 'mbank_pis_proxy';
+    case NEOBANK = 'neobank';
+    case ORANGE = 'orange';
+    case PEKAO_PIS_PROXY = 'pekao_pis_proxy';
+    case POCZTA = 'poczta';
+    case RAIFFEISENPOLBANK = 'raiffeisenpolbank';
+    case TOYOTA = 'toyota';
+    case TWISTO = 'twisto';
+    case VWBANK = 'vwbank';
 
     // For notification
     case ONECLICK = 'oneclick';

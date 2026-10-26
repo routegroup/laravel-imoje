@@ -10,9 +10,12 @@ use Routegroup\Imoje\Payment\DTO\Casts\CartDto;
 use Routegroup\Imoje\Payment\DTO\Casts\CustomerDto;
 use Routegroup\Imoje\Payment\DTO\Casts\InvoiceDto;
 use Routegroup\Imoje\Payment\DTO\Concerns\HasMultipayout;
+use Routegroup\Imoje\Payment\DTO\Concerns\HasVisibleMethod;
 use Routegroup\Imoje\Payment\Factories\Api\PaymentDtoFactory;
 use Routegroup\Imoje\Payment\Lib\Config;
 use Routegroup\Imoje\Payment\Types\Currency;
+use Routegroup\Imoje\Payment\Types\PaymentMethod;
+use Routegroup\Imoje\Payment\Types\PaymentMethodCode;
 
 /**
  * @phpstan-import-type CustomerShape from CustomerDto
@@ -23,8 +26,8 @@ use Routegroup\Imoje\Payment\Types\Currency;
  * @property-read string $orderId
  * @property-read CustomerDto $customer
  * @property-read string $title
- * @property-read array $visibleMethod
- * @property-read string $preselectMethodCode
+ * @property-read list<string> $visibleMethod
+ * @property-read PaymentMethodCode|string $preselectMethodCode
  * @property-read string $returnUrl
  * @property-read string $successReturnUrl
  * @property-read string $failureReturnUrl
@@ -38,6 +41,7 @@ class PaymentDto extends BaseDto
 {
     use HasFactory;
     use HasMultipayout;
+    use HasVisibleMethod;
 
     protected bool $strictEnums = true;
 
@@ -63,8 +67,8 @@ class PaymentDto extends BaseDto
      *     serviceId?: string,
      *     // Optional
      *     title?: string,
-     *     visibleMethod?: list<string>,
-     *     preselectMethodCode?: string,
+     *     visibleMethod?: list<PaymentMethod|string>,
+     *     preselectMethodCode?: PaymentMethodCode|string,
      *     returnUrl?: string,
      *     successReturnUrl?: string,
      *     failureReturnUrl?: string,
@@ -84,7 +88,7 @@ class PaymentDto extends BaseDto
             'serviceId' => $config->serviceId,
         ], $attributes);
 
-        parent::__construct(self::castMultipayout($attributes));
+        parent::__construct(self::castVisibleMethod(self::castMultipayout($attributes)));
     }
 
     /** The payment-link schema is the one place multipayout stays at the top level. */
