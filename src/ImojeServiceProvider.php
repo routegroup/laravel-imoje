@@ -33,14 +33,7 @@ class ImojeServiceProvider extends ServiceProvider
         );
     }
 
-    /**
-     * An empty `services.imoje.env` is as good as an absent one.
-     *
-     * README tells integrators to put `IMOJE_ENV=` in .env and read it with
-     * env(), which yields an empty string rather than null, so the default
-     * argument of Arr::get never applies and Environment::from('') used to
-     * throw while the container was still booting.
-     */
+    /** env('IMOJE_ENV') yields an empty string, not null, so Arr::get's default never applies. */
     private function resolveEnvironment(mixed $value): Environment
     {
         if (blank($value)) {
