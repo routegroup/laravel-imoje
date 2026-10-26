@@ -11,11 +11,15 @@ enum Currency: string
     case CZK = 'CZK';
     case GBP = 'GBP';
     case USD = 'USD';
-    case UAH = 'UAH';
-    case HRK = 'HRK';
     case HUF = 'HUF';
     case SEK = 'SEK';
     case RON = 'RON';
     case CHF = 'CHF';
     case BGN = 'BGN';
+
+    /** @deprecated The gateway answers 422 for it, and no specification mentions it. */
+    case UAH = 'UAH';
+
+    /** @deprecated Retired in 2023, and the gateway answers 422 for it. */
+    case HRK = 'HRK';
 }
