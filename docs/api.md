@@ -45,3 +45,10 @@ accepts an empty `title` but rejects a null one.
 
 To create a payment link with no expiry, omit `validTo` rather than passing
 `null` — the gateway reports `validTo: null` for such a link either way.
+
+## Trusted IPs
+
+`GET` and `PUT /settings/ips` answer with different shapes and share one DTO:
+`getTrustedIps()` fills `trustedIps`, `putTrustedIps()` fills `status`, and the
+other property is `null`. An empty allowlist reads as `[]`, not `null`, so it is
+distinguishable from a response that carried no list at all.
