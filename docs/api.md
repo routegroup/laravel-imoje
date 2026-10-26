@@ -72,6 +72,31 @@ An unknown `cid` answers `404` with an empty body. That is not an exception —
 `paymentProfiles` is then `[]` and `failed()` is `true`, so check `failed()`
 rather than reading an empty list as "this customer has no cards".
 
+## Timeouts, and why there are no retries
+
+The client carries Laravel's own defaults — 30 seconds for the request, 10 for
+the connection — and both are now yours to set:
+
+```php
+// config/services.php
+'imoje' => [
+    // ...
+    'timeout' => 8,
+    'connect_timeout' => 3,
+],
+```
+
+Fractions are allowed, so `0.5` is half a second. Leave either out and you get
+the figure above, which is what the package already behaved like.
+
+Nothing is retried, on purpose. Chapter 05 answers a `500` with "switch that
+channel off for a few minutes", and a `503` or `504` with a **single** `GET`
+five minutes later — not with another attempt. Repeating a `POST` the gateway
+may already have accepted would risk a second transaction against the same
+order, and no timeout tells you which side of that line you are on. Backing off
+is the caller's decision to make, with the order context the package does not
+have.
+
 ## Multipayout
 
 Pass `multipayout` as a flat list; the package puts it where each endpoint
