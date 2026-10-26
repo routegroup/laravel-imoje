@@ -187,6 +187,35 @@ Five more fields that always reached the gateway are now part of the DTO
 contract rather than slipping through untyped: `notificationUrl`,
 `additionalDescription`, `blikCode`, `clientIp` and `data`.
 
+## Field limits
+
+Order and customer fields are checked before the request leaves, on the API
+and on both paywall channels alike, so one payload gets the same answer
+whichever way it is sent. A violation raises `InvalidFieldException` naming
+the field.
+
+| field | limit |
+| --- | --- |
+| `orderId` | 100 characters; letters, digits, `_ - # . \ /`, space, Latin-1 |
+| `customerId` / `cid` | 36 characters, same set |
+| `firstName`, `lastName` | 100 characters; the above plus apostrophe, backtick, quote, `&`, `,` and Cyrillic |
+| `phone` | 20 characters; digits, `+`, `-`, space |
+| `email` | 200 characters, an address |
+| `title`, `orderDescription` | 255 characters, the name set without Cyrillic |
+
+**These are the gateway's own patterns, not the specification's.** Both
+documents describe narrower sets than it actually accepts — `cid` is the
+plainest case, written as letters, digits and a hyphen while the gateway takes
+`cid_1` without complaint. Enforcing the document would have refused calls that
+work, so the rules were transcribed from the `422`s the gateway answers with
+and then checked back against it: fifteen borderline values, in both
+directions, no disagreement.
+
+Where PCRE and the gateway's JavaScript read a character class differently the
+rules err towards accepting. Being a shade more permissive costs a round trip
+the gateway would have refused anyway; being stricter would refuse a call that
+works.
+
 ## Multipayout
 
 Pass `multipayout` as a flat list; the package puts it where each endpoint

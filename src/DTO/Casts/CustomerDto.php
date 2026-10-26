@@ -6,6 +6,8 @@ namespace Routegroup\Imoje\Payment\DTO\Casts;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Routegroup\Imoje\Payment\DTO\BaseDto;
+use Routegroup\Imoje\Payment\DTO\Concerns\ValidatesGatewayFields;
+use Routegroup\Imoje\Payment\Exceptions\InvalidFieldException;
 use Routegroup\Imoje\Payment\Factories\Casts\CustomerDtoFactory;
 use Routegroup\Imoje\Payment\Types\Lang;
 
@@ -33,6 +35,7 @@ use Routegroup\Imoje\Payment\Types\Lang;
 class CustomerDto extends BaseDto
 {
     use HasFactory;
+    use ValidatesGatewayFields;
 
     protected bool $allowNull = true;
 
@@ -42,6 +45,21 @@ class CustomerDto extends BaseDto
         'email' => 'string',
         'locale' => Lang::class,
     ];
+
+    /** @throws InvalidFieldException */
+    public function __construct($attributes = [])
+    {
+        self::checkGatewayFields((array) $attributes, [
+            'firstName' => 'name',
+            'lastName' => 'name',
+            'company' => 'description',
+            'email' => 'email',
+            'phone' => 'phone',
+            'cid' => 'customerId',
+        ]);
+
+        parent::__construct($attributes);
+    }
 
     protected static function newFactory(): CustomerDtoFactory
     {
