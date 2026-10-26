@@ -38,7 +38,7 @@ use Routegroup\Imoje\Payment\Types\TransactionType;
  * @property-read array $visibleMethod
  * @property-read array $additionalData
  * @property-read int $validTo
- * @property-read array $multipayout
+ * @property-read array $multipayout Serialised as data.multipayout; see toArray()
  * @property-read array $invoice
  *
  * @method static TransactionDtoFactory factory($count = null, $state = [])
@@ -86,6 +86,7 @@ class TransactionDto extends BaseDto
      *     card?: CardDto|CardShape,
      *     additionalData?: array<mixed>,
      *     validTo?: int,
+     *     // Sent as data.multipayout, which is where the schema wants it.
      *     multipayout?: array<mixed>,
      *     invoice?: array<mixed>,
      * } $attributes
@@ -100,6 +101,33 @@ class TransactionDto extends BaseDto
         ], $attributes);
 
         parent::__construct($attributes);
+    }
+
+    /**
+     * The transaction schema carries multipayout under `data`, with
+     * `data.required: ["multipayout"]` — only the payment-link schema has it
+     * at the top level. Accepting it flat keeps the documented input shape
+     * and puts it where this endpoint expects it.
+     */
+    public function toArray(): array
+    {
+        $attributes = parent::toArray();
+
+        if (! isset($attributes['multipayout'])) {
+            return $attributes;
+        }
+
+        $multipayout = $attributes['multipayout'];
+
+        unset($attributes['multipayout']);
+
+        $data = $attributes['data'] ?? [];
+        $data = is_array($data) ? $data : [];
+        $data['multipayout'] = $multipayout;
+
+        $attributes['data'] = $data;
+
+        return $attributes;
     }
 
     protected static function newFactory(): TransactionDtoFactory
