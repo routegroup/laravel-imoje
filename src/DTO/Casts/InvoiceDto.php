@@ -10,11 +10,14 @@ use Routegroup\Imoje\Payment\Exceptions\InvalidInvoiceException;
 use Routegroup\Imoje\Payment\Factories\Casts\InvoiceDtoFactory;
 
 /**
- * invoiceId sits beside buyer and positions, not inside buyer: the chapter's
- * table says otherwise, but the API schema and ING's own encoded example agree
- * it belongs here.
+ * Split Payment carries invoiceId and a taxAmount per position; ING Księgowość
+ * carries neither and may add basisForVatExemption and issueInvoice. invoiceId
+ * picks the variant. It sits beside buyer, not inside it, whatever the
+ * chapter's table says.
  *
- * @property-read string $invoiceId
+ * @property-read string|null $invoiceId
+ * @property-read VatExemptionDto|null $basisForVatExemption
+ * @property-read bool|null $issueInvoice
  * @property-read InvoiceBuyerDto $buyer
  * @property-read list<InvoicePositionDto> $positions
  *
@@ -28,16 +31,14 @@ class InvoiceDto extends BaseDto
 
     protected array $casts = [
         'buyer' => InvoiceBuyerDto::class,
+        'basisForVatExemption' => VatExemptionDto::class,
+        'issueInvoice' => 'bool',
     ];
 
     /** @throws InvalidInvoiceException */
     public function __construct($attributes = [])
     {
         $attributes = (array) $attributes;
-
-        if (($attributes['invoiceId'] ?? null) === null) {
-            throw new InvalidInvoiceException('invoiceId', 'is required');
-        }
 
         if (! isset($attributes['buyer'])) {
             throw new InvalidInvoiceException('buyer', 'is required');
@@ -49,7 +50,10 @@ class InvoiceDto extends BaseDto
             throw new InvalidInvoiceException('positions', 'is required');
         }
 
-        $attributes['positions'] = InvoicePositionDto::fromList($positions);
+        $attributes['positions'] = InvoicePositionDto::fromList(
+            $positions,
+            ($attributes['invoiceId'] ?? null) !== null,
+        );
 
         parent::__construct($attributes);
     }

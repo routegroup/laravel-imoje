@@ -157,25 +157,21 @@ it('carries the invoice on a paywall transaction as one signed field', function 
     );
 });
 
-it('requires the fields the gateway requires but the schema omits', function (array $invoice, string $field): void {
-    expect(fn () => new InvoiceDto($invoice))->toThrow(InvalidInvoiceException::class, $field);
-})->with([
-    'invoiceId' => [
-        (function (): array {
-            $invoice = specInvoice();
-            unset($invoice['invoiceId']);
+it('requires taxAmount when invoiceId marks a Split Payment invoice', function (): void {
+    $invoice = specInvoice();
+    unset($invoice['positions'][0]['taxAmount']);
 
-            return $invoice;
-        })(),
-        'invoiceId',
-    ],
-    'taxAmount' => [
-        (function (): array {
-            $invoice = specInvoice();
-            unset($invoice['positions'][0]['taxAmount']);
+    expect(fn () => new InvoiceDto($invoice))
+        ->toThrow(InvalidInvoiceException::class, 'taxAmount');
+});
 
-            return $invoice;
-        })(),
-        'taxAmount',
-    ],
-]);
+it('accepts an accounting invoice without invoiceId or taxAmount', function (): void {
+    $invoice = specInvoice();
+    unset($invoice['invoiceId'], $invoice['positions'][0]['taxAmount']);
+
+    $dto = new InvoiceDto($invoice);
+
+    expect($dto->invoiceId)->toBeNull()
+        ->and($dto->positions[0]->taxAmount)->toBeNull()
+        ->and($dto->toArray())->not->toHaveKey('invoiceId');
+});

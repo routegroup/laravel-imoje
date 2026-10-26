@@ -170,3 +170,48 @@ Violations raise `InvalidInvoiceException` naming the field.
 
 The same `invoice` works on the API side, where it travels as a plain object
 rather than encoded.
+
+## ING Księgowość
+
+The same `invoice` field carries a second, narrower variant. Leave out
+`invoiceId` and the package switches to it: positions then carry no `taxAmount`,
+and two further fields become available.
+
+```php
+'invoice' => [
+    'buyer' => [
+        'type' => 'PERSON', 'email' => 'jan.kowalski@example.com',
+        'fullName' => 'Jan Kowalski', 'street' => 'Ulica', 'city' => 'Miasto',
+        'postalCode' => '12-345', 'countryCodeAlpha2' => 'PL',
+    ],
+    'positions' => [[
+        'name' => 'Produkt', 'code' => 'produkt-01', 'quantity' => 1,
+        'unit' => 'Sztuki', 'taxStake' => 'TAX_23', 'grossAmount' => 12300,
+    ]],
+    'issueInvoice' => true,
+    'basisForVatExemption' => ['type' => 'TUTORING'],
+],
+```
+
+`issueInvoice` asks ING to issue the invoice once the payment settles.
+`basisForVatExemption` takes a `VatExemptionType` and, for `OTHER`, a non-empty
+`text`; omit it and `InvalidInvoiceException` names the field. Note ING's own
+spelling of `GUARANTIEES` and `DENTAL_TECHNICAN_SERVICES`.
+
+On the API side `Api::createPayment()` additionally takes `isKsef` to send the
+invoice to the national e-invoicing system:
+
+```php
+$api->createPayment(new PaymentDto([
+    // ...
+    'isKsef' => true,
+    'invoice' => $invoice,
+]));
+```
+
+`POST /payment` currently rejects **every** value of `basisForVatExemption`,
+including the ones its own error messages ask for. One branch of the gateway's
+invoice schema declares the field with an empty list of permitted types, so no
+object, string, number, array, boolean or null can satisfy it. Probed on the
+sandbox in October 2026; the rest of the variant is accepted. Until ING fixes
+the schema, send that one field through the paywall rather than the API.

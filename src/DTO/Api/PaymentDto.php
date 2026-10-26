@@ -46,6 +46,7 @@ class PaymentDto extends BaseDto
         'amount' => 'int',
         'currency' => Currency::class,
         'invoice' => InvoiceDto::class,
+        'isKsef' => 'bool',
         'customer' => CustomerDto::class,
     ];
 
@@ -70,6 +71,7 @@ class PaymentDto extends BaseDto
      *     cart?: array<mixed>,
      *     multipayout?: array<mixed>,
      *     invoice?: InvoiceDto|array<mixed>,
+     *     isKsef?: bool,
      * } $attributes
      */
     public function __construct(array $attributes = [])
