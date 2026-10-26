@@ -31,13 +31,13 @@ use Routegroup\Imoje\Payment\Types\TransactionType;
  * @property-read PaymentMethodCode|null $paymentMethodCode
  * @property-read PaymentSummaryDto|null $payment
  * @property-read PaymentProfileDto|null $paymentProfile
- * @property-read array $refunds
+ * @property-read array $refunds Untyped: the specification defines no shape for it
  * @property-read string|null $blikTransactionId
  * @property-read string|null $statusCode
  * @property-read string|null $statusCodeDescription
  * @property-read FeeDto|null $fee
- * @property-read array|null $payerData
- * @property-read array|null $payerCardData
+ * @property-read PayerDataDto|null $payerData
+ * @property-read PayerCardDataDto|null $payerCardData
  * @property-read int|null $paidAmount
  * @property-read ActionDto|null $action
  *
@@ -67,6 +67,8 @@ class TransactionDto extends BaseDto
         'paidAmount' => 'int',
         'fee' => FeeDto::class,
         'action' => ActionDto::class,
+        'payerData' => PayerDataDto::class,
+        'payerCardData' => PayerCardDataDto::class,
     ];
 
     protected static function newFactory(): TransactionDtoFactory

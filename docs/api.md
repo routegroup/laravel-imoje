@@ -24,6 +24,31 @@ The gateway answers errors in two shapes — most codes wrap the detail in an
 same way. A `401` carries no message at all, so the exception falls back to the
 reason phrase.
 
+## Typed error details
+
+A failing response carries `errors`, and each entry is now an `ApiErrorDto`
+rather than a bare array:
+
+```php
+foreach ($exception->dto->errors as $error) {
+    logger()->warning("{$error->property}: {$error->message}");
+}
+```
+
+`Fluent` is an `ArrayAccess`, so `$error['message']` keeps working for code
+written against the old shape. The gateway adds a random three-character key
+to every entry; it rides along untouched rather than being dropped.
+
+`payerData` and `payerCardData` on a transaction are typed too — the payer
+behind a transfer, and the brand, bin and last four digits behind a card.
+Both are absent until a payment completes, so an unpaid transaction simply
+carries neither.
+
+`refunds` on a transaction, and `transactions` on a payment, stay plain
+arrays. Neither has a shape in the specification, and neither appears on any
+response reachable without a completed payment — so there is nothing to type
+them from that would not be guesswork.
+
 ## Unknown enum values
 
 A value the package does not know — a channel ING ships after your version of
