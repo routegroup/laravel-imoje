@@ -16,19 +16,19 @@ use Routegroup\Imoje\Payment\Types\TransactionType;
 
 /**
  * @property-read string $id
- * @property-read TransactionType $type
- * @property-read TransactionStatus $status
- * @property-read TransactionSource $source
+ * @property-read TransactionType|null $type
+ * @property-read TransactionStatus|null $status
+ * @property-read TransactionSource|null $source
  * @property-read int $created
  * @property-read int $modified
  * @property-read string|null $notificationUrl
  * @property-read string $serviceId
  * @property-read int $amount
- * @property-read Currency $currency
+ * @property-read Currency|null $currency
  * @property-read string $title
  * @property-read string $orderId
- * @property-read PaymentMethod $paymentMethod
- * @property-read PaymentMethodCode $paymentMethodCode
+ * @property-read PaymentMethod|null $paymentMethod
+ * @property-read PaymentMethodCode|null $paymentMethodCode
  * @property-read PaymentSummaryDto|null $payment
  * @property-read PaymentProfileDto|null $paymentProfile
  * @property-read array $refunds

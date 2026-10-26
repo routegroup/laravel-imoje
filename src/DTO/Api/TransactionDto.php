@@ -47,6 +47,8 @@ class TransactionDto extends BaseDto
 {
     use HasFactory;
 
+    protected bool $strictEnums = true;
+
     protected bool $allowNull = true;
 
     protected array $casts = [

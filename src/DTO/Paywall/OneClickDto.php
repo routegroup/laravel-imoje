@@ -39,6 +39,8 @@ class OneClickDto extends BaseDto
 {
     use HasFactory;
 
+    protected bool $strictEnums = true;
+
     protected array $casts = [
         'amount' => 'int',
         'currency' => Currency::class,

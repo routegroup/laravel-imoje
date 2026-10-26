@@ -14,10 +14,10 @@ use Routegroup\Imoje\Payment\Types\TransactionStatus;
  * @property-read string $id
  * @property-read string|null $title
  * @property-read int $amount
- * @property-read TransactionStatus $status
+ * @property-read TransactionStatus|null $status
  * @property-read int $created
  * @property-read string $orderId
- * @property-read Currency $currency
+ * @property-read Currency|null $currency
  * @property-read int $modified
  * @property-read string $serviceId
  *
