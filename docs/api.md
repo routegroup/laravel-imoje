@@ -119,3 +119,60 @@ round trip ending in `TRX-ERROR-120022`.
 
 The order must be between 300 and 50 000 PLN. That is not checked locally; the
 gateway answers `TRX-ERROR-120011` below the floor.
+
+## Google Pay and Apple Pay
+
+Both ride `createTransaction()` with `paymentMethod` `wallet` and
+`paymentMethodCode` `gpay` or `applepay`. One `wallet` field carries either
+provider — `paymentData` picks Apple Pay, its absence Google Pay:
+
+```php
+$api->createTransaction(new TransactionDto([
+    // ...
+    'paymentMethod' => PaymentMethod::WALLET,
+    'paymentMethodCode' => PaymentMethodCode::GOOGLE_PAY,
+    'wallet' => [
+        'signature' => $token['signature'],
+        'protocolVersion' => $token['protocolVersion'],
+        'signedMessage' => $token['signedMessage'],
+    ],
+    'additionalData' => ['browser' => [
+        'ip' => '127.0.0.1', 'language' => 'pl-PL', 'jsEnabled' => true,
+        'timezoneOffset' => 100, 'userAgent' => $request->userAgent(),
+        'accept' => 'application/json', 'javaEnabled' => false,
+        'screenColorDepth' => 24, 'screenHeight' => 1080, 'screenWidth' => 2560,
+    ]],
+]));
+```
+
+Apple Pay takes the token's `paymentData` instead:
+
+```php
+'wallet' => ['paymentData' => [
+    'version' => $token['version'],
+    'data' => $token['data'],
+    'signature' => $token['signature'],
+    'header' => [
+        'ephemeralPublicKey' => $token['header']['ephemeralPublicKey'],
+        'publicKeyHash' => $token['header']['publicKeyHash'],
+        'transactionId' => $token['header']['transactionId'],
+    ],
+]],
+```
+
+`additionalData.browser` is required for a wallet payment, and all ten of its
+fields are required with it. The gateway types them strictly — `'true'` and
+`'100'` are refused where `true` and `100` are wanted — so `BrowserDto` casts
+them for you. Google Pay needs all three token fields; Apple Pay needs
+`version`, `data`, `signature` and a `header`, whose `transactionId` must be at
+least 64 characters. Violations raise `InvalidWalletException` naming the
+field.
+
+Each provider has to be enabled for the merchant. Until it is, the gateway
+answers `406` with `TRX-ERROR-120003` rather than a validation error — so a
+`406` here means the payload was fine and the service was not available.
+
+A card issuer may still demand 3-D Secure. When the response carries an
+`action` with a `url`, send the payer there; otherwise continue to your own
+success page.
+
