@@ -1,5 +1,17 @@
 # laravel-imoje
 
+> [!IMPORTANT]
+> **This repository is archived and no longer maintained.** The gateway was renamed from
+> imoje to ING Pay, and the package was split in two:
+>
+> - [routegroup/php-ing-pay](https://github.com/routegroup/php-ing-pay) — the framework-agnostic PHP core
+> - [routegroup/laravel-ing-pay](https://github.com/routegroup/laravel-ing-pay) — the Laravel integration
+>
+> Both carry new Composer names and the `Routegroup\IngPay\*` namespace, so there is no
+> in-place upgrade: require `routegroup/laravel-ing-pay` instead and update your imports.
+> `routegroup/laravel-imoje` gets no further releases, and everything below describes the
+> last published version.
+
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/routegroup/laravel-imoje.svg?style=flat-square)](https://packagist.org/packages/routegroup/laravel-imoje)
 [![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/routegroup/laravel-imoje/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/routegroup/laravel-imoje/actions?query=workflow%3Arun-tests+branch%3Amain)
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/routegroup/laravel-imoje/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/routegroup/laravel-imoje/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
@@ -9,7 +21,7 @@
 
 This package is an integration of [imoje payments](https://www.imoje.pl/) with typed objects, which will help you integrate payments quickly.
 
-It is tested on PHP 8.3, 8.4, and 8.5. PHP 8.5 is tested with Laravel 12 and 13. Laravel 11 is tested through PHP 8.4.
+It is tested on PHP 8.3, 8.4, and 8.5 against Laravel 12 and 13. Laravel 11 was dropped: it left its security window in March 2026 and no patched 11.x release exists.
 
 ## Installation
 
