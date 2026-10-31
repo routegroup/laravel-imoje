@@ -1,6 +1,7 @@
 {
     "name": "routegroup/laravel-imoje",
     "description": "Package for imoje payments",
+    "abandoned": "routegroup/laravel-ing-pay",
     "keywords": [
         "routegroup",
         "laravel",
